@@ -24,7 +24,7 @@ public:
     * 
     * @return cv::Mat
     */
-    std::vector<cv::Mat> getPattern();
+    std::vector<cv::Mat> getPattern(int width, int height);
     
     /**
     * @brief Given the current frame grabbed by the camera, compute the relative position of the projector.
