@@ -1,7 +1,14 @@
 
+#ifndef PROJECTORTRACKER_H
+#define PROJECTORTRACKER_H
+
 #include <opencv2/core/core.hpp>
 #include <vector>
 
+/**
+ * @brief Camera-Projector relative position tracker
+ * 
+ */
 class ProjectorTracker {
 public:
     /**
@@ -34,3 +41,5 @@ protected:
 private:
     cv::Mat pattern;  /// cached pattern
 };
+
+#endif // PROJECTORTRACKER_H
