@@ -1,21 +1,22 @@
 #include <projector_tracker/ProjectorTracker.h>
 #include <opencv2/imgproc/imgproc.hpp>
 #include <opencv2/highgui/highgui.hpp>
-
+#include <vector>
 //#include <ros/ros.h>
 //#include <pcl_ros/point_cloud.h>
 //#include <sensor_msgs/PointCloud2.h>
 //#include "rgbprocess.h"
 
 #include <iostream>
-
+using namespace cv;
+using namespace std;
+void capturePatterns(VideoCapture& capture, const vector<Mat>& pattern, vector<Mat>& captured_patterns);
 int main(int argc, char **argv) {
     //load Kinect calibration file
     FileStorage fs( "../data/rgb_A00363813595051A.yaml", FileStorage::READ );
     if( !fs.isOpened() )
     {
       cout << "Failed to open Camera Calibration Data File." << endl;
-      help();
       return -1;
     }
     FileStorage fs2( "../data/calibration.yml", FileStorage::READ);
@@ -43,8 +44,8 @@ int main(int argc, char **argv) {
     const size_t CAMERA_WIDTH = 640;//1280
     const size_t CAMERA_HEIGHT = 480;//720
 
-    ProjectorTracker tracker ;
-    vector<Mat> generated_pattern = tracker.getPattern(CAMERA_WIDTH, CAMERA_HEIGHT);
+    ProjectorTracker tracker(cam1intrinsics, prointrinsics) ;
+    vector<Mat> generated_patterns = tracker.getPattern(CAMERA_WIDTH, CAMERA_HEIGHT);
 
     //namedWindow( "cam1", WINDOW_NORMAL );
     //resizeWindow( "cam1", 640, 480 );
@@ -64,7 +65,6 @@ int main(int argc, char **argv) {
     {
       // check if cam opened
       cout << "kinect not opened!" << endl;
-      help();
       return -1;
     }
 
@@ -77,7 +77,7 @@ int main(int argc, char **argv) {
 
 
     //call synchronizer to project and capture graycode patterns
-    Vector<Mat> capture_patterns;
+    vector<Mat> capture_patterns;
     capturePatterns(capture,generated_patterns, capture_patterns);
 
 
@@ -87,6 +87,7 @@ int main(int argc, char **argv) {
 }
 void capturePatterns(VideoCapture& capture, const vector<Mat>& pattern, vector<Mat>& captured_patterns)
 {
+    String captured_path = "../captured/";
     int i =0;
     while( i < pattern.size() )
     {
