@@ -46,3 +46,4 @@ qtcreator-*
 # Catkin custom files
 CATKIN_IGNORE
 *.kdev4
+*.kdev_include_paths
