@@ -5,7 +5,7 @@ CameraInterface::CameraInterface()
 {
 
 }
-bool CameraInterface::loadIntrinsic(std::string matrix_file )
+bool CameraInterface::loadIntrinsic(std::string matrix_file , std::string tag)
 {
     cv::FileStorage fs( matrix_file, cv::FileStorage::READ );
     if( !fs.isOpened() )
@@ -14,7 +14,7 @@ bool CameraInterface::loadIntrinsic(std::string matrix_file )
       return false;
     }
     // Loading calibration parameters
-    fs["camera_matrix"] >> intrinsics;
+    fs[tag] >> intrinsics;
     return true;
 }
 cv::Mat CameraInterface::get(){

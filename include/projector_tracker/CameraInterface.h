@@ -23,7 +23,7 @@ public:
      */
     ~CameraInterface();
 public:
-    bool loadIntrinsic(std::string file);
+    bool loadIntrinsic(std::string file, std::string tag);
     cv::Mat get();
 protected:
     cv::Mat intrinsics;  /// intrinsic projector calibration parameters

@@ -7,9 +7,10 @@ using namespace cv;
 using namespace std;
 int main (int argc, char **argv) {
     CameraInterface cam_intrinsics;
-    cam_intrinsics.loadIntrinsic("../data/rgb_A00363813595051A.yaml");
     CameraInterface pro_intrinsics;
-    pro_intrinsics.loadIntrinsic("../data/calibration.yml");
+    pro_intrinsics.loadIntrinsic("../data/calibration.yml", "proj_K");//TO DO's: recalibration projector and camera intrinsics
+    cam_intrinsics.loadIntrinsic("../data/calibration.yml", "camera_matrix");
+
     const size_t CAMERA_WIDTH = 640;//1280
     const size_t CAMERA_HEIGHT = 480;//720
     ProjectorTracker tracker (cam_intrinsics.get(), pro_intrinsics.get()) ;
@@ -19,8 +20,9 @@ int main (int argc, char **argv) {
     Mat pro_cam_extrinsic = tracker.computeRelativePosition (captured_patterns);
     // get Rotation and translation part form extrinsic
     Mat Ra = pro_cam_extrinsic(Rect (0, 0, 3, 3));
-    Mat ta = pro_cam_extrinsic(Rect (0, 3, 3, 1));
+    Mat ta = pro_cam_extrinsic(Rect (0, 3, 3, 1)); //library output ....[]
 
+    //TO DO's: example use of the library
     //read in Robot Hand-Base transformation: Rb. tb
     Mat Rb, tb;
     //read in camera-Base transformation Rz, tz
