@@ -9,7 +9,7 @@ int main (int argc, char **argv) {
     CameraInterface cam_intrinsics;
     CameraInterface pro_intrinsics;
     pro_intrinsics.loadIntrinsic("../data/calibration.yml", "proj_K");//TO DO's: recalibration projector and camera intrinsics
-    cam_intrinsics.loadIntrinsic("../data/calibration.yml", "camera_matrix");
+    cam_intrinsics.loadIntrinsic("../data/calibration.yml", "cam_K");
 
     const size_t CAMERA_WIDTH = 640;//1280
     const size_t CAMERA_HEIGHT = 480;//720
