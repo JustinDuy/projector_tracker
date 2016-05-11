@@ -13,6 +13,11 @@ CameraInterface::CameraInterface(int device_number)
     height = capture.get(CV_CAP_PROP_FRAME_HEIGHT);
 }
 
+CameraInterface::~CameraInterface()
+{
+
+}
+
 bool CameraInterface::loadIntrinsics(std::string matrix_file , std::string tag)
 {
     cv::FileStorage fs( matrix_file, cv::FileStorage::READ );
@@ -37,10 +42,4 @@ cv::Mat CameraInterface::grabFrame() {
     capture >> frame;
     return frame;
 }
-
-CameraInterface::~CameraInterface()
-{
-
-}
-
 

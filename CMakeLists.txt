@@ -3,6 +3,9 @@ cmake_minimum_required(VERSION 2.8)
 project(projector_tracker)
 
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
+if(CMAKE_COMPILER_IS_GNUCC)
+        set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -pthread")
+endif(CMAKE_COMPILER_IS_GNUCC)
 
 find_package(OpenCV 3 REQUIRED)
 find_package(Qt4 REQUIRED)
@@ -14,7 +17,7 @@ include_directories(include)
 add_library(projector_tracker src/ProjectorTracker.cpp)
 target_link_libraries(projector_tracker ${OpenCV_LIBS})
 
-add_library(hw_interface src/CameraInterface.cpp src/ProjectorInterface.cpp) # CameraProjectorInterface.cpp
+add_library(hw_interface src/CameraInterface.cpp src/ProjectorInterface.cpp src/CameraProjectorInterface.cpp) 
 target_link_libraries(hw_interface ${OpenCV_LIBS} ${QT_LIBRARIES})
 
 # add_executable(projector_tracker_app nodes/node.cpp)

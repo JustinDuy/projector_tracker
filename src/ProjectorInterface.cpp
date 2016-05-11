@@ -9,6 +9,11 @@ ProjectorInterface::ProjectorInterface()
 
 }
 
+ProjectorInterface::~ProjectorInterface()
+{
+
+}
+
 bool ProjectorInterface::loadIntrinsics(std::string matrix_file , std::string tag)
 {
     cv::FileStorage fs( matrix_file, cv::FileStorage::READ );
@@ -41,9 +46,6 @@ void ProjectorInterface::projectFullscreenOnScreen(const cv::Mat& target_image, 
     image_label.showFullScreen();
 }
 
-ProjectorInterface::~ProjectorInterface()
-{
 
-}
 
 
