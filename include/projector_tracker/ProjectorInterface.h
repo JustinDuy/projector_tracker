@@ -29,7 +29,7 @@ public:
     void projectFullscreen(const cv::Mat& target_image, int screen_number = 1);
 
 public:
-    bool loadIntrinsic(std::string file, std::string tag);
+    bool loadIntrinsics(std::string file, std::string tag);
     cv::Mat getIntrinsics();
 protected:
     cv::Mat intrinsics;  /// intrinsic projector calibration parameters

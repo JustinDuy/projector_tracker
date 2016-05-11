@@ -9,7 +9,7 @@ ProjectorInterface::ProjectorInterface()
 
 }
 
-bool ProjectorInterface::loadIntrinsic(std::string matrix_file , std::string tag)
+bool ProjectorInterface::loadIntrinsics(std::string matrix_file , std::string tag)
 {
     cv::FileStorage fs( matrix_file, cv::FileStorage::READ );
     if( !fs.isOpened() )

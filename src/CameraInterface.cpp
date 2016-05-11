@@ -2,14 +2,8 @@
 #include "projector_tracker/CameraInterface.h"
 #include <iostream>
 
-CameraInterface::CameraInterface(std::string matrix_file, std::string tag, int device_number)
-{
-    
-    if( !loadIntrinsics(matrix_file, tag) )
-    {
-      std::cerr << "Error: could not load camera intrinsic calibration from file " << matrix_file << std::endl;
-    }
-    
+CameraInterface::CameraInterface(int device_number)
+{    
     capture = cv::VideoCapture(device_number);
     if( !capture.isOpened() )
     {
@@ -32,15 +26,15 @@ bool CameraInterface::loadIntrinsics(std::string matrix_file , std::string tag)
     return true;
 }
 
+cv::Mat CameraInterface::getIntrinsics()
+{
+    return cv::Mat(intrinsics);
+}
+
 cv::Mat CameraInterface::grabFrame() {
     cv::Mat frame;
     capture >> frame;
     return frame;
-}
-
-cv::Mat CameraInterface::getIntrinsics()
-{
-    return cv::Mat(intrinsics);
 }
 
 CameraInterface::~CameraInterface()

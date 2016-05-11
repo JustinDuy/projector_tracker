@@ -18,7 +18,7 @@ public:
      * @brief Constructs a CameraInterface, identifying the target screen.
      * 
      */
-    CameraInterface(std::string calibration_filepath , std::string tag, int device_number = 0);
+    CameraInterface(int device_number = 0);
     /**
      * @brief Releases the acquired resources.
      * 
@@ -28,6 +28,8 @@ public:
 public:
     bool loadIntrinsics(std::string file, std::string tag);
     cv::Mat getIntrinsics();
+    unsigned int getWidth() { return width; }
+    unsigned int getHeight() { return height; }
     cv::Mat grabFrame();
     
 protected:
