@@ -8,11 +8,17 @@
 #include <QLabel>
 #include <string>
 
+class ProjectorInterfaceBase {
+public:
+    virtual cv::Mat getIntrinsics() = 0;    
+    virtual void projectFullscreen(const cv::Mat& target_image) = 0;
+};
+
 /**
  * @brief Allows to project images on a projector at full screen.
  * 
  */
-class ProjectorInterface
+class ProjectorInterface : public ProjectorInterfaceBase
 {
 public:
     /**
@@ -26,11 +32,13 @@ public:
      */
     ~ProjectorInterface();
     
-    void projectFullscreen(const cv::Mat& target_image, int screen_number = 1);
+    void projectFullscreen(const cv::Mat& target_image) { projectFullscreenOnScreen(target_image, 1); }
+    void projectFullscreenOnScreen(const cv::Mat& target_image, int screen_number = 1);
 
 public:
     bool loadIntrinsics(std::string file, std::string tag);
     cv::Mat getIntrinsics();
+    
 protected:
     cv::Mat intrinsics;  /// intrinsic projector calibration parameters
     

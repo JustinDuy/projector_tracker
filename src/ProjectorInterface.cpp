@@ -27,7 +27,7 @@ cv::Mat ProjectorInterface::getIntrinsics()
     return cv::Mat(intrinsics);
 }
 
-void ProjectorInterface::projectFullscreen(const cv::Mat& target_image, int screen_number) 
+void ProjectorInterface::projectFullscreenOnScreen(const cv::Mat& target_image, int screen_number) 
 {
     cv::Mat temp(target_image.cols,target_image.rows,target_image.type());
     cv::cvtColor(target_image, temp, CV_BGR2RGB);

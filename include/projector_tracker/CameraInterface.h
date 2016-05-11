@@ -9,10 +9,10 @@
 
 class CameraInterfaceBase {
 public:
-    cv::Mat grabFrame() = 0;
-    cv::Mat getIntrinsics() = 0;
-    unsigned int getWidth() = 0;
-    unsigned int getHeight() = 0;
+    virtual cv::Mat grabFrame() = 0;
+    virtual cv::Mat getIntrinsics() = 0;
+    virtual unsigned int getWidth() = 0;
+    virtual unsigned int getHeight() = 0;
 };
 
 /**

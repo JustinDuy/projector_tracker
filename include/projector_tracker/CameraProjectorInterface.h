@@ -32,6 +32,8 @@ public:
     std::vector<cv::Mat> projectAndAcquire(const std::vector<cv::Mat>& target_images);
     
 protected:
+    std::shared_ptr<CameraInterfaceBase> camera;
+    std::shared_ptr<ProjectorInterfaceBase> projector;
     
 };
 
