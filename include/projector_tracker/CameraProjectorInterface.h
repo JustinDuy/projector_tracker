@@ -2,9 +2,13 @@
 #ifndef CAMERAPROJECTORINTERFACE_H
 #define CAMERAPROJECTORINTERFACE_H
 
+#include <projector_tracker/CameraInterface.h>
+#include <projector_tracker/ProjectorInterface.h>
+
 #include <opencv2/core/core.hpp>
 #include <opencv2/imgproc/imgproc.hpp>
 #include <opencv2/highgui/highgui.hpp>
+
 /**
  * @brief Allows synchronized projection of a pattern and acquisition through a camera.
  * 
@@ -28,11 +32,7 @@ public:
     std::vector<cv::Mat> projectAndAcquire(const std::vector<cv::Mat>& target_images);
     
 protected:
-    cv::Mat camera_intrinsics;  /// intrinsic RGB camera calibration parameters
-    cv::Mat projector_intrinsics;  /// intrinsic projector calibration parameters
-    cv::VideoCapture capture; //Camera Handle
-    size_t camera_width;
-    size_t camera_height;
+    
 };
 
-#endif // PROJECTORINTERFACE_H
+#endif // CAMERAPROJECTORINTERFACE_H
