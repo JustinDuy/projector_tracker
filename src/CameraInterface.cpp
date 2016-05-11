@@ -32,6 +32,7 @@ cv::Mat CameraInterface::getIntrinsics()
 }
 
 cv::Mat CameraInterface::grabFrame() {
+    // TODO: rectify image if intrinsics are loaded
     cv::Mat frame;
     capture >> frame;
     return frame;

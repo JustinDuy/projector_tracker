@@ -7,11 +7,19 @@
 #include <opencv2/highgui/highgui.hpp>
 #include <string>
 
+class CameraInterfaceBase {
+public:
+    cv::Mat grabFrame() = 0;
+    cv::Mat getIntrinsics() = 0;
+    unsigned int getWidth() = 0;
+    unsigned int getHeight() = 0;
+};
+
 /**
  * @brief Allows to capture images from a video camera
  * 
  */
-class CameraInterface
+class CameraInterface : public CameraInterfaceBase
 {
 public:
     /**
