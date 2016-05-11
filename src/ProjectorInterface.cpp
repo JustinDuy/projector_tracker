@@ -31,7 +31,7 @@ void ProjectorInterface::projectFullscreen(const cv::Mat& target_image, int scre
 {
     cv::Mat temp(target_image.cols,target_image.rows,target_image.type());
     cv::cvtColor(target_image, temp, CV_BGR2RGB);
-    QImage img((uchar*)temp.data, temp.cols, temp.rows, temp.step1(), QImage::Format_RGB32);
+    QImage img(temp.data, temp.cols, temp.rows, temp.step, QImage::Format_RGB888);
     
     QRect screenres = QApplication::desktop()->screenGeometry(screen_number);
     image_label.move(QPoint(screenres.x(), screenres.y()));
