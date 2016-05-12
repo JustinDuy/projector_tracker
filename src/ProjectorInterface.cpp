@@ -23,14 +23,15 @@ bool ProjectorInterface::loadIntrinsics(std::string matrix_file , std::string ta
       return false;
     }
     // Loading calibration parameters
-    fs[tag] >> intrinsics;
+    fs[tag] >> calibration.intrinsics;
     return true;
 }
 
-cv::Mat ProjectorInterface::getIntrinsics()
+ProjectorInterfaceBase::Calibration ProjectorInterface::getCalibration()
 {
-    return cv::Mat(intrinsics);
+    return calibration;
 }
+
 
 void ProjectorInterface::projectFullscreenOnScreen(const cv::Mat& target_image, int screen_number) 
 {

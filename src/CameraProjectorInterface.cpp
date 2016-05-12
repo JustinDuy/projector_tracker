@@ -18,16 +18,23 @@ CameraProjectorInterface::~CameraProjectorInterface()
     
 }
 
-cv::Mat CameraProjectorInterface::projectAndAcquire(const cv::Mat& target_image)
+CameraProjectorInterface::CameraProjectorImagePair CameraProjectorInterface::projectAndAcquire(const cv::Mat& target_image)
 {
+    CameraProjectorImagePair ret;
+    ret.projected = target_image;
+    
     projector->projectFullscreen(target_image);
+    
     std::this_thread::sleep_for(std::chrono::milliseconds(delay_ms));
-    return camera->grabFrame();
+    
+    ret.acquired = camera->grabFrame();
+    
+    return ret;
 }
 
-std::vector<cv::Mat> CameraProjectorInterface::projectAndAcquire(const std::vector<cv::Mat>& target_images)
+std::vector<CameraProjectorInterface::CameraProjectorImagePair> CameraProjectorInterface::projectAndAcquire(const std::vector<cv::Mat>& target_images)
 {
-    std::vector<cv::Mat> ret;
+    std::vector<CameraProjectorImagePair> ret;
     
     for (auto& target_image: target_images)
         ret.push_back(projectAndAcquire(target_image));

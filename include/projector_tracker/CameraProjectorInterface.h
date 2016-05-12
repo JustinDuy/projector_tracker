@@ -20,6 +20,14 @@ const int DEFAULT_PROJ_ACQ_DELAY_MS = 300;
 class CameraProjectorInterface
 {
 public:
+    using CameraCalibration = CameraInterface::Calibration;
+    using ProjectorCalibration = ProjectorInterface::Calibration;
+    
+    struct CameraProjectorImagePair {
+        cv::Mat projected;
+        cv::Mat acquired;
+    };
+    
     /**
      * @brief Constructs a CameraProjectorInterface, identifying the target screen and cameras.
      * 
@@ -32,8 +40,11 @@ public:
     ~CameraProjectorInterface();
     
     
-    cv::Mat projectAndAcquire(const cv::Mat& target_image);
-    std::vector<cv::Mat> projectAndAcquire(const std::vector<cv::Mat>& target_images);
+    CameraProjectorImagePair projectAndAcquire(const cv::Mat& target_image);
+    std::vector<CameraProjectorImagePair> projectAndAcquire(const std::vector<cv::Mat>& target_images);
+    
+    CameraCalibration getCameraCalibration() { return camera->getCalibration(); }
+    ProjectorCalibration getProjectorCalibration() { return projector->getCalibration(); }
     
 protected:
     std::shared_ptr<CameraInterfaceBase> camera;

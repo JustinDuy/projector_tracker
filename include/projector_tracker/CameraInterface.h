@@ -2,17 +2,21 @@
 #ifndef CAMERAINTERFACE_H
 #define CAMERAINTERFACE_H
 
-#include <opencv2/core/core.hpp>
-#include <opencv2/imgproc/imgproc.hpp>
-#include <opencv2/highgui/highgui.hpp>
+#include <opencv2/core.hpp>
+#include <opencv2/imgproc.hpp>
+#include <opencv2/highgui.hpp>
 #include <string>
 
 class CameraInterfaceBase {
 public:
+    struct Calibration {
+        unsigned int width;
+        unsigned int height;
+        cv::Mat intrinsics;
+    };
+
     virtual cv::Mat grabFrame() = 0;
-    virtual cv::Mat getIntrinsics() = 0;
-    virtual unsigned int getWidth() = 0;
-    virtual unsigned int getHeight() = 0;
+    virtual Calibration getCalibration() = 0;
 };
 
 /**
@@ -22,6 +26,8 @@ public:
 class CameraInterface : public CameraInterfaceBase
 {
 public:
+    using CameraInterfaceBase::Calibration;
+    
     /**
      * @brief Constructs a CameraInterface, identifying the target screen.
      * 
@@ -35,16 +41,12 @@ public:
     
 public:
     bool loadIntrinsics(std::string file, std::string tag);
-    cv::Mat getIntrinsics();
-    unsigned int getWidth() { return width; }
-    unsigned int getHeight() { return height; }
+    Calibration getCalibration();
     cv::Mat grabFrame();
     
 protected:
-    cv::Mat intrinsics;  /// intrinsic camera calibration parameters
+    Calibration calibration;  /// intrinsic camera calibration parameters
     cv::VideoCapture capture; // Camera Handle
-    unsigned int width;
-    unsigned int height;
 };
 
 #endif // CAMERAINTERFACE_H

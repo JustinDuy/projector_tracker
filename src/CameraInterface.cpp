@@ -9,8 +9,8 @@ CameraInterface::CameraInterface(int device_number)
     {
       std::cerr << "Error: camera device is not opened!" << std::endl;
     }
-    width = capture.get(CV_CAP_PROP_FRAME_WIDTH);
-    height = capture.get(CV_CAP_PROP_FRAME_HEIGHT);
+    calibration.width = capture.get(CV_CAP_PROP_FRAME_WIDTH);
+    calibration.height = capture.get(CV_CAP_PROP_FRAME_HEIGHT);
 }
 
 CameraInterface::~CameraInterface()
@@ -27,14 +27,15 @@ bool CameraInterface::loadIntrinsics(std::string matrix_file , std::string tag)
       return false;
     }
     // Loading calibration parameters
-    fs[tag] >> intrinsics;
+    fs[tag] >> calibration.intrinsics;
     return true;
 }
 
-cv::Mat CameraInterface::getIntrinsics()
+CameraInterfaceBase::Calibration CameraInterface::getCalibration()
 {
-    return cv::Mat(intrinsics);
+    return calibration;
 }
+
 
 cv::Mat CameraInterface::grabFrame() {
     // TODO: rectify image if intrinsics are loaded

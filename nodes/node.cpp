@@ -18,7 +18,7 @@ int main (int argc, char **argv) {
     const size_t CAMERA_HEIGHT = 480;//720
     
     ProjectorTracker tracker (cam_intrinsics.get(), pro_intrinsics.get()) ;
-    vector<Mat> generated_patterns = tracker.getPattern (CAMERA_WIDTH, CAMERA_HEIGHT);
+    vector<Mat> generated_patterns = tracker.getPatternImages (CAMERA_WIDTH, CAMERA_HEIGHT);
     
     CameraProjectorInterface pro_cam_handler(cam_intrinsics.get(), CAMERA_WIDTH, CAMERA_HEIGHT, pro_intrinsics.get(), CV_CAP_OPENNI);
     vector<Mat> captured_patterns = pro_cam_handler.projectAndAcquire(generated_patterns);

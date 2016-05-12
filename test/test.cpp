@@ -43,7 +43,7 @@ int test_framegrabbing(int argc, char **argv) {
 void test_cameraprojector_helper(cv::Mat test_image, std::shared_ptr<CameraProjectorInterface> cpi) {
     for (int i = 0; i < 100; i++) {
         std::cout << "grabbing frame" << std::endl;
-        test_image = cpi->projectAndAcquire(test_image);
+        test_image = cpi->projectAndAcquire(test_image).acquired;
         std::cout << "grabbed frame" << std::endl;
     }
 }

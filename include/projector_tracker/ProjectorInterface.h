@@ -10,8 +10,14 @@
 
 class ProjectorInterfaceBase {
 public:
-    virtual cv::Mat getIntrinsics() = 0;    
+    struct Calibration {
+        unsigned int width;
+        unsigned int height;
+        cv::Mat intrinsics;
+    };
+    
     virtual void projectFullscreen(const cv::Mat& target_image) = 0;
+    virtual Calibration getCalibration() = 0;
 };
 
 /**
@@ -21,6 +27,8 @@ public:
 class ProjectorInterface : public ProjectorInterfaceBase
 {
 public:
+    using ProjectorInterfaceBase::Calibration;
+    
     /**
      * @brief Constructs a ProjectorInterface, identifying the target screen.
      * 
@@ -37,10 +45,10 @@ public:
 
 public:
     bool loadIntrinsics(std::string file, std::string tag);
-    cv::Mat getIntrinsics();
+    Calibration getCalibration();
     
 protected:
-    cv::Mat intrinsics;  /// intrinsic projector calibration parameters
+    Calibration calibration;  /// intrinsic projector calibration parameters
     
     QLabel image_label;  // used to display an image
 };
