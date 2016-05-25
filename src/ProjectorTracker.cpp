@@ -244,7 +244,10 @@ Mat ProjectorTracker::computeRelativePosition (const std::vector<CameraProjector
     // Computing shadows mask
     Mat shadowMask;
     computeShadowMask (blackImage, whiteImage, DEFAULT_BLACK_THRESHOLD, shadowMask);
-
+    vector<Mat> camera_images ;
+    for(int i=0; i< seq_length; i++){
+        camera_images.push_back(cp_images[i].projected);
+    }
 //     cvNamedWindow ("Shadow Mask");
     //resizeWindow( "Shadow Mask", 640, 480 );
 //     imshow ("Shadow Mask", shadowMask * 255);
@@ -266,7 +269,7 @@ Mat ProjectorTracker::computeRelativePosition (const std::vector<CameraProjector
             //if the pixel is not shadowed, reconstruct
             if (shadowMask.at<uchar> (j, i)) {
                 //for a (x,y) pixel of the camera returns the corresponding projector pixel by calculating the decimal number
-                bool error = getProjPixel (camera_image, i, j, projPixel);
+                bool error = getProjPixel (camera_images, i, j, projPixel);
 
                 if (error) {
                     continue;
