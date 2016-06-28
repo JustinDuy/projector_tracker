@@ -23,9 +23,8 @@ CameraProjectorInterface::CameraProjectorImagePair CameraProjectorInterface::pro
 {
     CameraProjectorImagePair ret;
     ret.projected = target_image;
-    
     projector->projectFullscreen(target_image);
-    
+    std::cout << "delay ms " << delay_ms << std::endl;
     std::this_thread::sleep_for(std::chrono::milliseconds(delay_ms));
     
     ret.acquired = camera->grabFrame();
