@@ -239,6 +239,7 @@ Mat ProjectorTracker::computeRelativePosition (const std::vector<CameraProjector
     Mat shadowMask;
     computeShadowMask (blackImage, whiteImage, DEFAULT_BLACK_THRESHOLD, shadowMask);
 
+
     int cam_width = cp_interface->getCameraCalibration().width;
     int cam_height = cp_interface->getCameraCalibration().height;
     int proj_width = cp_interface->getProjectorCalibration().width;
