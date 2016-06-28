@@ -25,4 +25,4 @@ target_link_libraries(hw_interface ${OpenCV_LIBS} ${QT_LIBRARIES})
 
 # TEST
 add_executable(test_node test/test.cpp)
-target_link_libraries(test_node hw_interface)
+target_link_libraries(test_node hw_interface projector_tracker)

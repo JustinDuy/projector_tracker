@@ -38,12 +38,13 @@ public:
     * @return cv::Mat
     */
     cv::Mat computeRelativePosition(const std::vector<CameraProjectorImagePair>& camera_image);
-    
+
 protected:
     std::shared_ptr<CameraProjectorInterface> cp_interface;  // Gives synchronized access to camera and projector
 
 private:
     cv::Mat pattern;  /// cached pattern
+    void saveExtrinsics(cv::Mat R, cv::Mat t, std::string filename) ;
 };
 
 #endif // PROJECTORTRACKER_H

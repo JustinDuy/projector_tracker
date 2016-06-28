@@ -24,6 +24,11 @@ bool ProjectorInterface::loadIntrinsics(std::string matrix_file , std::string ta
     }
     // Loading calibration parameters
     fs[tag] >> calibration.intrinsics;
+    int width, height;
+    fs["imageSize_width"] >> width;
+    fs["imageSize_height"] >> height;
+    calibration.width = width;
+    calibration.height = height;
     return true;
 }
 

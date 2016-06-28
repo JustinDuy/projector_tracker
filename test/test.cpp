@@ -1,5 +1,6 @@
 
 #include <projector_tracker/CameraProjectorInterface.h>
+#include <projector_tracker/ProjectorTracker.h>
 #include <QApplication>
 #include <thread>
 #include <iostream>
@@ -40,25 +41,24 @@ int test_framegrabbing(int argc, char **argv) {
     app.exec();
 }
 
-void test_cameraprojector_helper(cv::Mat test_image, std::shared_ptr<CameraProjectorInterface> cpi) {
-    for (int i = 0; i < 100; i++) {
-        std::cout << "grabbing frame" << std::endl;
-        test_image = cpi->projectAndAcquire(test_image).acquired;
-        std::cout << "grabbed frame" << std::endl;
-    }
+void test_cameraprojector_helper(std::vector<cv::Mat> test_images, std::shared_ptr<CameraProjectorInterface> cpi, std::shared_ptr<ProjectorTracker> tracker) {
+    std::vector<CameraProjectorInterface::CameraProjectorImagePair> cp_img_pairs = cpi->projectAndAcquire(test_images);
+    //tracker->computeRelativePosition(cp_img_pairs);
 }
 
 int test_cameraprojector(int argc, char **argv) {
     QApplication app(argc, argv);
     
-    std::shared_ptr<CameraInterfaceBase> ci = std::make_shared<CameraInterface>();
-    std::shared_ptr<ProjectorInterfaceBase> pi= std::make_shared<ProjectorInterface>();
-    std::shared_ptr<CameraProjectorInterface> cpi = std::make_shared<CameraProjectorInterface>(ci, pi);
-    
-    cv::Mat test_image = ci->grabFrame();
-    std::cout << "grabbed frame" << std::endl;
-    
-    std::thread t(test_cameraprojector_helper, test_image, cpi);
-    
+    std::shared_ptr<CameraInterface> cam_interface = std::make_shared<CameraInterface>();
+    //cam_interface->loadIntrinsics("../data/rgb_A00363813595051A.yaml", "camera_matrix"); //Kinect RGB Cam
+    cam_interface->loadIntrinsics("../data/calibrationCamera.yml", "cameraMatrix"); //C92 HD Webcam
+
+    std::shared_ptr<ProjectorInterface> proj_interface= std::make_shared<ProjectorInterface>();
+    proj_interface->loadIntrinsics("../data/calibrationProjector.yml", "cameraMatrix");
+
+    std::shared_ptr<CameraProjectorInterface> cpi = std::make_shared<CameraProjectorInterface>(cam_interface, proj_interface);
+    std::shared_ptr<ProjectorTracker> projTracker = std::make_shared<ProjectorTracker>  (cpi);
+    std::vector<cv::Mat> patterns = projTracker->getPatternImages(1280, 720);
+    std::thread t(test_cameraprojector_helper, patterns, cpi, projTracker);
     app.exec();
 }

@@ -1,7 +1,6 @@
 #include <projector_tracker/ProjectorTracker.h>
 #include <opencv2/imgproc.hpp>
 #include <opencv2/highgui.hpp>
-#include <opencv2/structured_light.hpp>
 #include <opencv2/calib3d.hpp>
 #include <iostream>
 #include <stdexcept>
@@ -10,8 +9,8 @@
 using namespace std;
 using namespace cv;
 
-ProjectorTracker::ProjectorTracker (std::shared_ptr<CameraProjectorInterface> cp_interface)
-: cp_interface(cp_interface) 
+ProjectorTracker::ProjectorTracker (std::shared_ptr<CameraProjectorInterface> cpi)
+:cp_interface(cpi)
 {
 
 }
@@ -37,6 +36,12 @@ int getPatternImageNum (int width, int height) {
 }
 
 vector<Mat> ProjectorTracker::getPatternImages (int width, int height) {
+    if(cp_interface->getProjectorCalibration().width != width ||
+        cp_interface->getProjectorCalibration().height != height)
+    {
+        std::cerr << "Projector Resolution hasn't been calibrated!" << std::endl;
+    }
+
     size_t numOfPatternImages ;
     size_t numOfRowImgs;
     size_t numOfColImgs;
@@ -122,14 +127,9 @@ vector<Mat> ProjectorTracker::getPatternImages (int width, int height) {
 
 // Computes the shadows occlusion where we cannot reconstruct the model
 void computeShadowMask (const Mat blackImage, const Mat whiteImage, double blackThreshold, Mat &shadowMask) {
-    //Mat grayWhite, grayBlack;
-    //cvtColor(blackImage, grayBlack, CV_BGR2GRAY);
-    //cvtColor(whiteImage, grayWhite, CV_BGR2GRAY);
-
     int cam_width = whiteImage.cols;
     int cam_height = blackImage.rows;
     shadowMask = Mat (cam_height, cam_width, CV_8U);
-
     for (int i = 0; i < cam_height; i++) {
         for (int j = 0; j < cam_width; j++) {
             double white = whiteImage.at<uchar> (i, j) ;
@@ -143,10 +143,7 @@ void computeShadowMask (const Mat blackImage, const Mat whiteImage, double black
                 shadowMask.at<uchar> (i, j) = (uchar) 0;
             }
         }
-
     }
-
-    //shadowMask = whiteImage - blackImage;
 }
 
 // Converts a gray code sequence (~ binary number) to a decimal number
@@ -170,20 +167,13 @@ int grayToDec (const vector<uchar> &gray) {
 }
 
 // For a (x,y) pixel of the camera returns the corresponding projector's pixel
-bool getProjPixel (const vector<Mat> &patternImages, int x, int y, Point &projPix) {
+bool getProjPixel (const vector<Mat> &patternImages, size_t width, size_t height, int x, int y, Point &projPix) {
     vector<uchar> grayCol;
     vector<uchar> grayRow;
-
     bool error = false;
     int xDec, yDec;
-
-    size_t width = patternImages[0].cols;
-    size_t height = patternImages[0].rows;
-
     size_t numOfColImgs, numOfRowImgs, numOfPatternImages;
     computeNumberOfImages (width, height, numOfColImgs, numOfRowImgs, numOfPatternImages);
-
-    //cout << "Num. of col images " << numOfColImgs << endl;
     // process column images
     for (size_t count = 0; count < numOfColImgs; count++) {
         // get pixel intensity for regular pattern projection and its inverse
@@ -204,7 +194,6 @@ bool getProjPixel (const vector<Mat> &patternImages, int x, int y, Point &projPi
 
     xDec = grayToDec (grayCol);
 
-    //cout << "Num. of row images " << numOfRowImgs << endl;
     // process row images
     for (size_t count = 0; count < numOfRowImgs; count++) {
         // get pixel intensity for regular pattern projection and its inverse
@@ -227,87 +216,67 @@ bool getProjPixel (const vector<Mat> &patternImages, int x, int y, Point &projPi
     if ( (yDec >= height || xDec >= width)) {
         error = true;
     }
-
     projPix.x = xDec;
     projPix.y = yDec;
-
     return error;
 }
-
+void ProjectorTracker::saveExtrinsics(cv::Mat rotCamToProj, cv::Mat transCamToProj, std::string filename) {
+    cv::FileStorage fs(filename, cv::FileStorage::WRITE);
+    fs << "Rotation_Vector" << rotCamToProj;
+    fs << "Translation_Vector" << transCamToProj;
+}
 Mat ProjectorTracker::computeRelativePosition (const std::vector<CameraProjectorImagePair>& cp_images) {
     // output : camera-projector stereo matrix R, u
     Mat blackImage, whiteImage;
     int seq_length = cp_images.size();
     blackImage = cp_images[seq_length - 1].projected;
     whiteImage = cp_images[seq_length - 2].projected;
-
+    vector<Mat> camera_images;
+    for(int i=0;i< seq_length; i++){
+        camera_images.push_back(cp_images[i].projected);
+    }
     // Computing shadows mask
     Mat shadowMask;
     computeShadowMask (blackImage, whiteImage, DEFAULT_BLACK_THRESHOLD, shadowMask);
 
-//     cvNamedWindow ("Shadow Mask");
-    //resizeWindow( "Shadow Mask", 640, 480 );
-//     imshow ("Shadow Mask", shadowMask * 255);
-//     waitKey (0);
-
     int cam_width = cp_interface->getCameraCalibration().width;
     int cam_height = cp_interface->getCameraCalibration().height;
-//     cout << "CAM WIDTH, HEIGHT = " << cam_width << "," << cam_height << endl;
+    int proj_width = cp_interface->getProjectorCalibration().width;
+    int proj_height = cp_interface->getProjectorCalibration().height;
     Point projPixel;
     // Storage for the pixels of the camera that correspond to the same pixel of the projector
     vector<Point> camPixels;
     vector<Point> projPixels;
-
-    //camPixels.resize( cam_height * cam_width );
-    //for drawing:
     
     for (int i = 0; i < cam_width; i++) {
         for (int j = 0; j < cam_height; j++) {
             //if the pixel is not shadowed, reconstruct
             if (shadowMask.at<uchar> (j, i)) {
                 //for a (x,y) pixel of the camera returns the corresponding projector pixel by calculating the decimal number
-                bool error = getProjPixel (camera_image, i, j, projPixel);
-
-                if (error) {
+                bool error = getProjPixel (camera_images, proj_width, proj_height, i, j, projPixel);
+                if (error)
+                {
                     continue;
-                } else {
+                }
+                else
+                {
                     camPixels.push_back (Point (i, j));
                     projPixels.push_back (projPixel);
-//                     Point textOrg (i, j);
-                    //if(projPixel.x < 20 && projPixel.y < 20)
-                    //{
-//                     circle (whiteImage, Point (i , j), 2, (255, 0, 0), 0);
-                    //display correspondences:
-                    //  sprintf(text, "(%d,%d)", projPixel.x, projPixel.y);
-                    //cout << text <<",";
-                    //  putText(whiteImage, string(text) , textOrg, fontFace, fontScale,
-                    //      Scalar::all(255), thickness, 3);
-                    //}
+                    //visualize projector correspondence on camera image
+                    //circle (whiteImage, Point (i , j), 2, (255, 0, 0), 0);
                 }
             }
         }
-
-        //cout << endl;
-
     }
-
-//     cout << "Num. of Correspondences " << camPixels.size() << endl;
-    //show correspondences:
-//     cvNamedWindow ("Correspondences");
-//     resizeWindow ("Correspondences", 640, 480);
-//     imshow ("Correspondences", whiteImage);
-//     waitKey (0);
     Mat ret (4, 4, CV_64F, Scalar (0));
-
     if (camPixels.size() == projPixels.size() && camPixels.size() > 9) {
         Mat F = findFundamentalMat (camPixels, projPixels, FM_RANSAC, 3, 0.99);
-        Mat E = cp_interface->getProjectorCalibration().intrinsics.t() * F * cp_interface->getCameraCalibration().intrinsics;
+        //Mat E = cp_interface->getProjectorCalibration().intrinsics.t() * F * cp_interface->getCameraCalibration().intrinsics;
+        Mat E = cp_interface->getCameraCalibration().intrinsics.t() * F * cp_interface->getProjectorCalibration().intrinsics;
         //Perform SVD on E
         SVD decomp = SVD (E);
-
         //U
         Mat U = decomp.u;
-
         //S
         Mat S (3, 3, CV_64F, Scalar (0));
         S.at<double> (0, 0) = decomp.w.at<double> (0, 0);
@@ -333,12 +302,10 @@ Mat ProjectorTracker::computeRelativePosition (const std::vector<CameraProjector
         Mat u1 = U.col (2);
         Mat t2 = -U.col (2);
         //4 candidates
-//         cout << "computed rotation, translation: " << endl;
-//         cout << R1 << "," << u1 << endl;
-
         //save R1, u1 to "cam_proj_trans.yaml"
-        //saveTransformation(R1, u1, "../data/cam_proj_trans.yaml");
+        saveExtrinsics(R1, u1, "../data/cam_proj_trans.yaml");
 
+        //wrap into one single Mat to return
         ret.at<double> (3, 3) = 1;
         Mat mask_R (4, 4, CV_64F, Scalar (0));
         mask_R (Rect (0, 0, R1.rows, R1.cols)) = 1;
@@ -347,9 +314,10 @@ Mat ProjectorTracker::computeRelativePosition (const std::vector<CameraProjector
         mask_t (Rect (0, 3, u1.rows, u1.cols));
         u1.copyTo (ret, mask_t);
 
-    } else {
+    }
+    else
+    {
         cerr << "correspodence lists size mismatched or not enough correspondences" << endl;
     }
-
     return ret;
 }

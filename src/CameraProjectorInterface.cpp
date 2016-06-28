@@ -13,6 +13,7 @@ CameraProjectorInterface::CameraProjectorInterface(std::shared_ptr<CameraInterfa
     
 }
 
+
 CameraProjectorInterface::~CameraProjectorInterface()
 { 
     
