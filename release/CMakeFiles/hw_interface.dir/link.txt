@@ -1,0 +1,2 @@
+/usr/bin/ar cr libhw_interface.a  CMakeFiles/hw_interface.dir/src/CameraInterface.cpp.o CMakeFiles/hw_interface.dir/src/ProjectorInterface.cpp.o CMakeFiles/hw_interface.dir/src/CameraProjectorInterface.cpp.o
+/usr/bin/ranlib libhw_interface.a
