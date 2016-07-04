@@ -3,11 +3,13 @@
 
 CMakeFiles/projector_tracker.dir/src/ProjectorTracker.cpp.o: ../include/projector_tracker/CameraInterface.h
 CMakeFiles/projector_tracker.dir/src/ProjectorTracker.cpp.o: ../include/projector_tracker/CameraProjectorInterface.h
+CMakeFiles/projector_tracker.dir/src/ProjectorTracker.cpp.o: ../include/projector_tracker/ImageLabel.hpp
 CMakeFiles/projector_tracker.dir/src/ProjectorTracker.cpp.o: ../include/projector_tracker/ProjectorInterface.h
 CMakeFiles/projector_tracker.dir/src/ProjectorTracker.cpp.o: ../include/projector_tracker/ProjectorTracker.h
 CMakeFiles/projector_tracker.dir/src/ProjectorTracker.cpp.o: ../src/ProjectorTracker.cpp
 CMakeFiles/projector_tracker.dir/src/ProjectorTracker.cpp.o: /usr/include/qt4/Qt3Support/q3cstring.h
 CMakeFiles/projector_tracker.dir/src/ProjectorTracker.cpp.o: /usr/include/qt4/Qt3Support/q3valuelist.h
+CMakeFiles/projector_tracker.dir/src/ProjectorTracker.cpp.o: /usr/include/qt4/QtCore/QMutex
 CMakeFiles/projector_tracker.dir/src/ProjectorTracker.cpp.o: /usr/include/qt4/QtCore/QPoint
 CMakeFiles/projector_tracker.dir/src/ProjectorTracker.cpp.o: /usr/include/qt4/QtCore/QPointF
 CMakeFiles/projector_tracker.dir/src/ProjectorTracker.cpp.o: /usr/include/qt4/QtCore/qalgorithms.h
@@ -59,6 +61,7 @@ CMakeFiles/projector_tracker.dir/src/ProjectorTracker.cpp.o: /usr/include/qt4/Qt
 CMakeFiles/projector_tracker.dir/src/ProjectorTracker.cpp.o: /usr/include/qt4/QtCore/qmargins.h
 CMakeFiles/projector_tracker.dir/src/ProjectorTracker.cpp.o: /usr/include/qt4/QtCore/qmetatype.h
 CMakeFiles/projector_tracker.dir/src/ProjectorTracker.cpp.o: /usr/include/qt4/QtCore/qmimedata.h
+CMakeFiles/projector_tracker.dir/src/ProjectorTracker.cpp.o: /usr/include/qt4/QtCore/qmutex.h
 CMakeFiles/projector_tracker.dir/src/ProjectorTracker.cpp.o: /usr/include/qt4/QtCore/qnamespace.h
 CMakeFiles/projector_tracker.dir/src/ProjectorTracker.cpp.o: /usr/include/qt4/QtCore/qobject.h
 CMakeFiles/projector_tracker.dir/src/ProjectorTracker.cpp.o: /usr/include/qt4/QtCore/qobjectdefs.h
@@ -80,6 +83,7 @@ CMakeFiles/projector_tracker.dir/src/ProjectorTracker.cpp.o: /usr/include/qt4/Qt
 CMakeFiles/projector_tracker.dir/src/ProjectorTracker.cpp.o: /usr/include/qt4/QtCore/qvector.h
 CMakeFiles/projector_tracker.dir/src/ProjectorTracker.cpp.o: /usr/include/qt4/QtGui/QLabel
 CMakeFiles/projector_tracker.dir/src/ProjectorTracker.cpp.o: /usr/include/qt4/QtGui/QPlatformWindow
+CMakeFiles/projector_tracker.dir/src/ProjectorTracker.cpp.o: /usr/include/qt4/QtGui/QWidget
 CMakeFiles/projector_tracker.dir/src/ProjectorTracker.cpp.o: /usr/include/qt4/QtGui/qbrush.h
 CMakeFiles/projector_tracker.dir/src/ProjectorTracker.cpp.o: /usr/include/qt4/QtGui/qcolor.h
 CMakeFiles/projector_tracker.dir/src/ProjectorTracker.cpp.o: /usr/include/qt4/QtGui/qcursor.h

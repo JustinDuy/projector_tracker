@@ -5,7 +5,7 @@
 #include <projector_tracker/CameraProjectorInterface.h>
 #include <opencv2/core.hpp>
 
-const unsigned int DEFAULT_BLACK_THRESHOLD = 25;  // 3D_underworld default value 40
+const unsigned int DEFAULT_BLACK_THRESHOLD = 40;  // 3D_underworld default value 40
 const unsigned int DEFAULT_WHITE_THRESHOLD = 5;   // 3D_underworld default value  5
 
 

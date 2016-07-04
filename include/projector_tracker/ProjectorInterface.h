@@ -7,7 +7,7 @@
 #include <opencv2/highgui/highgui.hpp>
 #include <QLabel>
 #include <string>
-
+#include <projector_tracker/ImageLabel.hpp>
 class ProjectorInterfaceBase {
 public:
     struct Calibration {
@@ -40,17 +40,17 @@ public:
      */
     ~ProjectorInterface();
     
-    void projectFullscreen(const cv::Mat& target_image) { projectFullscreenOnScreen(target_image, 1); }
+    void projectFullscreen(const cv::Mat& target_image) { projectFullscreenOnScreen(target_image); }
     void projectFullscreenOnScreen(const cv::Mat& target_image, int screen_number = 1);
 
 public:
-    bool loadIntrinsics(std::string file, std::string tag);
+    bool loadIntrinsics(std::string file, std::string tag_K, std::string tag_W, std::string tag_H);
     Calibration getCalibration();
     
 protected:
     Calibration calibration;  /// intrinsic projector calibration parameters
     
-    QLabel image_label;  // used to display an image
+    ImageLabel image_label;  // used to display an image
 };
 
 #endif // PROJECTORINTERFACE_H

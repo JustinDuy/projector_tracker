@@ -24,7 +24,6 @@ CameraProjectorInterface::CameraProjectorImagePair CameraProjectorInterface::pro
     CameraProjectorImagePair ret;
     ret.projected = target_image;
     projector->projectFullscreen(target_image);
-    std::cout << "delay ms " << delay_ms << std::endl;
     std::this_thread::sleep_for(std::chrono::milliseconds(delay_ms));
     ret.acquired = camera->grabFrame();
     return ret;
@@ -34,11 +33,12 @@ std::vector<CameraProjectorInterface::CameraProjectorImagePair> CameraProjectorI
 {
     std::vector<CameraProjectorImagePair> ret;
     int count = 0;
-    char file[300];
+    char file[500];
     for (auto& target_image: target_images){
-        sprintf(file, "target_%d.jpeg", count++);
-        //imwrite(file,target_image);
-        ret.push_back(projectAndAcquire(target_image));
+        CameraProjectorImagePair pair = projectAndAcquire(target_image);
+        sprintf(file,"captured_%d.jpeg",++count);
+        ret.push_back(pair);
+        cv::imwrite(file, pair.acquired);
     }
     return ret;
 }

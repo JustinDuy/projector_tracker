@@ -10,11 +10,6 @@ CameraInterface::CameraInterface(int device_number)
     {
       std::cerr << "Error: camera device is not opened!" << std::endl;
     }
-    capture.set(CV_CAP_PROP_FRAME_WIDTH, 1280);
-    capture.set(CV_CAP_PROP_FRAME_HEIGHT, 720);
-    calibration.width = capture.get(CV_CAP_PROP_FRAME_WIDTH);
-    calibration.height = capture.get(CV_CAP_PROP_FRAME_HEIGHT);
-    //std::cout << calibration.width << calibration.height << std::endl;
 }
 
 CameraInterface::~CameraInterface()
@@ -22,7 +17,7 @@ CameraInterface::~CameraInterface()
 
 }
 
-bool CameraInterface::loadIntrinsics(std::string matrix_file , std::string tag)
+bool CameraInterface::loadIntrinsics(std::string matrix_file , std::string tag_K, std::string tag_W, std::string tag_H)
 {
     cv::FileStorage fs( matrix_file, cv::FileStorage::READ );
     if( !fs.isOpened() )
@@ -31,12 +26,14 @@ bool CameraInterface::loadIntrinsics(std::string matrix_file , std::string tag)
       return false;
     }
     // Loading calibration parameters
-    fs[tag] >> calibration.intrinsics;
+    fs[tag_K] >> calibration.intrinsics;
     int width, height;
-    fs["imageSize_width"] >> width ;
-    fs["imageSize_height"] >> height;
+    fs[tag_W] >> width ;
+    fs[tag_H] >> height;
     calibration.height = height;
     calibration.width = width;
+    capture.set(CV_CAP_PROP_FRAME_WIDTH, width);
+    capture.set(CV_CAP_PROP_FRAME_HEIGHT, height);
     return true;
 }
 

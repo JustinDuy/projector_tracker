@@ -229,17 +229,18 @@ Mat ProjectorTracker::computeRelativePosition (const std::vector<CameraProjector
     // output : camera-projector stereo matrix R, u
     Mat blackImage, whiteImage;
     int seq_length = cp_images.size();
-    blackImage = cp_images[seq_length - 1].projected;
-    whiteImage = cp_images[seq_length - 2].projected;
+    blackImage = cp_images[seq_length - 2].acquired;
+    whiteImage = cp_images[seq_length - 1].acquired;
     vector<Mat> camera_images;
     for(int i=0;i< seq_length; i++){
-        camera_images.push_back(cp_images[i].projected);
+        camera_images.push_back(cp_images[i].acquired);
     }
     // Computing shadows mask
     Mat shadowMask;
+    imwrite("black.jpeg",blackImage);
+    imwrite("white.jpeg",whiteImage);
     computeShadowMask (blackImage, whiteImage, DEFAULT_BLACK_THRESHOLD, shadowMask);
-
-
+    imwrite("shadow.jpeg",shadowMask);
     int cam_width = cp_interface->getCameraCalibration().width;
     int cam_height = cp_interface->getCameraCalibration().height;
     int proj_width = cp_interface->getProjectorCalibration().width;
@@ -264,11 +265,12 @@ Mat ProjectorTracker::computeRelativePosition (const std::vector<CameraProjector
                     camPixels.push_back (Point (i, j));
                     projPixels.push_back (projPixel);
                     //visualize projector correspondence on camera image
-                    //circle (whiteImage, Point (i , j), 2, (255, 0, 0), 0);
+                    circle (whiteImage, Point (i , j), 2, (255, 0, 0), 0);
                 }
             }
         }
     }
+    imwrite("test.jpeg",whiteImage);
     Mat ret (4, 4, CV_64F, Scalar (0));
     if (camPixels.size() == projPixels.size() && camPixels.size() > 9) {
         Mat F = findFundamentalMat (camPixels, projPixels, FM_RANSAC, 3, 0.99);

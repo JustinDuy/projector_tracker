@@ -40,7 +40,7 @@ public:
     ~CameraInterface();
     
 public:
-    bool loadIntrinsics(std::string file, std::string tag);
+    bool loadIntrinsics(std::string file, std::string tag_K, std::string tag_W, std::string tag_H);
     Calibration getCalibration();
     cv::Mat grabFrame();
     

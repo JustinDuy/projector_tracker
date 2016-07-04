@@ -30,6 +30,14 @@ opencv2/highgui/highgui.hpp
 memory
 -
 
+../include/projector_tracker/ImageLabel.hpp
+QWidget
+-
+QMutex
+-
+opencv2/core/core.hpp
+-
+
 ../include/projector_tracker/ProjectorInterface.h
 opencv2/core/core.hpp
 -
@@ -40,6 +48,8 @@ opencv2/highgui/highgui.hpp
 QLabel
 -
 string
+-
+projector_tracker/ImageLabel.hpp
 -
 
 ../include/projector_tracker/ProjectorTracker.h
@@ -81,6 +91,10 @@ iterator
 -
 list
 -
+
+/usr/include/qt4/QtCore/QMutex
+qmutex.h
+/usr/include/qt4/QtCore/qmutex.h
 
 /usr/include/qt4/QtCore/QPoint
 qpoint.h
@@ -414,6 +428,14 @@ QtCore/qvariant.h
 QtCore/qobject.h
 -
 
+/usr/include/qt4/QtCore/qmutex.h
+QtCore/qglobal.h
+-
+QtCore/qatomic.h
+-
+new
+-
+
 /usr/include/qt4/QtCore/qnamespace.h
 QtCore/qglobal.h
 -
@@ -587,6 +609,10 @@ qlabel.h
 /usr/include/qt4/QtGui/QPlatformWindow
 qplatformwindow_qpa.h
 /usr/include/qt4/QtGui/qplatformwindow_qpa.h
+
+/usr/include/qt4/QtGui/QWidget
+qwidget.h
+/usr/include/qt4/QtGui/qwidget.h
 
 /usr/include/qt4/QtGui/qbrush.h
 QtCore/qpair.h

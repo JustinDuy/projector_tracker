@@ -6,6 +6,38 @@
 
 #IncludeRegexTransform: 
 
+../include/projector_tracker/CameraInterface.h
+opencv2/core.hpp
+-
+opencv2/imgproc.hpp
+-
+opencv2/highgui.hpp
+-
+string
+-
+
+../include/projector_tracker/CameraProjectorInterface.h
+projector_tracker/CameraInterface.h
+-
+projector_tracker/ProjectorInterface.h
+-
+opencv2/core/core.hpp
+-
+opencv2/imgproc/imgproc.hpp
+-
+opencv2/highgui/highgui.hpp
+-
+memory
+-
+
+../include/projector_tracker/ImageLabel.hpp
+QWidget
+-
+QMutex
+-
+opencv2/core/core.hpp
+-
+
 ../include/projector_tracker/ProjectorInterface.h
 opencv2/core/core.hpp
 -
@@ -17,15 +49,19 @@ QLabel
 -
 string
 -
-
-/home/duy/projector_tracker/src/ProjectorInterface.cpp
-projector_tracker/ProjectorInterface.h
-/home/duy/projector_tracker/src/projector_tracker/ProjectorInterface.h
-QApplication
+projector_tracker/ImageLabel.hpp
 -
-QDesktopWidget
+
+/home/duy/projector_tracker/src/CameraProjectorInterface.cpp
+projector_tracker/CameraProjectorInterface.h
+-
+string
 -
 iostream
+-
+chrono
+-
+thread
 -
 
 /usr/include/qt4/Qt3Support/q3cstring.h
@@ -45,6 +81,10 @@ iterator
 -
 list
 -
+
+/usr/include/qt4/QtCore/QMutex
+qmutex.h
+/usr/include/qt4/QtCore/qmutex.h
 
 /usr/include/qt4/QtCore/QPoint
 qpoint.h
@@ -222,12 +262,6 @@ QtCore/qatomic_bootstrap.h
 QtCore/qatomic_arch.h
 -
 
-/usr/include/qt4/QtCore/qbuffer.h
-QtCore/qiodevice.h
--
-QtCore/qbytearray.h
--
-
 /usr/include/qt4/QtCore/qbytearray.h
 QtCore/qatomic.h
 -
@@ -246,16 +280,6 @@ QtCore/qglobal.h
 
 /usr/include/qt4/QtCore/qconfig.h
 
-/usr/include/qt4/QtCore/qcoreapplication.h
-QtCore/qobject.h
--
-QtCore/qcoreevent.h
--
-QtCore/qeventloop.h
--
-QtCore/qstringlist.h
--
-
 /usr/include/qt4/QtCore/qcoreevent.h
 QtCore/qnamespace.h
 -
@@ -270,10 +294,6 @@ QtCore/qscopedpointer.h
 QtCore/qiodevice.h
 -
 QtCore/qglobal.h
--
-
-/usr/include/qt4/QtCore/qeventloop.h
-QtCore/qobject.h
 -
 
 /usr/include/qt4/QtCore/qfeatures.h
@@ -398,6 +418,14 @@ QtCore/qvariant.h
 QtCore/qobject.h
 -
 
+/usr/include/qt4/QtCore/qmutex.h
+QtCore/qglobal.h
+-
+QtCore/qatomic.h
+-
+new
+-
+
 /usr/include/qt4/QtCore/qnamespace.h
 QtCore/qglobal.h
 -
@@ -426,10 +454,6 @@ QtCore/qdatastream.h
 
 /usr/include/qt4/QtCore/qpoint.h
 QtCore/qnamespace.h
--
-
-/usr/include/qt4/QtCore/qpointer.h
-QtCore/qobject.h
 -
 
 /usr/include/qt4/QtCore/qrect.h
@@ -568,14 +592,6 @@ QtCore/QPointF
 QtCore/QPoint
 -
 
-/usr/include/qt4/QtGui/QApplication
-qapplication.h
-/usr/include/qt4/QtGui/qapplication.h
-
-/usr/include/qt4/QtGui/QDesktopWidget
-qdesktopwidget.h
-/usr/include/qt4/QtGui/qdesktopwidget.h
-
 /usr/include/qt4/QtGui/QLabel
 qlabel.h
 /usr/include/qt4/QtGui/qlabel.h
@@ -584,27 +600,9 @@ qlabel.h
 qplatformwindow_qpa.h
 /usr/include/qt4/QtGui/qplatformwindow_qpa.h
 
-/usr/include/qt4/QtGui/qapplication.h
-QtCore/qcoreapplication.h
--
-QtGui/qwindowdefs.h
--
-QtCore/qpoint.h
--
-QtCore/qsize.h
--
-QtGui/qcursor.h
--
-QtGui/qdesktopwidget.h
--
-QtGui/qwidget.h
--
-QtGui/qpalette.h
--
-QtGui/qrgb.h
--
-QtGui/qtransportauth_qws.h
--
+/usr/include/qt4/QtGui/QWidget
+qwidget.h
+/usr/include/qt4/QtGui/qwidget.h
 
 /usr/include/qt4/QtGui/qbrush.h
 QtCore/qpair.h
@@ -638,10 +636,6 @@ QtCore/qstringlist.h
 QtCore/qpoint.h
 -
 QtGui/qwindowdefs.h
--
-
-/usr/include/qt4/QtGui/qdesktopwidget.h
-QtGui/qwidget.h
 -
 
 /usr/include/qt4/QtGui/qdrag.h
@@ -854,22 +848,6 @@ QtCore/qline.h
 QtCore/qpoint.h
 -
 QtCore/qrect.h
--
-
-/usr/include/qt4/QtGui/qtransportauth_qws.h
-QtCore/qglobal.h
--
-QtCore/qobject.h
--
-QtCore/qhash.h
--
-QtCore/qstring.h
--
-QtCore/qbuffer.h
--
-QtCore/qpointer.h
--
-sys/types.h
 -
 
 /usr/include/qt4/QtGui/qwidget.h

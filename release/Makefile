@@ -188,6 +188,30 @@ src/CameraProjectorInterface.cpp.s:
 	$(MAKE) -f CMakeFiles/hw_interface.dir/build.make CMakeFiles/hw_interface.dir/src/CameraProjectorInterface.cpp.s
 .PHONY : src/CameraProjectorInterface.cpp.s
 
+src/ImageLabel.o: src/ImageLabel.cpp.o
+.PHONY : src/ImageLabel.o
+
+# target to build an object file
+src/ImageLabel.cpp.o:
+	$(MAKE) -f CMakeFiles/hw_interface.dir/build.make CMakeFiles/hw_interface.dir/src/ImageLabel.cpp.o
+.PHONY : src/ImageLabel.cpp.o
+
+src/ImageLabel.i: src/ImageLabel.cpp.i
+.PHONY : src/ImageLabel.i
+
+# target to preprocess a source file
+src/ImageLabel.cpp.i:
+	$(MAKE) -f CMakeFiles/hw_interface.dir/build.make CMakeFiles/hw_interface.dir/src/ImageLabel.cpp.i
+.PHONY : src/ImageLabel.cpp.i
+
+src/ImageLabel.s: src/ImageLabel.cpp.s
+.PHONY : src/ImageLabel.s
+
+# target to generate assembly for a file
+src/ImageLabel.cpp.s:
+	$(MAKE) -f CMakeFiles/hw_interface.dir/build.make CMakeFiles/hw_interface.dir/src/ImageLabel.cpp.s
+.PHONY : src/ImageLabel.cpp.s
+
 src/ProjectorInterface.o: src/ProjectorInterface.cpp.o
 .PHONY : src/ProjectorInterface.o
 
@@ -277,6 +301,9 @@ help:
 	@echo "... src/CameraProjectorInterface.o"
 	@echo "... src/CameraProjectorInterface.i"
 	@echo "... src/CameraProjectorInterface.s"
+	@echo "... src/ImageLabel.o"
+	@echo "... src/ImageLabel.i"
+	@echo "... src/ImageLabel.s"
 	@echo "... src/ProjectorInterface.o"
 	@echo "... src/ProjectorInterface.i"
 	@echo "... src/ProjectorInterface.s"

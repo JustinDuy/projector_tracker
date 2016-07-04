@@ -17,7 +17,7 @@ include_directories(include)
 add_library(projector_tracker src/ProjectorTracker.cpp)
 target_link_libraries(projector_tracker ${OpenCV_LIBS})
 
-add_library(hw_interface src/CameraInterface.cpp src/ProjectorInterface.cpp src/CameraProjectorInterface.cpp) 
+add_library(hw_interface src/CameraInterface.cpp src/ProjectorInterface.cpp src/CameraProjectorInterface.cpp src/ImageLabel.cpp)
 target_link_libraries(hw_interface ${OpenCV_LIBS} ${QT_LIBRARIES})
 
 # add_executable(projector_tracker_app nodes/node.cpp)

@@ -62,7 +62,7 @@ CMAKE_BINARY_DIR = /home/duy/projector_tracker/release
 CMakeFiles/hw_interface.dir/all:
 	$(MAKE) -f CMakeFiles/hw_interface.dir/build.make CMakeFiles/hw_interface.dir/depend
 	$(MAKE) -f CMakeFiles/hw_interface.dir/build.make CMakeFiles/hw_interface.dir/build
-	$(CMAKE_COMMAND) -E cmake_progress_report /home/duy/projector_tracker/release/CMakeFiles  1 2 3
+	$(CMAKE_COMMAND) -E cmake_progress_report /home/duy/projector_tracker/release/CMakeFiles  1 2 3 4
 	@echo "Built target hw_interface"
 .PHONY : CMakeFiles/hw_interface.dir/all
 
@@ -72,7 +72,7 @@ all: CMakeFiles/hw_interface.dir/all
 
 # Build rule for subdir invocation for target.
 CMakeFiles/hw_interface.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/duy/projector_tracker/release/CMakeFiles 3
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/duy/projector_tracker/release/CMakeFiles 4
 	$(MAKE) -f CMakeFiles/Makefile2 CMakeFiles/hw_interface.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/duy/projector_tracker/release/CMakeFiles 0
 .PHONY : CMakeFiles/hw_interface.dir/rule
@@ -97,7 +97,7 @@ clean: CMakeFiles/hw_interface.dir/clean
 CMakeFiles/projector_tracker.dir/all:
 	$(MAKE) -f CMakeFiles/projector_tracker.dir/build.make CMakeFiles/projector_tracker.dir/depend
 	$(MAKE) -f CMakeFiles/projector_tracker.dir/build.make CMakeFiles/projector_tracker.dir/build
-	$(CMAKE_COMMAND) -E cmake_progress_report /home/duy/projector_tracker/release/CMakeFiles  4
+	$(CMAKE_COMMAND) -E cmake_progress_report /home/duy/projector_tracker/release/CMakeFiles  5
 	@echo "Built target projector_tracker"
 .PHONY : CMakeFiles/projector_tracker.dir/all
 
@@ -129,11 +129,11 @@ clean: CMakeFiles/projector_tracker.dir/clean
 # Target rules for target CMakeFiles/test_node.dir
 
 # All Build rule for target.
-CMakeFiles/test_node.dir/all: CMakeFiles/hw_interface.dir/all
 CMakeFiles/test_node.dir/all: CMakeFiles/projector_tracker.dir/all
+CMakeFiles/test_node.dir/all: CMakeFiles/hw_interface.dir/all
 	$(MAKE) -f CMakeFiles/test_node.dir/build.make CMakeFiles/test_node.dir/depend
 	$(MAKE) -f CMakeFiles/test_node.dir/build.make CMakeFiles/test_node.dir/build
-	$(CMAKE_COMMAND) -E cmake_progress_report /home/duy/projector_tracker/release/CMakeFiles  5
+	$(CMAKE_COMMAND) -E cmake_progress_report /home/duy/projector_tracker/release/CMakeFiles  6
 	@echo "Built target test_node"
 .PHONY : CMakeFiles/test_node.dir/all
 
@@ -143,7 +143,7 @@ all: CMakeFiles/test_node.dir/all
 
 # Build rule for subdir invocation for target.
 CMakeFiles/test_node.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/duy/projector_tracker/release/CMakeFiles 5
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/duy/projector_tracker/release/CMakeFiles 6
 	$(MAKE) -f CMakeFiles/Makefile2 CMakeFiles/test_node.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/duy/projector_tracker/release/CMakeFiles 0
 .PHONY : CMakeFiles/test_node.dir/rule

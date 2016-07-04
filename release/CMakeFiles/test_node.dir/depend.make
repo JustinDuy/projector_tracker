@@ -3,11 +3,13 @@
 
 CMakeFiles/test_node.dir/test/test.cpp.o: ../include/projector_tracker/CameraInterface.h
 CMakeFiles/test_node.dir/test/test.cpp.o: ../include/projector_tracker/CameraProjectorInterface.h
+CMakeFiles/test_node.dir/test/test.cpp.o: ../include/projector_tracker/ImageLabel.hpp
 CMakeFiles/test_node.dir/test/test.cpp.o: ../include/projector_tracker/ProjectorInterface.h
 CMakeFiles/test_node.dir/test/test.cpp.o: ../include/projector_tracker/ProjectorTracker.h
 CMakeFiles/test_node.dir/test/test.cpp.o: ../test/test.cpp
 CMakeFiles/test_node.dir/test/test.cpp.o: /usr/include/qt4/Qt3Support/q3cstring.h
 CMakeFiles/test_node.dir/test/test.cpp.o: /usr/include/qt4/Qt3Support/q3valuelist.h
+CMakeFiles/test_node.dir/test/test.cpp.o: /usr/include/qt4/QtCore/QMutex
 CMakeFiles/test_node.dir/test/test.cpp.o: /usr/include/qt4/QtCore/QPoint
 CMakeFiles/test_node.dir/test/test.cpp.o: /usr/include/qt4/QtCore/QPointF
 CMakeFiles/test_node.dir/test/test.cpp.o: /usr/include/qt4/QtCore/qalgorithms.h
@@ -62,6 +64,7 @@ CMakeFiles/test_node.dir/test/test.cpp.o: /usr/include/qt4/QtCore/qmap.h
 CMakeFiles/test_node.dir/test/test.cpp.o: /usr/include/qt4/QtCore/qmargins.h
 CMakeFiles/test_node.dir/test/test.cpp.o: /usr/include/qt4/QtCore/qmetatype.h
 CMakeFiles/test_node.dir/test/test.cpp.o: /usr/include/qt4/QtCore/qmimedata.h
+CMakeFiles/test_node.dir/test/test.cpp.o: /usr/include/qt4/QtCore/qmutex.h
 CMakeFiles/test_node.dir/test/test.cpp.o: /usr/include/qt4/QtCore/qnamespace.h
 CMakeFiles/test_node.dir/test/test.cpp.o: /usr/include/qt4/QtCore/qobject.h
 CMakeFiles/test_node.dir/test/test.cpp.o: /usr/include/qt4/QtCore/qobjectdefs.h
@@ -85,6 +88,7 @@ CMakeFiles/test_node.dir/test/test.cpp.o: /usr/include/qt4/QtCore/qvector.h
 CMakeFiles/test_node.dir/test/test.cpp.o: /usr/include/qt4/QtGui/QApplication
 CMakeFiles/test_node.dir/test/test.cpp.o: /usr/include/qt4/QtGui/QLabel
 CMakeFiles/test_node.dir/test/test.cpp.o: /usr/include/qt4/QtGui/QPlatformWindow
+CMakeFiles/test_node.dir/test/test.cpp.o: /usr/include/qt4/QtGui/QWidget
 CMakeFiles/test_node.dir/test/test.cpp.o: /usr/include/qt4/QtGui/qapplication.h
 CMakeFiles/test_node.dir/test/test.cpp.o: /usr/include/qt4/QtGui/qbrush.h
 CMakeFiles/test_node.dir/test/test.cpp.o: /usr/include/qt4/QtGui/qcolor.h

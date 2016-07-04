@@ -121,11 +121,35 @@ CMakeFiles/hw_interface.dir/src/CameraProjectorInterface.cpp.o.provides: CMakeFi
 
 CMakeFiles/hw_interface.dir/src/CameraProjectorInterface.cpp.o.provides.build: CMakeFiles/hw_interface.dir/src/CameraProjectorInterface.cpp.o
 
+CMakeFiles/hw_interface.dir/src/ImageLabel.cpp.o: CMakeFiles/hw_interface.dir/flags.make
+CMakeFiles/hw_interface.dir/src/ImageLabel.cpp.o: ../src/ImageLabel.cpp
+	$(CMAKE_COMMAND) -E cmake_progress_report /home/duy/projector_tracker/release/CMakeFiles $(CMAKE_PROGRESS_4)
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Building CXX object CMakeFiles/hw_interface.dir/src/ImageLabel.cpp.o"
+	/usr/bin/c++   $(CXX_DEFINES) $(CXX_FLAGS) -o CMakeFiles/hw_interface.dir/src/ImageLabel.cpp.o -c /home/duy/projector_tracker/src/ImageLabel.cpp
+
+CMakeFiles/hw_interface.dir/src/ImageLabel.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/hw_interface.dir/src/ImageLabel.cpp.i"
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_FLAGS) -E /home/duy/projector_tracker/src/ImageLabel.cpp > CMakeFiles/hw_interface.dir/src/ImageLabel.cpp.i
+
+CMakeFiles/hw_interface.dir/src/ImageLabel.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/hw_interface.dir/src/ImageLabel.cpp.s"
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_FLAGS) -S /home/duy/projector_tracker/src/ImageLabel.cpp -o CMakeFiles/hw_interface.dir/src/ImageLabel.cpp.s
+
+CMakeFiles/hw_interface.dir/src/ImageLabel.cpp.o.requires:
+.PHONY : CMakeFiles/hw_interface.dir/src/ImageLabel.cpp.o.requires
+
+CMakeFiles/hw_interface.dir/src/ImageLabel.cpp.o.provides: CMakeFiles/hw_interface.dir/src/ImageLabel.cpp.o.requires
+	$(MAKE) -f CMakeFiles/hw_interface.dir/build.make CMakeFiles/hw_interface.dir/src/ImageLabel.cpp.o.provides.build
+.PHONY : CMakeFiles/hw_interface.dir/src/ImageLabel.cpp.o.provides
+
+CMakeFiles/hw_interface.dir/src/ImageLabel.cpp.o.provides.build: CMakeFiles/hw_interface.dir/src/ImageLabel.cpp.o
+
 # Object files for target hw_interface
 hw_interface_OBJECTS = \
 "CMakeFiles/hw_interface.dir/src/CameraInterface.cpp.o" \
 "CMakeFiles/hw_interface.dir/src/ProjectorInterface.cpp.o" \
-"CMakeFiles/hw_interface.dir/src/CameraProjectorInterface.cpp.o"
+"CMakeFiles/hw_interface.dir/src/CameraProjectorInterface.cpp.o" \
+"CMakeFiles/hw_interface.dir/src/ImageLabel.cpp.o"
 
 # External object files for target hw_interface
 hw_interface_EXTERNAL_OBJECTS =
@@ -133,6 +157,7 @@ hw_interface_EXTERNAL_OBJECTS =
 libhw_interface.a: CMakeFiles/hw_interface.dir/src/CameraInterface.cpp.o
 libhw_interface.a: CMakeFiles/hw_interface.dir/src/ProjectorInterface.cpp.o
 libhw_interface.a: CMakeFiles/hw_interface.dir/src/CameraProjectorInterface.cpp.o
+libhw_interface.a: CMakeFiles/hw_interface.dir/src/ImageLabel.cpp.o
 libhw_interface.a: CMakeFiles/hw_interface.dir/build.make
 libhw_interface.a: CMakeFiles/hw_interface.dir/link.txt
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --red --bold "Linking CXX static library libhw_interface.a"
@@ -146,6 +171,7 @@ CMakeFiles/hw_interface.dir/build: libhw_interface.a
 CMakeFiles/hw_interface.dir/requires: CMakeFiles/hw_interface.dir/src/CameraInterface.cpp.o.requires
 CMakeFiles/hw_interface.dir/requires: CMakeFiles/hw_interface.dir/src/ProjectorInterface.cpp.o.requires
 CMakeFiles/hw_interface.dir/requires: CMakeFiles/hw_interface.dir/src/CameraProjectorInterface.cpp.o.requires
+CMakeFiles/hw_interface.dir/requires: CMakeFiles/hw_interface.dir/src/ImageLabel.cpp.o.requires
 .PHONY : CMakeFiles/hw_interface.dir/requires
 
 CMakeFiles/hw_interface.dir/clean:

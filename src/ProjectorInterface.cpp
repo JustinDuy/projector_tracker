@@ -2,7 +2,11 @@
 #include "projector_tracker/ProjectorInterface.h"
 #include <QApplication>
 #include <QDesktopWidget>
+
 #include <iostream>
+#include <thread>
+
+
 QImage Mat2QImage(const cv::Mat& inImg);
 QImage Gray2QImage(const cv::Mat& inImg);
 QImage Rgb2QImage(const cv::Mat& inImg);
@@ -17,7 +21,7 @@ ProjectorInterface::~ProjectorInterface()
 
 }
 
-bool ProjectorInterface::loadIntrinsics(std::string matrix_file , std::string tag)
+bool ProjectorInterface::loadIntrinsics(std::string matrix_file , std::string tag_K, std::string tag_W, std::string tag_H)
 {
     cv::FileStorage fs( matrix_file, cv::FileStorage::READ );
     if( !fs.isOpened() )
@@ -26,13 +30,12 @@ bool ProjectorInterface::loadIntrinsics(std::string matrix_file , std::string ta
       return false;
     }
     // Loading calibration parameters
-    fs[tag] >> calibration.intrinsics;
+    fs[tag_K] >> calibration.intrinsics;
     int width, height;
-    fs["imageSize_width"] >> width;
-    fs["imageSize_height"] >> height;
+    fs[tag_W] >> width;
+    fs[tag_H] >> height;
     calibration.width = width;
     calibration.height = height;
-    //std::cout << "projector resolution : " << width << " , " << height << std::endl;
     return true;
 }
 
@@ -45,13 +48,13 @@ ProjectorInterfaceBase::Calibration ProjectorInterface::getCalibration()
 void ProjectorInterface::projectFullscreenOnScreen(const cv::Mat& target_image, int screen_number) 
 {
     QImage  qImg = Mat2QImage(target_image);
-    qImg.save("qimage.jpeg", "JPEG");
-    /*QRect screenres = QApplication::desktop()->screenGeometry(screen_number);
+    QRect screenres = QApplication::desktop()->screenGeometry(screen_number);
     image_label.move(QPoint(screenres.x(), screenres.y()));
     image_label.resize(screenres.width(), screenres.height());
-    image_label.setPixmap(QPixmap::fromImage(qImg));
-    image_label.setScaledContents(true);
-    image_label.showFullScreen();*/
+    QPixmap qpx = QPixmap::fromImage(qImg,Qt::MonoOnly);
+    image_label.setPixmap(qpx);
+    //image_label.setScaledContents(true);
+    image_label.showFullScreen();
 }
 QImage Mat2QImage(const cv::Mat& inImg){
     int type = inImg.type();
@@ -70,18 +73,6 @@ QImage Mat2QImage(const cv::Mat& inImg){
 
 QImage Gray2QImage(const cv::Mat& inMat)
 {
-    /*double scale = 255.0;
-    QImage dest(src.cols, src.rows, QImage::Format_ARGB32);
-    for (int y = 0; y < src.rows; ++y) {
-        const double *srcrow = src[y];
-        QRgb *destrow = (QRgb*)dest.scanLine(y);
-        for (int x = 0; x < src.cols; ++x) {
-                unsigned int color = srcrow[x] * scale;
-                destrow[x] = qRgba(color, color, color, 255);
-        }
-    }
-    return dest;*/
-    cv::normalize(inMat,inMat,0.0,255.0,CV_MINMAX,CV_8UC1);
     static QVector<QRgb>  sColorTable;
     // only create our color table once
     if ( sColorTable.isEmpty() )

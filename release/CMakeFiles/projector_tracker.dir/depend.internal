@@ -4,11 +4,13 @@
 CMakeFiles/projector_tracker.dir/src/ProjectorTracker.cpp.o
  ../include/projector_tracker/CameraInterface.h
  ../include/projector_tracker/CameraProjectorInterface.h
+ ../include/projector_tracker/ImageLabel.hpp
  ../include/projector_tracker/ProjectorInterface.h
  ../include/projector_tracker/ProjectorTracker.h
  /home/duy/projector_tracker/src/ProjectorTracker.cpp
  /usr/include/qt4/Qt3Support/q3cstring.h
  /usr/include/qt4/Qt3Support/q3valuelist.h
+ /usr/include/qt4/QtCore/QMutex
  /usr/include/qt4/QtCore/QPoint
  /usr/include/qt4/QtCore/QPointF
  /usr/include/qt4/QtCore/qalgorithms.h
@@ -60,6 +62,7 @@ CMakeFiles/projector_tracker.dir/src/ProjectorTracker.cpp.o
  /usr/include/qt4/QtCore/qmargins.h
  /usr/include/qt4/QtCore/qmetatype.h
  /usr/include/qt4/QtCore/qmimedata.h
+ /usr/include/qt4/QtCore/qmutex.h
  /usr/include/qt4/QtCore/qnamespace.h
  /usr/include/qt4/QtCore/qobject.h
  /usr/include/qt4/QtCore/qobjectdefs.h
@@ -81,6 +84,7 @@ CMakeFiles/projector_tracker.dir/src/ProjectorTracker.cpp.o
  /usr/include/qt4/QtCore/qvector.h
  /usr/include/qt4/QtGui/QLabel
  /usr/include/qt4/QtGui/QPlatformWindow
+ /usr/include/qt4/QtGui/QWidget
  /usr/include/qt4/QtGui/qbrush.h
  /usr/include/qt4/QtGui/qcolor.h
  /usr/include/qt4/QtGui/qcursor.h
