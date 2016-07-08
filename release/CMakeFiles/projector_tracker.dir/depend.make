@@ -115,6 +115,9 @@ CMakeFiles/projector_tracker.dir/src/ProjectorTracker.cpp.o: /usr/include/qt4/Qt
 CMakeFiles/projector_tracker.dir/src/ProjectorTracker.cpp.o: /usr/include/qt4/QtGui/qwindowdefs_win.h
 CMakeFiles/projector_tracker.dir/src/ProjectorTracker.cpp.o: /usr/include/qt4/QtGui/qwmatrix.h
 CMakeFiles/projector_tracker.dir/src/ProjectorTracker.cpp.o: /usr/local/include/opencv/cxcore.h
+CMakeFiles/projector_tracker.dir/src/ProjectorTracker.cpp.o: /usr/local/include/opencv2/aruco.hpp
+CMakeFiles/projector_tracker.dir/src/ProjectorTracker.cpp.o: /usr/local/include/opencv2/aruco/charuco.hpp
+CMakeFiles/projector_tracker.dir/src/ProjectorTracker.cpp.o: /usr/local/include/opencv2/aruco/dictionary.hpp
 CMakeFiles/projector_tracker.dir/src/ProjectorTracker.cpp.o: /usr/local/include/opencv2/calib3d.hpp
 CMakeFiles/projector_tracker.dir/src/ProjectorTracker.cpp.o: /usr/local/include/opencv2/calib3d/calib3d_c.h
 CMakeFiles/projector_tracker.dir/src/ProjectorTracker.cpp.o: /usr/local/include/opencv2/core.hpp
@@ -168,4 +171,6 @@ CMakeFiles/projector_tracker.dir/src/ProjectorTracker.cpp.o: /usr/local/include/
 CMakeFiles/projector_tracker.dir/src/ProjectorTracker.cpp.o: /usr/local/include/opencv2/video/tracking_c.h
 CMakeFiles/projector_tracker.dir/src/ProjectorTracker.cpp.o: /usr/local/include/opencv2/videoio.hpp
 CMakeFiles/projector_tracker.dir/src/ProjectorTracker.cpp.o: /usr/local/include/opencv2/videoio/videoio_c.h
+CMakeFiles/projector_tracker.dir/src/ProjectorTracker.cpp.o: /usr/local/include/opencv2/xfeatures2d.hpp
+CMakeFiles/projector_tracker.dir/src/ProjectorTracker.cpp.o: /usr/local/include/opencv2/xfeatures2d/nonfree.hpp
 

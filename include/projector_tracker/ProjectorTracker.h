@@ -29,7 +29,7 @@ public:
     * 
     * @return cv::Mat
     */
-    std::vector<cv::Mat> getPatternImages(int width, int height);
+    std::vector<cv::Mat> getPatternImages(int width, int height, bool useAruco);
     
     /**
     * @brief Given the current frame grabbed by the camera, compute the relative position of the projector.
@@ -37,7 +37,7 @@ public:
     * @param camera_image Current frame as grabbed by the RGB camera.
     * @return cv::Mat
     */
-    cv::Mat computeRelativePosition(const std::vector<CameraProjectorImagePair>& camera_image);
+    cv::Mat computeRelativePosition(const std::vector<CameraProjectorImagePair>& camera_image, bool useAruco);
 
 protected:
     std::shared_ptr<CameraProjectorInterface> cp_interface;  // Gives synchronized access to camera and projector

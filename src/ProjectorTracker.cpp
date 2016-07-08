@@ -5,7 +5,7 @@
 #include <iostream>
 #include <stdexcept>
 #include <string>
-
+#include <opencv2/aruco/charuco.hpp>
 using namespace std;
 using namespace cv;
 
@@ -35,94 +35,105 @@ int getPatternImageNum (int width, int height) {
     return (int) numOfPatterns;
 }
 
-vector<Mat> ProjectorTracker::getPatternImages (int width, int height) {
-    if(cp_interface->getProjectorCalibration().width != width ||
-        cp_interface->getProjectorCalibration().height != height)
-    {
-        std::cerr << "Projector Resolution hasn't been calibrated!" << std::endl;
+vector<Mat> ProjectorTracker::getPatternImages (int width, int height, bool useAruco) {
+    if(useAruco){//USE ARUCO MARKERS
+        cv::aruco::Dictionary dictionary = cv::aruco::getPredefinedDictionary(cv::aruco::DICT_6X6_250);
+        cv::aruco::CharucoBoard board = cv::aruco::CharucoBoard::create(5, 7, 0.04, 0.02, dictionary);
+        cv::Mat boardImage;
+        board.draw( cv::Size(width, height), boardImage, 10, 1 );
+        vector<Mat> ret;
+        ret.push_back(boardImage);
     }
-
-    size_t numOfPatternImages ;
-    size_t numOfRowImgs;
-    size_t numOfColImgs;
-    computeNumberOfImages (width, height, numOfColImgs, numOfRowImgs, numOfPatternImages);
-
-    vector<Mat> ret;
-    ret.resize (numOfPatternImages);
-
-    for (size_t i = 0; i < numOfPatternImages; i++) {
-        ret[i] = Mat (height, width, CV_8U);
-    }
-
-    uchar flag = 0;
-
-    for (int j = 0; j < width; j++) { // rows loop
-        int rem = 0, num = j, prevRem = j % 2;
-
-        for (size_t k = 0; k < numOfColImgs; k++) { // images loop
-            num = num / 2;
-            rem = num % 2;
-
-            if ( (rem == 0 && prevRem == 1) || (rem == 1 && prevRem == 0)) {
-                flag = 1;
-            } else {
-                flag = 0;
-            }
-
-            for (int i = 0; i < height; i++) { // rows loop
-
-                uchar pixel_color = (uchar) flag * 255;
-
-                ret[2 * numOfColImgs - 2 * k - 2].at<uchar> (i, j) = pixel_color;
-
-                if (pixel_color > 0)
-                    pixel_color = (uchar) 0;
-                else
-                    pixel_color = (uchar) 255;
-
-                ret[2 * numOfColImgs - 2 * k - 1].at<uchar> (i, j) = pixel_color;   // inverse
-            }
-
-            prevRem = rem;
+    else
+    {//USE GRAY CODE
+        if(cp_interface->getProjectorCalibration().width != width ||
+            cp_interface->getProjectorCalibration().height != height)
+        {
+            std::cerr << "Projector Resolution hasn't been calibrated!" << std::endl;
         }
-    }
 
-    for (int i = 0; i < height; i++) { // rows loop
-        int rem = 0, num = i, prevRem = i % 2;
+        size_t numOfPatternImages ;
+        size_t numOfRowImgs;
+        size_t numOfColImgs;
+        computeNumberOfImages (width, height, numOfColImgs, numOfRowImgs, numOfPatternImages);
 
-        for (size_t k = 0; k < numOfRowImgs; k++) {
-            num = num / 2;
-            rem = num % 2;
+        vector<Mat> ret;
+        ret.resize (numOfPatternImages);
 
-            if ( (rem == 0 && prevRem == 1) || (rem == 1 && prevRem == 0)) {
-                flag = 1;
-            } else {
-                flag = 0;
-            }
-
-            for (int j = 0; j < width; j++) {
-                uchar pixel_color = (uchar) flag * 255;
-                ret[2 * numOfRowImgs - 2 * k + 2 * numOfColImgs - 2].at<uchar> (i, j) = pixel_color;
-
-                if (pixel_color > 0)
-                    pixel_color = (uchar) 0;
-                else
-                    pixel_color = (uchar) 255;
-
-                ret[2 * numOfRowImgs - 2 * k + 2 * numOfColImgs - 1].at<uchar> (i, j) = pixel_color;
-            }
-
-            prevRem = rem;
+        for (size_t i = 0; i < numOfPatternImages; i++) {
+            ret[i] = Mat (height, width, CV_8U);
         }
-    }
 
-    // Generate the all-white and all-black images needed for shadows mask computation
-    Mat white;
-    Mat black;
-    getImagesForShadowMasks (width, height, black, white);
-    ret.push_back (black);
-    ret.push_back (white);
-    return ret;
+        uchar flag = 0;
+
+        for (int j = 0; j < width; j++) { // rows loop
+            int rem = 0, num = j, prevRem = j % 2;
+
+            for (size_t k = 0; k < numOfColImgs; k++) { // images loop
+                num = num / 2;
+                rem = num % 2;
+
+                if ( (rem == 0 && prevRem == 1) || (rem == 1 && prevRem == 0)) {
+                    flag = 1;
+                } else {
+                    flag = 0;
+                }
+
+                for (int i = 0; i < height; i++) { // rows loop
+
+                    uchar pixel_color = (uchar) flag * 255;
+
+                    ret[2 * numOfColImgs - 2 * k - 2].at<uchar> (i, j) = pixel_color;
+
+                    if (pixel_color > 0)
+                        pixel_color = (uchar) 0;
+                    else
+                        pixel_color = (uchar) 255;
+
+                    ret[2 * numOfColImgs - 2 * k - 1].at<uchar> (i, j) = pixel_color;   // inverse
+                }
+
+                prevRem = rem;
+            }
+        }
+
+        for (int i = 0; i < height; i++) { // rows loop
+            int rem = 0, num = i, prevRem = i % 2;
+
+            for (size_t k = 0; k < numOfRowImgs; k++) {
+                num = num / 2;
+                rem = num % 2;
+
+                if ( (rem == 0 && prevRem == 1) || (rem == 1 && prevRem == 0)) {
+                    flag = 1;
+                } else {
+                    flag = 0;
+                }
+
+                for (int j = 0; j < width; j++) {
+                    uchar pixel_color = (uchar) flag * 255;
+                    ret[2 * numOfRowImgs - 2 * k + 2 * numOfColImgs - 2].at<uchar> (i, j) = pixel_color;
+
+                    if (pixel_color > 0)
+                        pixel_color = (uchar) 0;
+                    else
+                        pixel_color = (uchar) 255;
+
+                    ret[2 * numOfRowImgs - 2 * k + 2 * numOfColImgs - 1].at<uchar> (i, j) = pixel_color;
+                }
+
+                prevRem = rem;
+            }
+        }
+
+        // Generate the all-white and all-black images needed for shadows mask computation
+        Mat white;
+        Mat black;
+        getImagesForShadowMasks (width, height, black, white);
+        ret.push_back (black);
+        ret.push_back (white);
+        return ret;
+    }
 }
 
 // Computes the shadows occlusion where we cannot reconstruct the model
@@ -225,52 +236,119 @@ void ProjectorTracker::saveExtrinsics(cv::Mat rotCamToProj, cv::Mat transCamToPr
     fs << "Rotation_Vector" << rotCamToProj;
     fs << "Translation_Vector" << transCamToProj;
 }
-Mat ProjectorTracker::computeRelativePosition (const std::vector<CameraProjectorImagePair>& cp_images) {
+Mat ProjectorTracker::computeRelativePosition (const std::vector<CameraProjectorImagePair>& cp_images, bool useAruco) {
     // output : camera-projector stereo matrix R, u
-    Mat blackImage, whiteImage;
-    int seq_length = cp_images.size();
-    blackImage = cp_images[seq_length - 2].acquired;
-    whiteImage = cp_images[seq_length - 1].acquired;
-    vector<Mat> camera_images;
-    for(int i=0;i< seq_length; i++){
-        camera_images.push_back(cp_images[i].acquired);
-    }
-    // Computing shadows mask
-    Mat shadowMask;
-    imwrite("black.jpeg",blackImage);
-    imwrite("white.jpeg",whiteImage);
-    computeShadowMask (blackImage, whiteImage, DEFAULT_BLACK_THRESHOLD, shadowMask);
-    imwrite("shadow.jpeg",shadowMask);
-    int cam_width = cp_interface->getCameraCalibration().width;
-    int cam_height = cp_interface->getCameraCalibration().height;
-    int proj_width = cp_interface->getProjectorCalibration().width;
-    int proj_height = cp_interface->getProjectorCalibration().height;
-    Point projPixel;
-    // Storage for the pixels of the camera that correspond to the same pixel of the projector
+    //establish correspondent pair of camera pixel & projector pixel
     vector<Point> camPixels;
     vector<Point> projPixels;
-    
-    for (int i = 0; i < cam_width; i++) {
-        for (int j = 0; j < cam_height; j++) {
-            //if the pixel is not shadowed, reconstruct
-            if (shadowMask.at<uchar> (j, i)) {
-                //for a (x,y) pixel of the camera returns the corresponding projector pixel by calculating the decimal number
-                bool error = getProjPixel (camera_images, proj_width, proj_height, i, j, projPixel);
-                if (error)
-                {
-                    continue;
-                }
-                else
-                {
-                    camPixels.push_back (Point (i, j));
-                    projPixels.push_back (projPixel);
-                    //visualize projector correspondence on camera image
-                    circle (whiteImage, Point (i , j), 2, (255, 0, 0), 0);
+    if(useAruco)
+    {
+        //cv::namedWindow("aruco aquired", WINDOW_AUTOSIZE);
+        //cv::namedWindow("aruco projected", WINDOW_AUTOSIZE);
+        //define Aruco Board
+        cv::aruco::Dictionary dictionary = cv::aruco::getPredefinedDictionary(cv::aruco::DICT_6X6_250);
+        cv::aruco::CharucoBoard board = cv::aruco::CharucoBoard::create(5, 7, 0.04, 0.02, dictionary);
+        cv::aruco::DetectorParameters params;
+        params.doCornerRefinement = false;
+
+        Mat projected = cp_images[0].projected;
+        Mat acquired = cp_images[0].acquired;
+        Mat copyProjected;
+        Mat copyAcquired;
+        projected.copyTo(copyProjected);
+        acquired.copyTo(copyAcquired);
+
+        //detect Aruco corners on projector image
+        std::vector<int> proj_ids;
+        std::vector<std::vector<cv::Point2f> > proj_corners;
+        cv::aruco::detectMarkers(projected, dictionary, proj_corners, proj_ids, params);
+        std::vector<cv::Point2f> proj_charucoCorners;
+        std::vector<int> proj_charucoIds;
+        // if at least one marker detected
+        if (proj_ids.size() > 0) {
+            cv::aruco::drawDetectedMarkers(copyProjected, proj_corners, proj_ids);
+            cv::aruco::interpolateCornersCharuco(proj_corners, proj_ids, projected, board, proj_charucoCorners, proj_charucoIds);
+            // if at least one charuco corner detected
+            if(proj_charucoIds.size() > 0)
+                cv::aruco::drawDetectedCornersCharuco(copyProjected, proj_charucoCorners, proj_charucoIds, cv::Scalar(255, 0, 0));
+        }
+
+        //cv::imshow("aruco projected", copyProjected);
+        //cv::waitKey(1000);
+
+        //detect Aruco corners on camera image
+        std::vector<int> cam_ids;
+        std::vector<std::vector<cv::Point2f> > cam_corners;
+        cv::aruco::detectMarkers(acquired, dictionary, cam_corners, cam_ids, params);
+        std::vector<cv::Point2f> cam_charucoCorners;
+        std::vector<int> cam_charucoIds;
+        // if at least one marker detected
+        if (cam_ids.size() > 0) {
+            cv::aruco::drawDetectedMarkers(copyAcquired, cam_corners, cam_ids);
+            cv::aruco::interpolateCornersCharuco(cam_corners, cam_ids, acquired, board, cam_charucoCorners, cam_charucoIds);
+            // if at least one charuco corner detected
+            if(cam_charucoIds.size() > 0)
+                cv::aruco::drawDetectedCornersCharuco(copyAcquired, cam_charucoCorners, cam_charucoIds, cv::Scalar(255, 0, 0));
+        }
+
+        //cv::imshow("aruco aquired", copyAcquired);
+        //cv::waitKey(1000);
+        imwrite("arucoacquired.jpeg",copyAcquired);
+        imwrite("arucoprojected.jpeg",copyProjected);
+        //matching project pixels and cam pixels based on aruco id:
+        for(int i = 0; i < cam_charucoIds.size(); i++){
+            for(int j = 0; j < proj_charucoIds.size(); j++){
+                if(cam_charucoIds[i] == proj_charucoIds[j]){
+                    camPixels.push_back(cam_charucoCorners[i]);
+                    projPixels.push_back(proj_charucoCorners[j]);
                 }
             }
         }
     }
-    imwrite("test.jpeg",whiteImage);
+    else
+    {
+        Mat blackImage, whiteImage;
+        int seq_length = cp_images.size();
+        blackImage = cp_images[seq_length - 2].acquired;
+        whiteImage = cp_images[seq_length - 1].acquired;
+        vector<Mat> camera_images;
+        for(int i=0;i< seq_length; i++){
+            camera_images.push_back(cp_images[i].acquired);
+        }
+        // Computing shadows mask
+        Mat shadowMask;
+        imwrite("black.jpeg",blackImage);
+        imwrite("white.jpeg",whiteImage);
+        computeShadowMask (blackImage, whiteImage, DEFAULT_BLACK_THRESHOLD, shadowMask);
+        imwrite("shadow.jpeg",shadowMask);
+        int cam_width = cp_interface->getCameraCalibration().width;
+        int cam_height = cp_interface->getCameraCalibration().height;
+        int proj_width = cp_interface->getProjectorCalibration().width;
+        int proj_height = cp_interface->getProjectorCalibration().height;
+        Point projPixel;
+        for (int i = 0; i < cam_width; i++) {
+            for (int j = 0; j < cam_height; j++) {
+                //if the pixel is not shadowed, reconstruct
+                if (shadowMask.at<uchar> (j, i)) {
+                    //for a (x,y) pixel of the camera returns the corresponding projector pixel by calculating the decimal number
+                    bool error = getProjPixel (camera_images, proj_width, proj_height, i, j, projPixel);
+                    if (error)
+                    {
+                        continue;
+                    }
+                    else
+                    {
+                        camPixels.push_back (Point (i, j));
+                        projPixels.push_back (projPixel);
+                        //visualize projector correspondence on camera image
+                        circle (whiteImage, Point (i , j), 2, (255, 0, 0), 0);
+                    }
+                }
+            }
+        }
+        imwrite("test.jpeg",whiteImage);
+    }
+    //compute extrinsic
     Mat ret (4, 4, CV_64F, Scalar (0));
     if (camPixels.size() == projPixels.size() && camPixels.size() > 9) {
         Mat F = findFundamentalMat (camPixels, projPixels, FM_RANSAC, 3, 0.99);

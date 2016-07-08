@@ -73,6 +73,8 @@ stdexcept
 -
 string
 -
+opencv2/aruco/charuco.hpp
+-
 
 /usr/include/qt4/Qt3Support/q3cstring.h
 QtCore/qbytearray.h
@@ -916,6 +918,26 @@ QtGui/qmatrix.h
 opencv2/core/core_c.h
 /usr/local/include/opencv/opencv2/core/core_c.h
 
+/usr/local/include/opencv2/aruco.hpp
+opencv2/core.hpp
+-
+vector
+-
+opencv2/aruco/dictionary.hpp
+/usr/local/include/opencv2/opencv2/aruco/dictionary.hpp
+
+/usr/local/include/opencv2/aruco/charuco.hpp
+opencv2/core.hpp
+-
+vector
+-
+opencv2/aruco.hpp
+-
+
+/usr/local/include/opencv2/aruco/dictionary.hpp
+opencv2/core.hpp
+-
+
 /usr/local/include/opencv2/calib3d.hpp
 opencv2/core.hpp
 /usr/local/include/opencv2/opencv2/core.hpp
@@ -1369,4 +1391,14 @@ opencv2/opencv.hpp
 /usr/local/include/opencv2/videoio/videoio_c.h
 opencv2/core/core_c.h
 /usr/local/include/opencv2/videoio/opencv2/core/core_c.h
+
+/usr/local/include/opencv2/xfeatures2d.hpp
+opencv2/features2d.hpp
+/usr/local/include/opencv2/opencv2/features2d.hpp
+opencv2/xfeatures2d/nonfree.hpp
+/usr/local/include/opencv2/opencv2/xfeatures2d/nonfree.hpp
+
+/usr/local/include/opencv2/xfeatures2d/nonfree.hpp
+opencv2/features2d.hpp
+/usr/local/include/opencv2/xfeatures2d/opencv2/features2d.hpp
 

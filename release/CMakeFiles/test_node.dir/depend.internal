@@ -177,3 +177,5 @@ CMakeFiles/test_node.dir/test/test.cpp.o
  /usr/local/include/opencv2/video/tracking_c.h
  /usr/local/include/opencv2/videoio.hpp
  /usr/local/include/opencv2/videoio/videoio_c.h
+ /usr/local/include/opencv2/xfeatures2d.hpp
+ /usr/local/include/opencv2/xfeatures2d/nonfree.hpp

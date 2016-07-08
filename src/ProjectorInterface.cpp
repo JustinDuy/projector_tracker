@@ -48,10 +48,11 @@ ProjectorInterfaceBase::Calibration ProjectorInterface::getCalibration()
 void ProjectorInterface::projectFullscreenOnScreen(const cv::Mat& target_image, int screen_number) 
 {
     QImage  qImg = Mat2QImage(target_image);
+    //QImage qImg("map.jpg");
     QRect screenres = QApplication::desktop()->screenGeometry(screen_number);
     image_label.move(QPoint(screenres.x(), screenres.y()));
     image_label.resize(screenres.width(), screenres.height());
-    QPixmap qpx = QPixmap::fromImage(qImg,Qt::MonoOnly);
+    QPixmap qpx = QPixmap::fromImage(qImg);//Qt::MonoOnly
     image_label.setPixmap(qpx);
     //image_label.setScaledContents(true);
     image_label.showFullScreen();
