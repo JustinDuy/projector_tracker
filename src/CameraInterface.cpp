@@ -4,7 +4,7 @@
 
 CameraInterface::CameraInterface(int device_number)
 {    
-    device_number = 1;
+    device_number = 0;
     capture = cv::VideoCapture(device_number);
     if(!capture.isOpened() )
     {
@@ -18,7 +18,7 @@ CameraInterface::~CameraInterface()
 
 }
 
-bool CameraInterface::loadIntrinsics(std::string matrix_file , std::string tag_K, std::string tag_W, std::string tag_H)
+bool CameraInterface::loadIntrinsics(std::string matrix_file , std::string tag_K, std::string tag_D, std::string tag_W, std::string tag_H)
 {
     cv::FileStorage fs( matrix_file, cv::FileStorage::READ );
     if( !fs.isOpened() )
@@ -28,6 +28,7 @@ bool CameraInterface::loadIntrinsics(std::string matrix_file , std::string tag_K
     }
     // Loading calibration parameters
     fs[tag_K] >> calibration.intrinsics;
+    fs[tag_D] >> calibration.distortion_coeffs;
     int width, height;
     fs[tag_W] >> width ;
     fs[tag_H] >> height;

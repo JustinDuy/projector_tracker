@@ -13,6 +13,7 @@ public:
         unsigned int width;
         unsigned int height;
         cv::Mat intrinsics;
+        cv::Mat distortion_coeffs;
     };
 
     virtual cv::Mat grabFrame() = 0;
@@ -40,7 +41,7 @@ public:
     ~CameraInterface();
     
 public:
-    bool loadIntrinsics(std::string file, std::string tag_K, std::string tag_W, std::string tag_H);
+    bool loadIntrinsics(std::string file, std::string tag_K, std::string tag_D, std::string tag_W, std::string tag_H);
     Calibration getCalibration();
     cv::Mat grabFrame();
     

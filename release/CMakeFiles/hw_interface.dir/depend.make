@@ -389,6 +389,8 @@ CMakeFiles/hw_interface.dir/src/ImageLabel.cpp.o: /usr/local/include/opencv2/vid
 CMakeFiles/hw_interface.dir/src/ImageLabel.cpp.o: /usr/local/include/opencv2/video/tracking_c.h
 CMakeFiles/hw_interface.dir/src/ImageLabel.cpp.o: /usr/local/include/opencv2/videoio.hpp
 CMakeFiles/hw_interface.dir/src/ImageLabel.cpp.o: /usr/local/include/opencv2/videoio/videoio_c.h
+CMakeFiles/hw_interface.dir/src/ImageLabel.cpp.o: /usr/local/include/opencv2/xfeatures2d.hpp
+CMakeFiles/hw_interface.dir/src/ImageLabel.cpp.o: /usr/local/include/opencv2/xfeatures2d/nonfree.hpp
 
 CMakeFiles/hw_interface.dir/src/ProjectorInterface.cpp.o: ../include/projector_tracker/ImageLabel.hpp
 CMakeFiles/hw_interface.dir/src/ProjectorInterface.cpp.o: ../include/projector_tracker/ProjectorInterface.h

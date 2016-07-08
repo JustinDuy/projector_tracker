@@ -1,19 +1,19 @@
 Determining if the Q_WS_WIN exist failed with the following output:
 Change Dir: /home/duy/projector_tracker/release/CMakeFiles/CMakeTmp
 
-Run Build Command:/usr/bin/make "cmTryCompileExec1937657014/fast"
-/usr/bin/make -f CMakeFiles/cmTryCompileExec1937657014.dir/build.make CMakeFiles/cmTryCompileExec1937657014.dir/build
+Run Build Command:/usr/bin/make "cmTryCompileExec2585107946/fast"
+/usr/bin/make -f CMakeFiles/cmTryCompileExec2585107946.dir/build.make CMakeFiles/cmTryCompileExec2585107946.dir/build
 make[1]: Entering directory `/home/duy/projector_tracker/release/CMakeFiles/CMakeTmp'
 /usr/bin/cmake -E cmake_progress_report /home/duy/projector_tracker/release/CMakeFiles/CMakeTmp/CMakeFiles 1
-Building CXX object CMakeFiles/cmTryCompileExec1937657014.dir/CheckSymbolExists.cxx.o
-/usr/bin/c++    -std=c++11 -pthread  -I/usr/include/qt4    -o CMakeFiles/cmTryCompileExec1937657014.dir/CheckSymbolExists.cxx.o -c /home/duy/projector_tracker/release/CMakeFiles/CMakeTmp/CheckSymbolExists.cxx
+Building CXX object CMakeFiles/cmTryCompileExec2585107946.dir/CheckSymbolExists.cxx.o
+/usr/bin/c++    -std=c++11 -pthread  -I/usr/include/qt4    -o CMakeFiles/cmTryCompileExec2585107946.dir/CheckSymbolExists.cxx.o -c /home/duy/projector_tracker/release/CMakeFiles/CMakeTmp/CheckSymbolExists.cxx
 /home/duy/projector_tracker/release/CMakeFiles/CMakeTmp/CheckSymbolExists.cxx: In function ‘int main(int, char**)’:
 /home/duy/projector_tracker/release/CMakeFiles/CMakeTmp/CheckSymbolExists.cxx:8:19: error: ‘Q_WS_WIN’ was not declared in this scope
    return ((int*)(&Q_WS_WIN))[argc];
                    ^
-make[1]: *** [CMakeFiles/cmTryCompileExec1937657014.dir/CheckSymbolExists.cxx.o] Error 1
+make[1]: *** [CMakeFiles/cmTryCompileExec2585107946.dir/CheckSymbolExists.cxx.o] Error 1
 make[1]: Leaving directory `/home/duy/projector_tracker/release/CMakeFiles/CMakeTmp'
-make: *** [cmTryCompileExec1937657014/fast] Error 2
+make: *** [cmTryCompileExec2585107946/fast] Error 2
 
 File /home/duy/projector_tracker/release/CMakeFiles/CMakeTmp/CheckSymbolExists.cxx:
 /* */
@@ -33,19 +33,19 @@ int main(int argc, char** argv)
 Determining if the Q_WS_QWS exist failed with the following output:
 Change Dir: /home/duy/projector_tracker/release/CMakeFiles/CMakeTmp
 
-Run Build Command:/usr/bin/make "cmTryCompileExec2765696757/fast"
-/usr/bin/make -f CMakeFiles/cmTryCompileExec2765696757.dir/build.make CMakeFiles/cmTryCompileExec2765696757.dir/build
+Run Build Command:/usr/bin/make "cmTryCompileExec784506944/fast"
+/usr/bin/make -f CMakeFiles/cmTryCompileExec784506944.dir/build.make CMakeFiles/cmTryCompileExec784506944.dir/build
 make[1]: Entering directory `/home/duy/projector_tracker/release/CMakeFiles/CMakeTmp'
 /usr/bin/cmake -E cmake_progress_report /home/duy/projector_tracker/release/CMakeFiles/CMakeTmp/CMakeFiles 1
-Building CXX object CMakeFiles/cmTryCompileExec2765696757.dir/CheckSymbolExists.cxx.o
-/usr/bin/c++    -std=c++11 -pthread  -I/usr/include/qt4    -o CMakeFiles/cmTryCompileExec2765696757.dir/CheckSymbolExists.cxx.o -c /home/duy/projector_tracker/release/CMakeFiles/CMakeTmp/CheckSymbolExists.cxx
+Building CXX object CMakeFiles/cmTryCompileExec784506944.dir/CheckSymbolExists.cxx.o
+/usr/bin/c++    -std=c++11 -pthread  -I/usr/include/qt4    -o CMakeFiles/cmTryCompileExec784506944.dir/CheckSymbolExists.cxx.o -c /home/duy/projector_tracker/release/CMakeFiles/CMakeTmp/CheckSymbolExists.cxx
 /home/duy/projector_tracker/release/CMakeFiles/CMakeTmp/CheckSymbolExists.cxx: In function ‘int main(int, char**)’:
 /home/duy/projector_tracker/release/CMakeFiles/CMakeTmp/CheckSymbolExists.cxx:8:19: error: ‘Q_WS_QWS’ was not declared in this scope
    return ((int*)(&Q_WS_QWS))[argc];
                    ^
-make[1]: *** [CMakeFiles/cmTryCompileExec2765696757.dir/CheckSymbolExists.cxx.o] Error 1
+make[1]: *** [CMakeFiles/cmTryCompileExec784506944.dir/CheckSymbolExists.cxx.o] Error 1
 make[1]: Leaving directory `/home/duy/projector_tracker/release/CMakeFiles/CMakeTmp'
-make: *** [cmTryCompileExec2765696757/fast] Error 2
+make: *** [cmTryCompileExec784506944/fast] Error 2
 
 File /home/duy/projector_tracker/release/CMakeFiles/CMakeTmp/CheckSymbolExists.cxx:
 /* */
@@ -65,19 +65,19 @@ int main(int argc, char** argv)
 Determining if the Q_WS_MAC exist failed with the following output:
 Change Dir: /home/duy/projector_tracker/release/CMakeFiles/CMakeTmp
 
-Run Build Command:/usr/bin/make "cmTryCompileExec3770403398/fast"
-/usr/bin/make -f CMakeFiles/cmTryCompileExec3770403398.dir/build.make CMakeFiles/cmTryCompileExec3770403398.dir/build
+Run Build Command:/usr/bin/make "cmTryCompileExec2782232262/fast"
+/usr/bin/make -f CMakeFiles/cmTryCompileExec2782232262.dir/build.make CMakeFiles/cmTryCompileExec2782232262.dir/build
 make[1]: Entering directory `/home/duy/projector_tracker/release/CMakeFiles/CMakeTmp'
 /usr/bin/cmake -E cmake_progress_report /home/duy/projector_tracker/release/CMakeFiles/CMakeTmp/CMakeFiles 1
-Building CXX object CMakeFiles/cmTryCompileExec3770403398.dir/CheckSymbolExists.cxx.o
-/usr/bin/c++    -std=c++11 -pthread  -I/usr/include/qt4    -o CMakeFiles/cmTryCompileExec3770403398.dir/CheckSymbolExists.cxx.o -c /home/duy/projector_tracker/release/CMakeFiles/CMakeTmp/CheckSymbolExists.cxx
+Building CXX object CMakeFiles/cmTryCompileExec2782232262.dir/CheckSymbolExists.cxx.o
+/usr/bin/c++    -std=c++11 -pthread  -I/usr/include/qt4    -o CMakeFiles/cmTryCompileExec2782232262.dir/CheckSymbolExists.cxx.o -c /home/duy/projector_tracker/release/CMakeFiles/CMakeTmp/CheckSymbolExists.cxx
 /home/duy/projector_tracker/release/CMakeFiles/CMakeTmp/CheckSymbolExists.cxx: In function ‘int main(int, char**)’:
 /home/duy/projector_tracker/release/CMakeFiles/CMakeTmp/CheckSymbolExists.cxx:8:19: error: ‘Q_WS_MAC’ was not declared in this scope
    return ((int*)(&Q_WS_MAC))[argc];
                    ^
-make[1]: *** [CMakeFiles/cmTryCompileExec3770403398.dir/CheckSymbolExists.cxx.o] Error 1
+make[1]: *** [CMakeFiles/cmTryCompileExec2782232262.dir/CheckSymbolExists.cxx.o] Error 1
 make[1]: Leaving directory `/home/duy/projector_tracker/release/CMakeFiles/CMakeTmp'
-make: *** [cmTryCompileExec3770403398/fast] Error 2
+make: *** [cmTryCompileExec2782232262/fast] Error 2
 
 File /home/duy/projector_tracker/release/CMakeFiles/CMakeTmp/CheckSymbolExists.cxx:
 /* */

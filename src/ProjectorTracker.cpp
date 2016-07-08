@@ -356,9 +356,8 @@ Mat ProjectorTracker::computeRelativePosition (const std::vector<CameraProjector
     //compute extrinsic
     Mat ret (4, 4, CV_64F, Scalar (0));
     if (camPixels.size() == projPixels.size() && camPixels.size() > 9) {
-    /*    Mat F = findFundamentalMat (camPixels, projPixels, FM_RANSAC, 3, 0.99);
-        //Mat E = cp_interface->getProjectorCalibration().intrinsics.t() * F * cp_interface->getCameraCalibration().intrinsics;
-        Mat E = cp_interface->getCameraCalibration().intrinsics.t() * F * cp_interface->getProjectorCalibration().intrinsics;
+        Mat F = findFundamentalMat (camPixels, projPixels, FM_RANSAC, 3, 0.99);
+        Mat E = cp_interface->getProjectorCalibration().intrinsics.t() * F * cp_interface->getCameraCalibration().intrinsics;
         //Perform SVD on E
         SVD decomp = SVD (E);
         //U
@@ -384,22 +383,28 @@ Mat ProjectorTracker::computeRelativePosition (const std::vector<CameraProjector
         Wt.at<double> (2, 2) = 1;
 
         Mat R1 = U * W * Vt;
-        Mat R2 = U * Wt * Vt;
+//        Mat R2 = U * Wt * Vt;
         Mat u1 = U.col (2);
-        Mat t2 = -U.col (2);
+  //      Mat t2 = -U.col (2);
         //4 candidates
         //save R1, u1 to "cam_proj_trans.yaml"
         saveExtrinsics(R1, u1, "../data/cam_proj_trans.yaml");
 
         //wrap into one single Mat to return
-        ret.at<double> (3, 3) = 1;
-        Mat mask_R (4, 4, CV_64F, Scalar (0));
-        mask_R (Rect (0, 0, R1.rows, R1.cols)) = 1;
-        R1.copyTo (ret, mask_R);
-        Mat mask_t (4, 4, CV_64F, Scalar (0));
-        mask_t (Rect (0, 3, u1.rows, u1.cols));
-        u1.copyTo (ret, mask_t);
-*/
+        ret.at<double> (3, 3) = (double) 1;
+
+        for(int i =0 ; i < R1.cols ; i++){
+            for(int j=0; j < R1.rows; j++){
+                ret.at<double>(j,i) = R1.at<double>(j,i);
+                cout << R1.at<double>(j,i) << ", ";
+            }
+            cout << endl;
+        }
+        cout << "u1 (rows,cols)" << u1.rows << "," << u1.cols << endl;
+        for(int i= 0; i < u1.rows; i++){
+            ret.at<double>(i,3) = u1.at<double> (i,0);
+            cout << u1.at<double> (i,0) << ", ";
+        }
     }
     else
     {

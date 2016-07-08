@@ -21,7 +21,7 @@ ProjectorInterface::~ProjectorInterface()
 
 }
 
-bool ProjectorInterface::loadIntrinsics(std::string matrix_file , std::string tag_K, std::string tag_W, std::string tag_H)
+bool ProjectorInterface::loadIntrinsics(std::string matrix_file , std::string tag_K, std::string tag_D, std::string tag_W, std::string tag_H)
 {
     cv::FileStorage fs( matrix_file, cv::FileStorage::READ );
     if( !fs.isOpened() )
@@ -31,6 +31,7 @@ bool ProjectorInterface::loadIntrinsics(std::string matrix_file , std::string ta
     }
     // Loading calibration parameters
     fs[tag_K] >> calibration.intrinsics;
+    fs[tag_D] >> calibration.distortion_coeffs;
     int width, height;
     fs[tag_W] >> width;
     fs[tag_H] >> height;

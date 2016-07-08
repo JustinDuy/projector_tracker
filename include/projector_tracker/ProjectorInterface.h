@@ -14,6 +14,7 @@ public:
         unsigned int width;
         unsigned int height;
         cv::Mat intrinsics;
+        cv::Mat distortion_coeffs;
     };
     
     virtual void projectFullscreen(const cv::Mat& target_image) = 0;
@@ -44,7 +45,7 @@ public:
     void projectFullscreenOnScreen(const cv::Mat& target_image, int screen_number = 1);
 
 public:
-    bool loadIntrinsics(std::string file, std::string tag_K, std::string tag_W, std::string tag_H);
+    bool loadIntrinsics(std::string file, std::string tag_K, std::string tag_D, std::string tag_W, std::string tag_H);
     Calibration getCalibration();
     
 protected:
