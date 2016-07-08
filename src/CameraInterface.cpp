@@ -10,6 +10,7 @@ CameraInterface::CameraInterface(int device_number)
     {
       std::cerr << "Error: camera device is not opened!" << std::endl;
     }
+    std::cout << "init camera done" << std::endl;
 }
 
 CameraInterface::~CameraInterface()
@@ -45,7 +46,7 @@ CameraInterfaceBase::Calibration CameraInterface::getCalibration()
 
 cv::Mat CameraInterface::grabFrame() {
     // TODO: rectify image if intrinsics are loaded
-    cv::Mat frame;
+    cv::Mat frame = cv::Mat::zeros(calibration.height, calibration.width, CV_8UC3);
     capture >> frame;
     cv::cvtColor( frame, frame, CV_RGB2GRAY );
     return frame;

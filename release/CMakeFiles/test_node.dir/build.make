@@ -111,7 +111,6 @@ test_node: /usr/local/lib/libopencv_ccalib.so.3.1.0
 test_node: /usr/local/lib/libopencv_bioinspired.so.3.1.0
 test_node: /usr/local/lib/libopencv_bgsegm.so.3.1.0
 test_node: /usr/local/lib/libopencv_aruco.so.3.1.0
-test_node: /usr/local/lib/libopencv_viz.so.3.1.0
 test_node: /usr/local/lib/libopencv_videostab.so.3.1.0
 test_node: /usr/local/lib/libopencv_superres.so.3.1.0
 test_node: /usr/local/lib/libopencv_stitching.so.3.1.0

@@ -56,7 +56,7 @@ int test_cameraprojector(int argc, char **argv) {
     std::shared_ptr<ProjectorInterface> proj_interface= std::make_shared<ProjectorInterface>();
     proj_interface->loadIntrinsics("../data/calibrationProjector.yml", "cameraMatrix", "imageSize_width", "imageSize_height");
 
-    std::shared_ptr<CameraProjectorInterface> cpi = std::make_shared<CameraProjectorInterface>(cam_interface, proj_interface, 100);
+    std::shared_ptr<CameraProjectorInterface> cpi = std::make_shared<CameraProjectorInterface>(cam_interface, proj_interface, 500);
     std::shared_ptr<ProjectorTracker> projTracker = std::make_shared<ProjectorTracker>  (cpi);
     std::vector<cv::Mat> patterns = projTracker->getPatternImages(proj_interface->getCalibration().width, proj_interface->getCalibration().height, true);
     std::thread t(test_cameraprojector_helper, patterns, cpi, projTracker);

@@ -129,8 +129,8 @@ clean: CMakeFiles/projector_tracker.dir/clean
 # Target rules for target CMakeFiles/test_node.dir
 
 # All Build rule for target.
-CMakeFiles/test_node.dir/all: CMakeFiles/hw_interface.dir/all
 CMakeFiles/test_node.dir/all: CMakeFiles/projector_tracker.dir/all
+CMakeFiles/test_node.dir/all: CMakeFiles/hw_interface.dir/all
 	$(MAKE) -f CMakeFiles/test_node.dir/build.make CMakeFiles/test_node.dir/depend
 	$(MAKE) -f CMakeFiles/test_node.dir/build.make CMakeFiles/test_node.dir/build
 	$(CMAKE_COMMAND) -E cmake_progress_report /home/duy/projector_tracker/release/CMakeFiles  6

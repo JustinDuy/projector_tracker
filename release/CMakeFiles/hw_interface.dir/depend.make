@@ -54,6 +54,8 @@ CMakeFiles/hw_interface.dir/src/CameraInterface.cpp.o: /usr/local/include/opencv
 CMakeFiles/hw_interface.dir/src/CameraInterface.cpp.o: /usr/local/include/opencv2/video/tracking_c.h
 CMakeFiles/hw_interface.dir/src/CameraInterface.cpp.o: /usr/local/include/opencv2/videoio.hpp
 CMakeFiles/hw_interface.dir/src/CameraInterface.cpp.o: /usr/local/include/opencv2/videoio/videoio_c.h
+CMakeFiles/hw_interface.dir/src/CameraInterface.cpp.o: /usr/local/include/opencv2/xfeatures2d.hpp
+CMakeFiles/hw_interface.dir/src/CameraInterface.cpp.o: /usr/local/include/opencv2/xfeatures2d/nonfree.hpp
 
 CMakeFiles/hw_interface.dir/src/CameraProjectorInterface.cpp.o: ../include/projector_tracker/CameraInterface.h
 CMakeFiles/hw_interface.dir/src/CameraProjectorInterface.cpp.o: ../include/projector_tracker/CameraProjectorInterface.h
@@ -221,6 +223,8 @@ CMakeFiles/hw_interface.dir/src/CameraProjectorInterface.cpp.o: /usr/local/inclu
 CMakeFiles/hw_interface.dir/src/CameraProjectorInterface.cpp.o: /usr/local/include/opencv2/video/tracking_c.h
 CMakeFiles/hw_interface.dir/src/CameraProjectorInterface.cpp.o: /usr/local/include/opencv2/videoio.hpp
 CMakeFiles/hw_interface.dir/src/CameraProjectorInterface.cpp.o: /usr/local/include/opencv2/videoio/videoio_c.h
+CMakeFiles/hw_interface.dir/src/CameraProjectorInterface.cpp.o: /usr/local/include/opencv2/xfeatures2d.hpp
+CMakeFiles/hw_interface.dir/src/CameraProjectorInterface.cpp.o: /usr/local/include/opencv2/xfeatures2d/nonfree.hpp
 
 CMakeFiles/hw_interface.dir/src/ImageLabel.cpp.o: ../include/projector_tracker/ImageLabel.hpp
 CMakeFiles/hw_interface.dir/src/ImageLabel.cpp.o: ../src/ImageLabel.cpp
@@ -559,4 +563,6 @@ CMakeFiles/hw_interface.dir/src/ProjectorInterface.cpp.o: /usr/local/include/ope
 CMakeFiles/hw_interface.dir/src/ProjectorInterface.cpp.o: /usr/local/include/opencv2/video/tracking_c.h
 CMakeFiles/hw_interface.dir/src/ProjectorInterface.cpp.o: /usr/local/include/opencv2/videoio.hpp
 CMakeFiles/hw_interface.dir/src/ProjectorInterface.cpp.o: /usr/local/include/opencv2/videoio/videoio_c.h
+CMakeFiles/hw_interface.dir/src/ProjectorInterface.cpp.o: /usr/local/include/opencv2/xfeatures2d.hpp
+CMakeFiles/hw_interface.dir/src/ProjectorInterface.cpp.o: /usr/local/include/opencv2/xfeatures2d/nonfree.hpp
 

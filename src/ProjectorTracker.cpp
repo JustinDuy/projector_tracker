@@ -43,6 +43,8 @@ vector<Mat> ProjectorTracker::getPatternImages (int width, int height, bool useA
         board.draw( cv::Size(width, height), boardImage, 10, 1 );
         vector<Mat> ret;
         ret.push_back(boardImage);
+        //imwrite("boadaruco.jpg", boardImage);
+        return ret;
     }
     else
     {//USE GRAY CODE
@@ -252,10 +254,10 @@ Mat ProjectorTracker::computeRelativePosition (const std::vector<CameraProjector
         params.doCornerRefinement = false;
 
         Mat projected = cp_images[0].projected;
-        Mat acquired = cp_images[0].acquired;
         Mat copyProjected;
-        Mat copyAcquired;
         projected.copyTo(copyProjected);
+        Mat acquired = cp_images[0].acquired;
+        Mat copyAcquired;
         acquired.copyTo(copyAcquired);
 
         //detect Aruco corners on projector image
@@ -275,6 +277,8 @@ Mat ProjectorTracker::computeRelativePosition (const std::vector<CameraProjector
 
         //cv::imshow("aruco projected", copyProjected);
         //cv::waitKey(1000);
+        cout << "saving arucoprojected.jpeg" << endl;
+        imwrite("arucoprojected.jpeg",copyProjected);
 
         //detect Aruco corners on camera image
         std::vector<int> cam_ids;
@@ -293,8 +297,8 @@ Mat ProjectorTracker::computeRelativePosition (const std::vector<CameraProjector
 
         //cv::imshow("aruco aquired", copyAcquired);
         //cv::waitKey(1000);
+        cout << "saving arucoacquired.jpeg" << endl;
         imwrite("arucoacquired.jpeg",copyAcquired);
-        imwrite("arucoprojected.jpeg",copyProjected);
         //matching project pixels and cam pixels based on aruco id:
         for(int i = 0; i < cam_charucoIds.size(); i++){
             for(int j = 0; j < proj_charucoIds.size(); j++){
@@ -304,6 +308,7 @@ Mat ProjectorTracker::computeRelativePosition (const std::vector<CameraProjector
                 }
             }
         }
+        cout << "matching list of size " << camPixels.size() << endl;
     }
     else
     {
@@ -351,7 +356,7 @@ Mat ProjectorTracker::computeRelativePosition (const std::vector<CameraProjector
     //compute extrinsic
     Mat ret (4, 4, CV_64F, Scalar (0));
     if (camPixels.size() == projPixels.size() && camPixels.size() > 9) {
-        Mat F = findFundamentalMat (camPixels, projPixels, FM_RANSAC, 3, 0.99);
+    /*    Mat F = findFundamentalMat (camPixels, projPixels, FM_RANSAC, 3, 0.99);
         //Mat E = cp_interface->getProjectorCalibration().intrinsics.t() * F * cp_interface->getCameraCalibration().intrinsics;
         Mat E = cp_interface->getCameraCalibration().intrinsics.t() * F * cp_interface->getProjectorCalibration().intrinsics;
         //Perform SVD on E
@@ -394,7 +399,7 @@ Mat ProjectorTracker::computeRelativePosition (const std::vector<CameraProjector
         Mat mask_t (4, 4, CV_64F, Scalar (0));
         mask_t (Rect (0, 3, u1.rows, u1.cols));
         u1.copyTo (ret, mask_t);
-
+*/
     }
     else
     {

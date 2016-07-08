@@ -55,6 +55,8 @@ CMakeFiles/hw_interface.dir/src/CameraInterface.cpp.o
  /usr/local/include/opencv2/video/tracking_c.h
  /usr/local/include/opencv2/videoio.hpp
  /usr/local/include/opencv2/videoio/videoio_c.h
+ /usr/local/include/opencv2/xfeatures2d.hpp
+ /usr/local/include/opencv2/xfeatures2d/nonfree.hpp
 CMakeFiles/hw_interface.dir/src/CameraProjectorInterface.cpp.o
  ../include/projector_tracker/CameraInterface.h
  ../include/projector_tracker/CameraProjectorInterface.h
@@ -222,6 +224,8 @@ CMakeFiles/hw_interface.dir/src/CameraProjectorInterface.cpp.o
  /usr/local/include/opencv2/video/tracking_c.h
  /usr/local/include/opencv2/videoio.hpp
  /usr/local/include/opencv2/videoio/videoio_c.h
+ /usr/local/include/opencv2/xfeatures2d.hpp
+ /usr/local/include/opencv2/xfeatures2d/nonfree.hpp
 CMakeFiles/hw_interface.dir/src/ImageLabel.cpp.o
  ../include/projector_tracker/ImageLabel.hpp
  /home/duy/projector_tracker/src/ImageLabel.cpp
@@ -560,3 +564,5 @@ CMakeFiles/hw_interface.dir/src/ProjectorInterface.cpp.o
  /usr/local/include/opencv2/video/tracking_c.h
  /usr/local/include/opencv2/videoio.hpp
  /usr/local/include/opencv2/videoio/videoio_c.h
+ /usr/local/include/opencv2/xfeatures2d.hpp
+ /usr/local/include/opencv2/xfeatures2d/nonfree.hpp
