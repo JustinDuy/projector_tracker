@@ -34,6 +34,7 @@ bool CameraInterface::loadIntrinsics(std::string matrix_file , std::string tag_K
     fs[tag_H] >> height;
     calibration.height = height;
     calibration.width = width;
+    capture.set(CV_CAP_PROP_FPS,10);
     capture.set(CV_CAP_PROP_FRAME_WIDTH, width);
     capture.set(CV_CAP_PROP_FRAME_HEIGHT, height);
     return true;

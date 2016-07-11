@@ -353,58 +353,40 @@ Mat ProjectorTracker::computeRelativePosition (const std::vector<CameraProjector
         }
         imwrite("test.jpeg",whiteImage);
     }
-    //compute extrinsic
+    //compute transformation matrix from camera to projector
     Mat ret (4, 4, CV_64F, Scalar (0));
     if (camPixels.size() == projPixels.size() && camPixels.size() > 9) {
-        Mat F = findFundamentalMat (camPixels, projPixels, FM_RANSAC, 3, 0.99);
-        Mat E = cp_interface->getProjectorCalibration().intrinsics.t() * F * cp_interface->getCameraCalibration().intrinsics;
-        //Perform SVD on E
-        SVD decomp = SVD (E);
-        //U
-        Mat U = decomp.u;
-        //S
-        Mat S (3, 3, CV_64F, Scalar (0));
-        S.at<double> (0, 0) = decomp.w.at<double> (0, 0);
-        S.at<double> (1, 1) = decomp.w.at<double> (0, 1);
-        S.at<double> (2, 2) = decomp.w.at<double> (0, 2);
+        /*const auto & objectPoints = calibrationProjector.getObjectPoints();
 
-        //Vt
-        Mat Vt = decomp.vt;
+        vector<vector<cv::Point2f> > auxImagePointsCamera;
+        for (int i=0; i<objectPoints.size() ; i++ ) {
+            vector<cv::Point2f> auxImagePoints;
+            projectPoints(cv::Mat(objectPoints[i]),
+                          calibrationCamera.getBoardRotations()[i],
+                          calibrationCamera.getBoardTranslations()[i],
+                          calibrationCamera.getDistortedIntrinsics().getCameraMatrix(),
+                          calibrationCamera.getDistCoeffs(),
+                          auxImagePoints);
 
-        //W
-        Mat W (3, 3, CV_64F, Scalar (0));
-        W.at<double> (0, 1) = -1;
-        W.at<double> (1, 0) = 1;
-        W.at<double> (2, 2) = 1;
-
-        Mat Wt (3, 3, CV_64F, Scalar (0));
-        Wt.at<double> (0, 1) = 1;
-        Wt.at<double> (1, 0) = -1;
-        Wt.at<double> (2, 2) = 1;
-
-        Mat R1 = U * W * Vt;
-//        Mat R2 = U * Wt * Vt;
-        Mat u1 = U.col (2);
-  //      Mat t2 = -U.col (2);
-        //4 candidates
-        //save R1, u1 to "cam_proj_trans.yaml"
-        saveExtrinsics(R1, u1, "../data/cam_proj_trans.yaml");
-
-        //wrap into one single Mat to return
-        ret.at<double> (3, 3) = (double) 1;
-
-        for(int i =0 ; i < R1.cols ; i++){
-            for(int j=0; j < R1.rows; j++){
-                ret.at<double>(j,i) = R1.at<double>(j,i);
-                cout << R1.at<double>(j,i) << ", ";
-            }
-            cout << endl;
+            auxImagePointsCamera.push_back(auxImagePoints);
         }
-        cout << "u1 (rows,cols)" << u1.rows << "," << u1.cols << endl;
-        for(int i= 0; i < u1.rows; i++){
-            ret.at<double>(i,3) = u1.at<double> (i,0);
-            cout << u1.at<double> (i,0) << ", ";
-        }
+
+        cv::Mat projectorMatrix     = calibrationProjector.getDistortedIntrinsics().getCameraMatrix();
+        cv::Mat projectorDistCoeffs = calibrationProjector.getDistCoeffs();
+        cv::Mat cameraMatrix        = calibrationCamera.getDistortedIntrinsics().getCameraMatrix();
+        cv::Mat cameraDistCoeffs    = calibrationCamera.getDistCoeffs();
+
+        cv::Mat fundamentalMatrix, essentialMatrix;
+        cv::Mat rotation3x3;
+        cv::stereoCalibrate(objectPoints,
+                            auxImagePointsCamera,
+                            calibrationProjector.imagePoints,
+                            cameraMatrix, cameraDistCoeffs,
+                            projectorMatrix, projectorDistCoeffs,
+                            calibrationCamera.getDistortedIntrinsics().getImageSize(),
+                            rotation3x3, transCamToProj,
+                            essentialMatrix, fundamentalMatrix);
+        cv::Rodrigues(rotation3x3, rotCamToProj);*/
     }
     else
     {
