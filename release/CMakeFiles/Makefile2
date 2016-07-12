@@ -46,14 +46,11 @@ RM = /usr/bin/cmake -E remove -f
 # Escaping for special characters.
 EQUALS = =
 
-# The program to use to edit the cache.
-CMAKE_EDIT_COMMAND = /usr/bin/ccmake
-
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /home/duy/projector_tracker
+CMAKE_SOURCE_DIR = /home/parallels/projector_tracker
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /home/duy/projector_tracker/release
+CMAKE_BINARY_DIR = /home/parallels/projector_tracker/release
 
 #=============================================================================
 # Target rules for target CMakeFiles/hw_interface.dir
@@ -62,7 +59,7 @@ CMAKE_BINARY_DIR = /home/duy/projector_tracker/release
 CMakeFiles/hw_interface.dir/all:
 	$(MAKE) -f CMakeFiles/hw_interface.dir/build.make CMakeFiles/hw_interface.dir/depend
 	$(MAKE) -f CMakeFiles/hw_interface.dir/build.make CMakeFiles/hw_interface.dir/build
-	$(CMAKE_COMMAND) -E cmake_progress_report /home/duy/projector_tracker/release/CMakeFiles  1 2 3 4
+	$(CMAKE_COMMAND) -E cmake_progress_report /home/parallels/projector_tracker/release/CMakeFiles  1 2 3 4
 	@echo "Built target hw_interface"
 .PHONY : CMakeFiles/hw_interface.dir/all
 
@@ -72,9 +69,9 @@ all: CMakeFiles/hw_interface.dir/all
 
 # Build rule for subdir invocation for target.
 CMakeFiles/hw_interface.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/duy/projector_tracker/release/CMakeFiles 4
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/parallels/projector_tracker/release/CMakeFiles 4
 	$(MAKE) -f CMakeFiles/Makefile2 CMakeFiles/hw_interface.dir/all
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/duy/projector_tracker/release/CMakeFiles 0
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/parallels/projector_tracker/release/CMakeFiles 0
 .PHONY : CMakeFiles/hw_interface.dir/rule
 
 # Convenience name for target.
@@ -97,7 +94,7 @@ clean: CMakeFiles/hw_interface.dir/clean
 CMakeFiles/projector_tracker.dir/all:
 	$(MAKE) -f CMakeFiles/projector_tracker.dir/build.make CMakeFiles/projector_tracker.dir/depend
 	$(MAKE) -f CMakeFiles/projector_tracker.dir/build.make CMakeFiles/projector_tracker.dir/build
-	$(CMAKE_COMMAND) -E cmake_progress_report /home/duy/projector_tracker/release/CMakeFiles  5
+	$(CMAKE_COMMAND) -E cmake_progress_report /home/parallels/projector_tracker/release/CMakeFiles  5
 	@echo "Built target projector_tracker"
 .PHONY : CMakeFiles/projector_tracker.dir/all
 
@@ -107,9 +104,9 @@ all: CMakeFiles/projector_tracker.dir/all
 
 # Build rule for subdir invocation for target.
 CMakeFiles/projector_tracker.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/duy/projector_tracker/release/CMakeFiles 1
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/parallels/projector_tracker/release/CMakeFiles 1
 	$(MAKE) -f CMakeFiles/Makefile2 CMakeFiles/projector_tracker.dir/all
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/duy/projector_tracker/release/CMakeFiles 0
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/parallels/projector_tracker/release/CMakeFiles 0
 .PHONY : CMakeFiles/projector_tracker.dir/rule
 
 # Convenience name for target.
@@ -133,7 +130,7 @@ CMakeFiles/test_node.dir/all: CMakeFiles/projector_tracker.dir/all
 CMakeFiles/test_node.dir/all: CMakeFiles/hw_interface.dir/all
 	$(MAKE) -f CMakeFiles/test_node.dir/build.make CMakeFiles/test_node.dir/depend
 	$(MAKE) -f CMakeFiles/test_node.dir/build.make CMakeFiles/test_node.dir/build
-	$(CMAKE_COMMAND) -E cmake_progress_report /home/duy/projector_tracker/release/CMakeFiles  6
+	$(CMAKE_COMMAND) -E cmake_progress_report /home/parallels/projector_tracker/release/CMakeFiles  6
 	@echo "Built target test_node"
 .PHONY : CMakeFiles/test_node.dir/all
 
@@ -143,9 +140,9 @@ all: CMakeFiles/test_node.dir/all
 
 # Build rule for subdir invocation for target.
 CMakeFiles/test_node.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/duy/projector_tracker/release/CMakeFiles 6
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/parallels/projector_tracker/release/CMakeFiles 6
 	$(MAKE) -f CMakeFiles/Makefile2 CMakeFiles/test_node.dir/all
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/duy/projector_tracker/release/CMakeFiles 0
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/parallels/projector_tracker/release/CMakeFiles 0
 .PHONY : CMakeFiles/test_node.dir/rule
 
 # Convenience name for target.

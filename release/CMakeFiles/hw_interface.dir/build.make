@@ -34,14 +34,11 @@ RM = /usr/bin/cmake -E remove -f
 # Escaping for special characters.
 EQUALS = =
 
-# The program to use to edit the cache.
-CMAKE_EDIT_COMMAND = /usr/bin/ccmake
-
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /home/duy/projector_tracker
+CMAKE_SOURCE_DIR = /home/parallels/projector_tracker
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /home/duy/projector_tracker/release
+CMAKE_BINARY_DIR = /home/parallels/projector_tracker/release
 
 # Include any dependencies generated for this target.
 include CMakeFiles/hw_interface.dir/depend.make
@@ -54,17 +51,17 @@ include CMakeFiles/hw_interface.dir/flags.make
 
 CMakeFiles/hw_interface.dir/src/CameraInterface.cpp.o: CMakeFiles/hw_interface.dir/flags.make
 CMakeFiles/hw_interface.dir/src/CameraInterface.cpp.o: ../src/CameraInterface.cpp
-	$(CMAKE_COMMAND) -E cmake_progress_report /home/duy/projector_tracker/release/CMakeFiles $(CMAKE_PROGRESS_1)
+	$(CMAKE_COMMAND) -E cmake_progress_report /home/parallels/projector_tracker/release/CMakeFiles $(CMAKE_PROGRESS_1)
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Building CXX object CMakeFiles/hw_interface.dir/src/CameraInterface.cpp.o"
-	/usr/bin/c++   $(CXX_DEFINES) $(CXX_FLAGS) -o CMakeFiles/hw_interface.dir/src/CameraInterface.cpp.o -c /home/duy/projector_tracker/src/CameraInterface.cpp
+	/usr/bin/c++   $(CXX_DEFINES) $(CXX_FLAGS) -o CMakeFiles/hw_interface.dir/src/CameraInterface.cpp.o -c /home/parallels/projector_tracker/src/CameraInterface.cpp
 
 CMakeFiles/hw_interface.dir/src/CameraInterface.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/hw_interface.dir/src/CameraInterface.cpp.i"
-	/usr/bin/c++  $(CXX_DEFINES) $(CXX_FLAGS) -E /home/duy/projector_tracker/src/CameraInterface.cpp > CMakeFiles/hw_interface.dir/src/CameraInterface.cpp.i
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_FLAGS) -E /home/parallels/projector_tracker/src/CameraInterface.cpp > CMakeFiles/hw_interface.dir/src/CameraInterface.cpp.i
 
 CMakeFiles/hw_interface.dir/src/CameraInterface.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/hw_interface.dir/src/CameraInterface.cpp.s"
-	/usr/bin/c++  $(CXX_DEFINES) $(CXX_FLAGS) -S /home/duy/projector_tracker/src/CameraInterface.cpp -o CMakeFiles/hw_interface.dir/src/CameraInterface.cpp.s
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_FLAGS) -S /home/parallels/projector_tracker/src/CameraInterface.cpp -o CMakeFiles/hw_interface.dir/src/CameraInterface.cpp.s
 
 CMakeFiles/hw_interface.dir/src/CameraInterface.cpp.o.requires:
 .PHONY : CMakeFiles/hw_interface.dir/src/CameraInterface.cpp.o.requires
@@ -77,17 +74,17 @@ CMakeFiles/hw_interface.dir/src/CameraInterface.cpp.o.provides.build: CMakeFiles
 
 CMakeFiles/hw_interface.dir/src/ProjectorInterface.cpp.o: CMakeFiles/hw_interface.dir/flags.make
 CMakeFiles/hw_interface.dir/src/ProjectorInterface.cpp.o: ../src/ProjectorInterface.cpp
-	$(CMAKE_COMMAND) -E cmake_progress_report /home/duy/projector_tracker/release/CMakeFiles $(CMAKE_PROGRESS_2)
+	$(CMAKE_COMMAND) -E cmake_progress_report /home/parallels/projector_tracker/release/CMakeFiles $(CMAKE_PROGRESS_2)
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Building CXX object CMakeFiles/hw_interface.dir/src/ProjectorInterface.cpp.o"
-	/usr/bin/c++   $(CXX_DEFINES) $(CXX_FLAGS) -o CMakeFiles/hw_interface.dir/src/ProjectorInterface.cpp.o -c /home/duy/projector_tracker/src/ProjectorInterface.cpp
+	/usr/bin/c++   $(CXX_DEFINES) $(CXX_FLAGS) -o CMakeFiles/hw_interface.dir/src/ProjectorInterface.cpp.o -c /home/parallels/projector_tracker/src/ProjectorInterface.cpp
 
 CMakeFiles/hw_interface.dir/src/ProjectorInterface.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/hw_interface.dir/src/ProjectorInterface.cpp.i"
-	/usr/bin/c++  $(CXX_DEFINES) $(CXX_FLAGS) -E /home/duy/projector_tracker/src/ProjectorInterface.cpp > CMakeFiles/hw_interface.dir/src/ProjectorInterface.cpp.i
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_FLAGS) -E /home/parallels/projector_tracker/src/ProjectorInterface.cpp > CMakeFiles/hw_interface.dir/src/ProjectorInterface.cpp.i
 
 CMakeFiles/hw_interface.dir/src/ProjectorInterface.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/hw_interface.dir/src/ProjectorInterface.cpp.s"
-	/usr/bin/c++  $(CXX_DEFINES) $(CXX_FLAGS) -S /home/duy/projector_tracker/src/ProjectorInterface.cpp -o CMakeFiles/hw_interface.dir/src/ProjectorInterface.cpp.s
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_FLAGS) -S /home/parallels/projector_tracker/src/ProjectorInterface.cpp -o CMakeFiles/hw_interface.dir/src/ProjectorInterface.cpp.s
 
 CMakeFiles/hw_interface.dir/src/ProjectorInterface.cpp.o.requires:
 .PHONY : CMakeFiles/hw_interface.dir/src/ProjectorInterface.cpp.o.requires
@@ -100,17 +97,17 @@ CMakeFiles/hw_interface.dir/src/ProjectorInterface.cpp.o.provides.build: CMakeFi
 
 CMakeFiles/hw_interface.dir/src/CameraProjectorInterface.cpp.o: CMakeFiles/hw_interface.dir/flags.make
 CMakeFiles/hw_interface.dir/src/CameraProjectorInterface.cpp.o: ../src/CameraProjectorInterface.cpp
-	$(CMAKE_COMMAND) -E cmake_progress_report /home/duy/projector_tracker/release/CMakeFiles $(CMAKE_PROGRESS_3)
+	$(CMAKE_COMMAND) -E cmake_progress_report /home/parallels/projector_tracker/release/CMakeFiles $(CMAKE_PROGRESS_3)
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Building CXX object CMakeFiles/hw_interface.dir/src/CameraProjectorInterface.cpp.o"
-	/usr/bin/c++   $(CXX_DEFINES) $(CXX_FLAGS) -o CMakeFiles/hw_interface.dir/src/CameraProjectorInterface.cpp.o -c /home/duy/projector_tracker/src/CameraProjectorInterface.cpp
+	/usr/bin/c++   $(CXX_DEFINES) $(CXX_FLAGS) -o CMakeFiles/hw_interface.dir/src/CameraProjectorInterface.cpp.o -c /home/parallels/projector_tracker/src/CameraProjectorInterface.cpp
 
 CMakeFiles/hw_interface.dir/src/CameraProjectorInterface.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/hw_interface.dir/src/CameraProjectorInterface.cpp.i"
-	/usr/bin/c++  $(CXX_DEFINES) $(CXX_FLAGS) -E /home/duy/projector_tracker/src/CameraProjectorInterface.cpp > CMakeFiles/hw_interface.dir/src/CameraProjectorInterface.cpp.i
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_FLAGS) -E /home/parallels/projector_tracker/src/CameraProjectorInterface.cpp > CMakeFiles/hw_interface.dir/src/CameraProjectorInterface.cpp.i
 
 CMakeFiles/hw_interface.dir/src/CameraProjectorInterface.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/hw_interface.dir/src/CameraProjectorInterface.cpp.s"
-	/usr/bin/c++  $(CXX_DEFINES) $(CXX_FLAGS) -S /home/duy/projector_tracker/src/CameraProjectorInterface.cpp -o CMakeFiles/hw_interface.dir/src/CameraProjectorInterface.cpp.s
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_FLAGS) -S /home/parallels/projector_tracker/src/CameraProjectorInterface.cpp -o CMakeFiles/hw_interface.dir/src/CameraProjectorInterface.cpp.s
 
 CMakeFiles/hw_interface.dir/src/CameraProjectorInterface.cpp.o.requires:
 .PHONY : CMakeFiles/hw_interface.dir/src/CameraProjectorInterface.cpp.o.requires
@@ -123,17 +120,17 @@ CMakeFiles/hw_interface.dir/src/CameraProjectorInterface.cpp.o.provides.build: C
 
 CMakeFiles/hw_interface.dir/src/ImageLabel.cpp.o: CMakeFiles/hw_interface.dir/flags.make
 CMakeFiles/hw_interface.dir/src/ImageLabel.cpp.o: ../src/ImageLabel.cpp
-	$(CMAKE_COMMAND) -E cmake_progress_report /home/duy/projector_tracker/release/CMakeFiles $(CMAKE_PROGRESS_4)
+	$(CMAKE_COMMAND) -E cmake_progress_report /home/parallels/projector_tracker/release/CMakeFiles $(CMAKE_PROGRESS_4)
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Building CXX object CMakeFiles/hw_interface.dir/src/ImageLabel.cpp.o"
-	/usr/bin/c++   $(CXX_DEFINES) $(CXX_FLAGS) -o CMakeFiles/hw_interface.dir/src/ImageLabel.cpp.o -c /home/duy/projector_tracker/src/ImageLabel.cpp
+	/usr/bin/c++   $(CXX_DEFINES) $(CXX_FLAGS) -o CMakeFiles/hw_interface.dir/src/ImageLabel.cpp.o -c /home/parallels/projector_tracker/src/ImageLabel.cpp
 
 CMakeFiles/hw_interface.dir/src/ImageLabel.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/hw_interface.dir/src/ImageLabel.cpp.i"
-	/usr/bin/c++  $(CXX_DEFINES) $(CXX_FLAGS) -E /home/duy/projector_tracker/src/ImageLabel.cpp > CMakeFiles/hw_interface.dir/src/ImageLabel.cpp.i
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_FLAGS) -E /home/parallels/projector_tracker/src/ImageLabel.cpp > CMakeFiles/hw_interface.dir/src/ImageLabel.cpp.i
 
 CMakeFiles/hw_interface.dir/src/ImageLabel.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/hw_interface.dir/src/ImageLabel.cpp.s"
-	/usr/bin/c++  $(CXX_DEFINES) $(CXX_FLAGS) -S /home/duy/projector_tracker/src/ImageLabel.cpp -o CMakeFiles/hw_interface.dir/src/ImageLabel.cpp.s
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_FLAGS) -S /home/parallels/projector_tracker/src/ImageLabel.cpp -o CMakeFiles/hw_interface.dir/src/ImageLabel.cpp.s
 
 CMakeFiles/hw_interface.dir/src/ImageLabel.cpp.o.requires:
 .PHONY : CMakeFiles/hw_interface.dir/src/ImageLabel.cpp.o.requires
@@ -179,6 +176,6 @@ CMakeFiles/hw_interface.dir/clean:
 .PHONY : CMakeFiles/hw_interface.dir/clean
 
 CMakeFiles/hw_interface.dir/depend:
-	cd /home/duy/projector_tracker/release && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/duy/projector_tracker /home/duy/projector_tracker /home/duy/projector_tracker/release /home/duy/projector_tracker/release /home/duy/projector_tracker/release/CMakeFiles/hw_interface.dir/DependInfo.cmake --color=$(COLOR)
+	cd /home/parallels/projector_tracker/release && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/parallels/projector_tracker /home/parallels/projector_tracker /home/parallels/projector_tracker/release /home/parallels/projector_tracker/release /home/parallels/projector_tracker/release/CMakeFiles/hw_interface.dir/DependInfo.cmake --color=$(COLOR)
 .PHONY : CMakeFiles/hw_interface.dir/depend
 

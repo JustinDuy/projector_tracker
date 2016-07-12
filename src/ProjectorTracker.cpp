@@ -37,10 +37,10 @@ int getPatternImageNum (int width, int height) {
 
 vector<Mat> ProjectorTracker::getPatternImages (int width, int height, bool useAruco) {
     if(useAruco){//USE ARUCO MARKERS
-        cv::aruco::Dictionary dictionary = cv::aruco::getPredefinedDictionary(cv::aruco::DICT_6X6_250);
-        cv::aruco::CharucoBoard board = cv::aruco::CharucoBoard::create(5, 7, 0.04, 0.02, dictionary);
+        cv::Ptr<cv::aruco::Dictionary> dictionary = cv::aruco::getPredefinedDictionary(cv::aruco::DICT_6X6_250);
+        cv::Ptr<cv::aruco::CharucoBoard> board = cv::aruco::CharucoBoard::create(5, 7, 0.04f, 0.02f, dictionary);
         cv::Mat boardImage;
-        board.draw( cv::Size(width, height), boardImage, 10, 1 );
+        board->draw( cv::Size(width, height), boardImage, 10, 1 );
         vector<Mat> ret;
         ret.push_back(boardImage);
         //imwrite("boadaruco.jpg", boardImage);
@@ -248,10 +248,10 @@ Mat ProjectorTracker::computeRelativePosition (const std::vector<CameraProjector
         //cv::namedWindow("aruco aquired", WINDOW_AUTOSIZE);
         //cv::namedWindow("aruco projected", WINDOW_AUTOSIZE);
         //define Aruco Board
-        cv::aruco::Dictionary dictionary = cv::aruco::getPredefinedDictionary(cv::aruco::DICT_6X6_250);
-        cv::aruco::CharucoBoard board = cv::aruco::CharucoBoard::create(5, 7, 0.04, 0.02, dictionary);
-        cv::aruco::DetectorParameters params;
-        params.doCornerRefinement = false;
+        cv::Ptr<cv::aruco::Dictionary> dictionary = cv::aruco::getPredefinedDictionary(cv::aruco::DICT_6X6_250);
+        cv::Ptr< cv::aruco::CharucoBoard > board = cv::aruco::CharucoBoard::create(5, 7, 0.04f, 0.02f, dictionary);
+        cv::Ptr<cv::aruco::DetectorParameters > params = cv::aruco::DetectorParameters::create();
+        params->doCornerRefinement = false;
 
         Mat projected = cp_images[0].projected;
         Mat copyProjected;

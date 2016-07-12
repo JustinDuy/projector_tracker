@@ -4,10 +4,10 @@ SET(CMAKE_DEPENDS_LANGUAGES
   )
 # The set of files for implicit dependencies of each language:
 SET(CMAKE_DEPENDS_CHECK_CXX
-  "/home/duy/projector_tracker/src/CameraInterface.cpp" "/home/duy/projector_tracker/release/CMakeFiles/hw_interface.dir/src/CameraInterface.cpp.o"
-  "/home/duy/projector_tracker/src/CameraProjectorInterface.cpp" "/home/duy/projector_tracker/release/CMakeFiles/hw_interface.dir/src/CameraProjectorInterface.cpp.o"
-  "/home/duy/projector_tracker/src/ImageLabel.cpp" "/home/duy/projector_tracker/release/CMakeFiles/hw_interface.dir/src/ImageLabel.cpp.o"
-  "/home/duy/projector_tracker/src/ProjectorInterface.cpp" "/home/duy/projector_tracker/release/CMakeFiles/hw_interface.dir/src/ProjectorInterface.cpp.o"
+  "/home/parallels/projector_tracker/src/CameraInterface.cpp" "/home/parallels/projector_tracker/release/CMakeFiles/hw_interface.dir/src/CameraInterface.cpp.o"
+  "/home/parallels/projector_tracker/src/CameraProjectorInterface.cpp" "/home/parallels/projector_tracker/release/CMakeFiles/hw_interface.dir/src/CameraProjectorInterface.cpp.o"
+  "/home/parallels/projector_tracker/src/ImageLabel.cpp" "/home/parallels/projector_tracker/release/CMakeFiles/hw_interface.dir/src/ImageLabel.cpp.o"
+  "/home/parallels/projector_tracker/src/ProjectorInterface.cpp" "/home/parallels/projector_tracker/release/CMakeFiles/hw_interface.dir/src/ProjectorInterface.cpp.o"
   )
 SET(CMAKE_CXX_COMPILER_ID "GNU")
 

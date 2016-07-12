@@ -3,7 +3,7 @@
 
 CMakeFiles/hw_interface.dir/src/CameraInterface.cpp.o
  ../include/projector_tracker/CameraInterface.h
- /home/duy/projector_tracker/src/CameraInterface.cpp
+ /home/parallels/projector_tracker/src/CameraInterface.cpp
  /usr/local/include/opencv/cxcore.h
  /usr/local/include/opencv2/calib3d.hpp
  /usr/local/include/opencv2/calib3d/calib3d_c.h
@@ -62,7 +62,7 @@ CMakeFiles/hw_interface.dir/src/CameraProjectorInterface.cpp.o
  ../include/projector_tracker/CameraProjectorInterface.h
  ../include/projector_tracker/ImageLabel.hpp
  ../include/projector_tracker/ProjectorInterface.h
- /home/duy/projector_tracker/src/CameraProjectorInterface.cpp
+ /home/parallels/projector_tracker/src/CameraProjectorInterface.cpp
  /usr/include/qt4/Qt3Support/q3cstring.h
  /usr/include/qt4/Qt3Support/q3valuelist.h
  /usr/include/qt4/QtCore/QMutex
@@ -228,7 +228,7 @@ CMakeFiles/hw_interface.dir/src/CameraProjectorInterface.cpp.o
  /usr/local/include/opencv2/xfeatures2d/nonfree.hpp
 CMakeFiles/hw_interface.dir/src/ImageLabel.cpp.o
  ../include/projector_tracker/ImageLabel.hpp
- /home/duy/projector_tracker/src/ImageLabel.cpp
+ /home/parallels/projector_tracker/src/ImageLabel.cpp
  /usr/include/qt4/Qt3Support/q3cstring.h
  /usr/include/qt4/Qt3Support/q3valuelist.h
  /usr/include/qt4/QtCore/QMutex
@@ -395,7 +395,7 @@ CMakeFiles/hw_interface.dir/src/ImageLabel.cpp.o
 CMakeFiles/hw_interface.dir/src/ProjectorInterface.cpp.o
  ../include/projector_tracker/ImageLabel.hpp
  ../include/projector_tracker/ProjectorInterface.h
- /home/duy/projector_tracker/src/ProjectorInterface.cpp
+ /home/parallels/projector_tracker/src/ProjectorInterface.cpp
  /usr/include/qt4/Qt3Support/q3cstring.h
  /usr/include/qt4/Qt3Support/q3valuelist.h
  /usr/include/qt4/QtCore/QMutex

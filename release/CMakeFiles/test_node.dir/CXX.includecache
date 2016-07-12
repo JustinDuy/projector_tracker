@@ -58,7 +58,7 @@ projector_tracker/CameraProjectorInterface.h
 opencv2/core.hpp
 -
 
-/home/duy/projector_tracker/test/test.cpp
+/home/parallels/projector_tracker/test/test.cpp
 projector_tracker/CameraProjectorInterface.h
 -
 projector_tracker/ProjectorTracker.h

@@ -4,7 +4,7 @@ SET(CMAKE_DEPENDS_LANGUAGES
   )
 # The set of files for implicit dependencies of each language:
 SET(CMAKE_DEPENDS_CHECK_CXX
-  "/home/duy/projector_tracker/test/test.cpp" "/home/duy/projector_tracker/release/CMakeFiles/test_node.dir/test/test.cpp.o"
+  "/home/parallels/projector_tracker/test/test.cpp" "/home/parallels/projector_tracker/release/CMakeFiles/test_node.dir/test/test.cpp.o"
   )
 SET(CMAKE_CXX_COMPILER_ID "GNU")
 
@@ -17,8 +17,8 @@ SET(CMAKE_TARGET_DEFINITIONS
 
 # Targets to which this target links.
 SET(CMAKE_TARGET_LINKED_INFO_FILES
-  "/home/duy/projector_tracker/release/CMakeFiles/hw_interface.dir/DependInfo.cmake"
-  "/home/duy/projector_tracker/release/CMakeFiles/projector_tracker.dir/DependInfo.cmake"
+  "/home/parallels/projector_tracker/release/CMakeFiles/hw_interface.dir/DependInfo.cmake"
+  "/home/parallels/projector_tracker/release/CMakeFiles/projector_tracker.dir/DependInfo.cmake"
   )
 
 # The include file search paths:
