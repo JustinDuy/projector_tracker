@@ -41,9 +41,22 @@ int test_framegrabbing(int argc, char **argv) {
     app.exec();
 }
 
-void test_cameraprojector_helper(std::vector<cv::Mat> test_images, std::shared_ptr<CameraProjectorInterface> cpi, std::shared_ptr<ProjectorTracker> tracker) {
+void test_tracker_helper( std::shared_ptr<CameraProjectorInterface> cpi){
+    //create cameraprojector interface
+    std::shared_ptr<ProjectorTracker> projTracker = std::make_shared<ProjectorTracker>  (cpi);
+    //load configuration for tracking algorithm
+    projTracker->loadSetting("../data/setting.yml", "use aruco pattern", "known 3D Object", "aruco width", "aruco height", "pattern width", "pattern height", "square size");
+    std::vector<cv::Mat> patterns = projTracker->getPatternImages();
+    std::vector<CameraProjectorInterface::CameraProjectorImagePair> cp_img_pairs = cpi->projectAndAcquire(patterns);
+    projTracker->computeRelativePosition(cp_img_pairs);
+}
+void test_cameraprojector_helper( std::shared_ptr<CameraProjectorInterface> cpi) {
+    std::vector<cv::Mat> test_images;
+    cv::Mat test = cv::imread("../data/boadaruco.jpg");
+    for(int i = 0; i < 100; i++){
+        test_images.push_back(test);
+    }
     std::vector<CameraProjectorInterface::CameraProjectorImagePair> cp_img_pairs = cpi->projectAndAcquire(test_images);
-    tracker->computeRelativePosition(cp_img_pairs);
 }
 
 int test_cameraprojector(int argc, char **argv) {
@@ -59,11 +72,6 @@ int test_cameraprojector(int argc, char **argv) {
     proj_interface->loadIntrinsics("../data/calibrationProjector.yml", "cameraMatrix", "distCoeffs", "imageSize_width", "imageSize_height");
 
     std::shared_ptr<CameraProjectorInterface> cpi = std::make_shared<CameraProjectorInterface>(cam_interface, proj_interface, 400);
-    std::shared_ptr<ProjectorTracker> projTracker = std::make_shared<ProjectorTracker>  (cpi);
-
-    projTracker->loadSetting("../data/setting.yml", "use aruco pattern", "known 3D Object", "aruco width", "aruco height", "pattern width", "pattern height", "square size");
-    std::vector<cv::Mat> patterns = projTracker->getPatternImages(proj_interface->getCalibration().width,
-                                                                  proj_interface->getCalibration().height);
-    std::thread t(test_cameraprojector_helper, patterns, cpi, projTracker);
+    std::thread t(test_tracker_helper, cpi);
     app.exec();
 }

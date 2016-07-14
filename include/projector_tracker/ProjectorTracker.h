@@ -30,11 +30,11 @@ public:
     */
     bool loadSetting(std::string matrix_file , std::string tag_aruco, std::string tag_known, std::string tag_arucoW, std::string arucoH, std::string tag_PatternW, std::string tag_PatternH, std::string tag_Square);
     /**
-    * @brief Creates a Gray code pattern to be projected by the projector, according to its intrinsics.
+    * @brief Creates a Gray code pattern/Aruco board to be projected by the projector
     * 
-    * @return cv::Mat
+    * @return std::vector<cv::Mat>
     */
-    std::vector<cv::Mat> getPatternImages(int width, int height);
+    std::vector<cv::Mat> getPatternImages();
     /**
     * @brief find the 2D points of calibration board on camera image
     * @param const Mat& img, bool refine

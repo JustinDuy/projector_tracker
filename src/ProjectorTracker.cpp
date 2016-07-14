@@ -64,7 +64,9 @@ int getPatternImageNum (int width, int height) {
     return (int) numOfPatterns;
 }
 
-vector<Mat> ProjectorTracker::getPatternImages (int width, int height) {
+vector<Mat> ProjectorTracker::getPatternImages () {
+    int width = cp_interface->getProjectorCalibration().width;
+    int height = cp_interface->getProjectorCalibration().height;
     if(useAruco){//USE ARUCO MARKERS
         cv::Ptr<cv::aruco::Dictionary> dictionary = cv::aruco::getPredefinedDictionary(cv::aruco::DICT_6X6_250);
         cv::Ptr<cv::aruco::CharucoBoard> board = cv::aruco::CharucoBoard::create(arucoW, arucoH, 0.04f, 0.02f, dictionary);
@@ -77,12 +79,6 @@ vector<Mat> ProjectorTracker::getPatternImages (int width, int height) {
     }
     else
     {//USE GRAY CODE
-        if(cp_interface->getProjectorCalibration().width != width ||
-            cp_interface->getProjectorCalibration().height != height)
-        {
-            std::cerr << "Projector Resolution hasn't been calibrated!" << std::endl;
-        }
-
         size_t numOfPatternImages ;
         size_t numOfRowImgs;
         size_t numOfColImgs;
