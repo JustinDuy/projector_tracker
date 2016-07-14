@@ -1,4 +1,6 @@
 %YAML:1.0
+use aruco pattern: 1
+known 3D Object: 1
 aruco width: 5
 aruco height: 7
 pattern width: 10
