@@ -58,6 +58,8 @@ int test_cameraprojector(int argc, char **argv) {
 
     std::shared_ptr<CameraProjectorInterface> cpi = std::make_shared<CameraProjectorInterface>(cam_interface, proj_interface, 400);
     std::shared_ptr<ProjectorTracker> projTracker = std::make_shared<ProjectorTracker>  (cpi);
+
+    projTracker->loadSetting("../data/setting.yml","aruco width", "aruco_height", "pattern width", "pattern height", "square size");
     std::vector<cv::Mat> patterns = projTracker->getPatternImages(proj_interface->getCalibration().width, proj_interface->getCalibration().height, true);
     std::thread t(test_cameraprojector_helper, patterns, cpi, projTracker);
     app.exec();

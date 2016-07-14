@@ -1,0 +1,6 @@
+%YAML:1.0
+aruco width: 5
+aruco height: 7
+pattern width: 10
+pattern height: 7
+square size: 2.4

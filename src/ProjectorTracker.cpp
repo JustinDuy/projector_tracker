@@ -14,6 +14,22 @@ ProjectorTracker::ProjectorTracker (std::shared_ptr<CameraProjectorInterface> cp
 {
 
 }
+bool ProjectorTracker::loadSetting(std::string matrix_file , std::string tag_arucoW, std::string tag_arucoH, std::string tag_PatternW, std::string tag_PatternH, std::string tag_Square)
+{
+    cv::FileStorage fs( matrix_file, cv::FileStorage::READ );
+    if( !fs.isOpened() )
+    {
+      std::cout << "Failed to open Projector Calibration Data File." << std::endl;
+      return false;
+    }
+    // Loading calibration parameters
+    fs[tag_arucoW] >> arucoW;
+    fs[tag_arucoH] >> arucoH;
+    fs[tag_PatternW] >> patternW;
+    fs[tag_PatternH] >> patternH;
+    fs[tag_Square] >> squareSize;
+    return true;
+}
 
 // Generates the images needed for shadowMasks computation
 void getImagesForShadowMasks (int width, int height, Mat &blackImage, Mat &whiteImage) {
@@ -38,7 +54,7 @@ int getPatternImageNum (int width, int height) {
 vector<Mat> ProjectorTracker::getPatternImages (int width, int height, bool useAruco) {
     if(useAruco){//USE ARUCO MARKERS
         cv::Ptr<cv::aruco::Dictionary> dictionary = cv::aruco::getPredefinedDictionary(cv::aruco::DICT_6X6_250);
-        cv::Ptr<cv::aruco::CharucoBoard> board = cv::aruco::CharucoBoard::create(5, 7, 0.04f, 0.02f, dictionary);
+        cv::Ptr<cv::aruco::CharucoBoard> board = cv::aruco::CharucoBoard::create(arucoW, arucoH, 0.04f, 0.02f, dictionary);
         cv::Mat boardImage;
         board->draw( cv::Size(width, height), boardImage, 10, 1 );
         vector<Mat> ret;
@@ -284,11 +300,60 @@ bool ProjectorTracker::backProject(const cv::Mat&  K, const cv::Mat& boardRot64,
     }
     return true;
 }
+bool ProjectorTracker::findBoard(const cv::Mat& img, vector<cv::Point2f>& pointBuf, bool refine) {
+    bool found=false;
+    // no CV_CALIB_CB_FAST_CHECK, because it breaks on dark images (e.g., dark IR images from kinect)
+    int chessFlags = CV_CALIB_CB_ADAPTIVE_THRESH;// | CV_CALIB_CB_NORMALIZE_IMAGE;
+    found = findChessboardCorners(img, cv::Size(patternW,patternH), pointBuf, chessFlags);
+
+    // improve corner accuracy
+    if(found) {
+        cv::Mat grayMat;
+        if(img.type() != CV_8UC1) {
+            cv::cvtColor(img, grayMat, CV_RGB2GRAY);
+        } else {
+            grayMat = img;
+        }
+
+        if(refine) {
+            // the 11x11 dictates the smallest image space square size allowed
+            // in other words, if your smallest square is 11x11 pixels, then set this to 11x11
+            cornerSubPix(grayMat, pointBuf, cv::Size(1,1),  cv::Size(-1,-1), TermCriteria(CV_TERMCRIT_EPS + CV_TERMCRIT_ITER, 30, 0.1 ));
+        }
+    }
+
+    return found;
+}
+void ProjectorTracker::computeCandidateBoardPose(const vector<cv::Point3f> & img3DPts, const vector<cv::Point2f> & imgPts,
+                                                 cv::Mat& K, cv::Mat distCoeffs, cv::Mat& boardRot, cv::Mat& boardTrans){
+    cv::solvePnP(img3DPts, imgPts,
+                 K,
+                 distCoeffs,
+                 boardRot, boardTrans);
+}
+
 Mat ProjectorTracker::computeRelativePosition (const std::vector<CameraProjectorImagePair>& cp_images, bool useAruco) {
     // output : camera-projector stereo matrix R, u
     //establish correspondent pair of camera pixel & projector pixel
-    vector<Point> camPixels;
-    vector<Point> projPixels;
+    vector<Point2f> camPixels;
+    vector<Point2f> projPixels;
+    Mat projected = cp_images[0].projected;
+    Mat copyProjected;
+    projected.copyTo(copyProjected);
+    Mat acquired = cp_images[0].acquired;
+    Mat copyAcquired;
+    acquired.copyTo(copyAcquired);
+
+
+    cv::Mat projectorMatrix     = cp_interface->getProjectorCalibration().intrinsics;
+    cv::Mat projectorDistCoeffs = cp_interface->getProjectorCalibration().distortion_coeffs;
+    cv::Mat cameraMatrix        = cp_interface->getCameraCalibration().intrinsics;
+    cv::Mat cameraDistCoeffs    = cp_interface->getCameraCalibration().distortion_coeffs;
+    int cam_width = cp_interface->getCameraCalibration().width;
+    int cam_height = cp_interface->getCameraCalibration().height;
+    int proj_width = cp_interface->getProjectorCalibration().width;
+    int proj_height = cp_interface->getProjectorCalibration().height;
+
     if(useAruco)
     {
         //cv::namedWindow("aruco aquired", WINDOW_AUTOSIZE);
@@ -298,14 +363,6 @@ Mat ProjectorTracker::computeRelativePosition (const std::vector<CameraProjector
         cv::Ptr< cv::aruco::CharucoBoard > board = cv::aruco::CharucoBoard::create(5, 7, 0.04f, 0.02f, dictionary);
         cv::Ptr<cv::aruco::DetectorParameters > params = cv::aruco::DetectorParameters::create();
         params->doCornerRefinement = false;
-
-        Mat projected = cp_images[0].projected;
-        Mat copyProjected;
-        projected.copyTo(copyProjected);
-        Mat acquired = cp_images[0].acquired;
-        Mat copyAcquired;
-        acquired.copyTo(copyAcquired);
-
         //detect Aruco corners on projector image
         std::vector<int> proj_ids;
         std::vector<std::vector<cv::Point2f> > proj_corners;
@@ -372,10 +429,7 @@ Mat ProjectorTracker::computeRelativePosition (const std::vector<CameraProjector
         imwrite("white.jpeg",whiteImage);
         computeShadowMask (blackImage, whiteImage, DEFAULT_BLACK_THRESHOLD, shadowMask);
         imwrite("shadow.jpeg",shadowMask);
-        int cam_width = cp_interface->getCameraCalibration().width;
-        int cam_height = cp_interface->getCameraCalibration().height;
-        int proj_width = cp_interface->getProjectorCalibration().width;
-        int proj_height = cp_interface->getProjectorCalibration().height;
+
         Point projPixel;
         for (int i = 0; i < cam_width; i++) {
             for (int j = 0; j < cam_height; j++) {
@@ -403,7 +457,7 @@ Mat ProjectorTracker::computeRelativePosition (const std::vector<CameraProjector
     Mat ret (4, 4, CV_64F, Scalar (0));
     if (camPixels.size() == projPixels.size() && camPixels.size() > 9) {
         Mat F = findFundamentalMat (camPixels, projPixels, FM_RANSAC, 3, 0.99);
-        Mat E = cp_interface->getProjectorCalibration().intrinsics.t() * F * cp_interface->getCameraCalibration().intrinsics;
+        Mat E = projectorMatrix.t() * F * cameraMatrix;
         //Perform SVD on E
         SVD decomp = SVD (E);
 
@@ -451,42 +505,36 @@ Mat ProjectorTracker::computeRelativePosition (const std::vector<CameraProjector
             ret.at<double> (i,0) = u1.at<double> (0,i);
 
         //to verify transformation using board:
-
-        //detect board corners on camera iamge
-        //project board corners to 3D points with regard to camera
-
-        //
-        /*const auto & objectPoints = calibrationProjector.getObjectPoints();
-
-        vector<vector<cv::Point2f> > auxImagePointsCamera;
-        for (int i=0; i<objectPoints.size() ; i++ ) {
-            vector<cv::Point2f> auxImagePoints;
-            projectPoints(cv::Mat(objectPoints[i]),
-                          calibrationCamera.getBoardRotations()[i],
-                          calibrationCamera.getBoardTranslations()[i],
-                          calibrationCamera.getDistortedIntrinsics().getCameraMatrix(),
-                          calibrationCamera.getDistCoeffs(),
-                          auxImagePoints);
-
-            auxImagePointsCamera.push_back(auxImagePoints);
+        cv::Mat transCamToProj;
+        //generate 3D object points (corners of board) (respect to board origin)
+        vector<Point3f> candidateObjectPts;
+        for(int i = 0; i < patternH; i++) {
+            for(int j = 0; j < patternW; j++) {
+                candidateObjectPts.push_back(cv::Point3f(float(j * squareSize), float(i * squareSize), 0));
+            }
         }
-
-        cv::Mat projectorMatrix     = calibrationProjector.getDistortedIntrinsics().getCameraMatrix();
-        cv::Mat projectorDistCoeffs = calibrationProjector.getDistCoeffs();
-        cv::Mat cameraMatrix        = calibrationCamera.getDistortedIntrinsics().getCameraMatrix();
-        cv::Mat cameraDistCoeffs    = calibrationCamera.getDistCoeffs();
-
+        //detect board corners on camera image
+        vector<Point2f> patternPoints;
+        findBoard(acquired, patternPoints, false);
+        //compute camera extrinsic based on known 3D points and detected 2D points
+        cv::Mat boardR;
+        cv::Mat boardT;
+        computeCandidateBoardPose(candidateObjectPts, patternPoints, cameraMatrix, cameraDistCoeffs, boardR, boardT);
+        //backproject camera's aruco 2D points to get camera's 3D aruco points
+        vector<cv::Point3f> aruco3DPoints;
+        backProject(cameraMatrix, boardR, boardT, camPixels, aruco3DPoints);
+        //stereoCalibrate btw camera and projector using aruco points:
         cv::Mat fundamentalMatrix, essentialMatrix;
         cv::Mat rotation3x3;
-        cv::stereoCalibrate(objectPoints,
-                            auxImagePointsCamera,
-                            calibrationProjector.imagePoints,
+        cv::stereoCalibrate(aruco3DPoints,
+                            camPixels,
+                            projPixels,
                             cameraMatrix, cameraDistCoeffs,
                             projectorMatrix, projectorDistCoeffs,
-                            calibrationCamera.getDistortedIntrinsics().getImageSize(),
+                            cv::Size(cam_width,cam_height),
                             rotation3x3, transCamToProj,
                             essentialMatrix, fundamentalMatrix);
-        cv::Rodrigues(rotation3x3, rotCamToProj);*/
+        //cv::Rodrigues(rotation3x3, rotCamToProj);
     }
     else
     {
