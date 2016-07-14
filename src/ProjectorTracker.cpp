@@ -238,6 +238,52 @@ void ProjectorTracker::saveExtrinsics(cv::Mat rotCamToProj, cv::Mat transCamToPr
     fs << "Rotation_Vector" << rotCamToProj;
     fs << "Translation_Vector" << transCamToProj;
 }
+bool ProjectorTracker::backProject(const cv::Mat&  K, const cv::Mat& boardRot64,
+                                    const cv::Mat& boardTrans64,
+                                    const vector<cv::Point2f>& imgPt,
+                                    vector<cv::Point3f>& worldPt) {
+    if( imgPt.size() == 0 ) {
+        return false;
+    }
+    else
+    {
+        cv::Mat imgPt_h = cv::Mat::zeros(3, imgPt.size(), CV_32F);
+        for( int h=0; h<imgPt.size(); ++h ) {
+            imgPt_h.at<float>(0,h) = imgPt[h].x;
+            imgPt_h.at<float>(1,h) = imgPt[h].y;
+            imgPt_h.at<float>(2,h) = 1.0f;
+        }
+        Mat Kinv64 = K.inv();
+        Mat Kinv,boardRot,boardTrans;
+        Kinv64.convertTo(Kinv, CV_32F);
+        boardRot64.convertTo(boardRot, CV_32F);
+        boardTrans64.convertTo(boardTrans, CV_32F);
+
+        // Transform all image points to world points in camera reference frame
+        // and then into the plane reference frame
+        Mat worldImgPt = Mat::zeros( 3, imgPt.size(), CV_32F );
+        Mat rot3x3;
+        Rodrigues(boardRot, rot3x3);
+
+        Mat transPlaneToCam = rot3x3.inv()*boardTrans;
+
+        for( int i=0; i<imgPt.size(); ++i ) {
+            Mat col = imgPt_h.col(i);
+            Mat worldPtcam = Kinv*col;
+            Mat worldPtPlane = rot3x3.inv()*(worldPtcam);
+
+            float scale = transPlaneToCam.at<float>(2)/worldPtPlane.at<float>(2);
+            Mat worldPtPlaneReproject = scale*worldPtPlane-transPlaneToCam;
+
+            cv::Point3f pt;
+            pt.x = worldPtPlaneReproject.at<float>(0);
+            pt.y = worldPtPlaneReproject.at<float>(1);
+            pt.z = 0;
+            worldPt.push_back(pt);
+        }
+    }
+    return true;
+}
 Mat ProjectorTracker::computeRelativePosition (const std::vector<CameraProjectorImagePair>& cp_images, bool useAruco) {
     // output : camera-projector stereo matrix R, u
     //establish correspondent pair of camera pixel & projector pixel
@@ -356,6 +402,60 @@ Mat ProjectorTracker::computeRelativePosition (const std::vector<CameraProjector
     //compute transformation matrix from camera to projector
     Mat ret (4, 4, CV_64F, Scalar (0));
     if (camPixels.size() == projPixels.size() && camPixels.size() > 9) {
+        Mat F = findFundamentalMat (camPixels, projPixels, FM_RANSAC, 3, 0.99);
+        Mat E = cp_interface->getProjectorCalibration().intrinsics.t() * F * cp_interface->getCameraCalibration().intrinsics;
+        //Perform SVD on E
+        SVD decomp = SVD (E);
+
+        //U
+        Mat U = decomp.u;
+
+        //S
+        Mat S (3, 3, CV_64F, Scalar (0));
+        S.at<double> (0, 0) = decomp.w.at<double> (0, 0);
+        S.at<double> (1, 1) = decomp.w.at<double> (0, 1);
+        S.at<double> (2, 2) = decomp.w.at<double> (0, 2);
+
+        //Vt
+        Mat Vt = decomp.vt;
+
+        //W
+        Mat W (3, 3, CV_64F, Scalar (0));
+        W.at<double> (0, 1) = -1;
+        W.at<double> (1, 0) = 1;
+        W.at<double> (2, 2) = 1;
+
+        Mat Wt (3, 3, CV_64F, Scalar (0));
+        Wt.at<double> (0, 1) = 1;
+        Wt.at<double> (1, 0) = -1;
+        Wt.at<double> (2, 2) = 1;
+
+        Mat R1 = U * W * Vt;
+        //Mat R2 = U * Wt * Vt;
+        Mat u1 = U.col (2);
+        //Mat u2 = -U.col (2);
+        //4 candidates
+        //cout << "computed rotation, translation: " << endl;
+        //cout << R1 << "," << u1 << endl;
+
+        //save R1, u1 to "cam_proj_trans.yaml"
+        //saveTransformation(R1, u1, "../data/cam_proj_trans.yaml");
+
+        ret.at<double> (3, 3) = 1;
+        for(int i = 0; i < 3; i++){
+            for(int j =0 ; j < 3; j++){
+                ret.at<double> (j,i) = R1.at<double> (j,i);
+            }
+        }
+        for(int i=0;i<3;i++)
+            ret.at<double> (i,0) = u1.at<double> (0,i);
+
+        //to verify transformation using board:
+
+        //detect board corners on camera iamge
+        //project board corners to 3D points with regard to camera
+
+        //
         /*const auto & objectPoints = calibrationProjector.getObjectPoints();
 
         vector<vector<cv::Point2f> > auxImagePointsCamera;

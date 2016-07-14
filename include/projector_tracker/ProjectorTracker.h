@@ -30,7 +30,17 @@ public:
     * @return cv::Mat
     */
     std::vector<cv::Mat> getPatternImages(int width, int height, bool useAruco);
-    
+
+    /**
+    * @brief backproject the 2D points on camera image to 3D object points giving Extrinsic and Intrinsic Matrices
+    *
+    * @param const cv::Mat& K,cv::Mat& boardRot64,const cv::Mat& boardTrans64, const vector<cv::Point2f>& imgPt
+    * @return bool
+    */
+    bool backProject(const cv::Mat& K, const cv::Mat& boardRot64,
+                                        const cv::Mat& boardTrans64,
+                                        const std::vector<cv::Point2f>& imgPt,
+                                        std::vector<cv::Point3f>& worldPt);
     /**
     * @brief Given the current frame grabbed by the camera, compute the relative position of the projector.
     * 
