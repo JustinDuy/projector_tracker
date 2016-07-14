@@ -34,7 +34,7 @@ public:
     * 
     * @return cv::Mat
     */
-    std::vector<cv::Mat> getPatternImages(int width, int height, bool useAruco);
+    std::vector<cv::Mat> getPatternImages(int width, int height);
     /**
     * @brief find the 2D points of calibration board on camera image
     * @param const Mat& img, bool refine

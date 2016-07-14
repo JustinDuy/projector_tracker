@@ -64,7 +64,7 @@ int getPatternImageNum (int width, int height) {
     return (int) numOfPatterns;
 }
 
-vector<Mat> ProjectorTracker::getPatternImages (int width, int height, bool useAruco) {
+vector<Mat> ProjectorTracker::getPatternImages (int width, int height) {
     if(useAruco){//USE ARUCO MARKERS
         cv::Ptr<cv::aruco::Dictionary> dictionary = cv::aruco::getPredefinedDictionary(cv::aruco::DICT_6X6_250);
         cv::Ptr<cv::aruco::CharucoBoard> board = cv::aruco::CharucoBoard::create(arucoW, arucoH, 0.04f, 0.02f, dictionary);
