@@ -25,15 +25,22 @@ bool ProjectorTracker::loadSetting(std::string matrix_file , std::string tag_use
     // Loading calibration parameters
     int iAruco = 0, iKnownObj =0;
     fs[tag_useAruco] >> iAruco;
+    std::cout << "useAruco : "<< iAruco << std::endl;
     useAruco = iAruco != 0;
     fs[tag_knownObj] >> iKnownObj;
+    std::cout << "knownObj : "<< iKnownObj << std::endl;
     known3DObj = iKnownObj != 0;
 
     fs[tag_arucoW] >> arucoW;
+    std::cout << "arucoW : "<< arucoW << std::endl;
     fs[tag_arucoH] >> arucoH;
+    std::cout << "arucoH : "<< arucoH << std::endl;
     fs[tag_PatternW] >> patternW;
+    std::cout << "patternW : "<< patternW << std::endl;
     fs[tag_PatternH] >> patternH;
+    std::cout << "patternH : "<< patternH << std::endl;
     fs[tag_Square] >> squareSize;
+    std::cout << "squareSize : "<< squareSize << std::endl;
     return true;
 }
 
@@ -65,7 +72,7 @@ vector<Mat> ProjectorTracker::getPatternImages (int width, int height, bool useA
         board->draw( cv::Size(width, height), boardImage, 10, 1 );
         vector<Mat> ret;
         ret.push_back(boardImage);
-        //imwrite("boadaruco.jpg", boardImage);
+        imwrite("boadaruco.jpg", boardImage);
         return ret;
     }
     else

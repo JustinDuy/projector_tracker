@@ -48,8 +48,10 @@ void test_cameraprojector_helper(std::vector<cv::Mat> test_images, std::shared_p
 
 int test_cameraprojector(int argc, char **argv) {
     QApplication app(argc, argv);
-    
-    std::shared_ptr<CameraInterface> cam_interface = std::make_shared<CameraInterface>();
+    //read second arg for camera device id
+    int cam_deviceID = atoi(argv[1]);
+    std::cout << "using camera device : " << cam_deviceID << std::endl;
+    std::shared_ptr<CameraInterface> cam_interface = std::make_shared<CameraInterface>(cam_deviceID);
     cam_interface->loadIntrinsics("../data/rgb_A00363813595051A.yaml", "camera_matrix", "distortion_coefficients", "image_width", "image_height"); //Kinect RGB Cam
     cam_interface->loadIntrinsics("../data/calibrationCamera.yml", "cameraMatrix", "distCoeffs", "imageSize_width", "imageSize_height"); //C92 HD Webcam
 
@@ -59,8 +61,8 @@ int test_cameraprojector(int argc, char **argv) {
     std::shared_ptr<CameraProjectorInterface> cpi = std::make_shared<CameraProjectorInterface>(cam_interface, proj_interface, 400);
     std::shared_ptr<ProjectorTracker> projTracker = std::make_shared<ProjectorTracker>  (cpi);
 
-    projTracker->loadSetting("../data/setting.yml", "use aruco pattern", "known 3D Object", "aruco width", "aruco_height", "pattern width", "pattern height", "square size");
+    projTracker->loadSetting("../data/setting.yml", "use aruco pattern", "known 3D Object", "aruco width", "aruco height", "pattern width", "pattern height", "square size");
     std::vector<cv::Mat> patterns = projTracker->getPatternImages(proj_interface->getCalibration().width, proj_interface->getCalibration().height, true);
-    //std::thread t(test_cameraprojector_helper, patterns, cpi, projTracker);
+    std::thread t(test_cameraprojector_helper, patterns, cpi, projTracker);
     app.exec();
 }

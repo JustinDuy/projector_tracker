@@ -4,7 +4,7 @@
 
 CameraInterface::CameraInterface(int device_number)
 {    
-    device_number = 0;
+    //device_number = 1;
     capture = cv::VideoCapture(device_number);
     if(!capture.isOpened() )
     {

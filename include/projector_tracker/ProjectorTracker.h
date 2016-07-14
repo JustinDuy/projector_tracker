@@ -88,7 +88,7 @@ private:
     int arucoH;
     int patternW;
     int patternH;
-    int squareSize;
+    double squareSize;
 };
 
 #endif // PROJECTORTRACKER_H
