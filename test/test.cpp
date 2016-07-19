@@ -45,7 +45,7 @@ void test_tracker_helper( std::shared_ptr<CameraProjectorInterface> cpi){
     //create cameraprojector interface
     std::shared_ptr<ProjectorTracker> projTracker = std::make_shared<ProjectorTracker>  (cpi);
     //load configuration for tracking algorithm
-    projTracker->loadSetting("../data/setting.yml", "use aruco pattern", "known 3D Object", "aruco width", "aruco height", "pattern width", "pattern height", "square size");
+    projTracker->loadSetting("../data/setting.yml", "use aruco pattern", "known 3D Object", "aruco width", "aruco height","aruco board number", "pattern width", "pattern height", "square size");
     std::vector<cv::Mat> patterns = projTracker->getPatternImages();
     std::vector<CameraProjectorInterface::CameraProjectorImagePair> cp_img_pairs = cpi->projectAndAcquire(patterns);
     projTracker->computeRelativePosition(cp_img_pairs);

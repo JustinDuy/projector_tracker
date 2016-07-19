@@ -28,7 +28,7 @@ public:
     *
     * @param std::string matrix_file, std::string tag,...
     */
-    bool loadSetting(std::string matrix_file , std::string tag_aruco, std::string tag_known, std::string tag_arucoW, std::string arucoH, std::string tag_PatternW, std::string tag_PatternH, std::string tag_Square);
+    bool loadSetting(std::string matrix_file , std::string tag_aruco, std::string tag_known, std::string tag_arucoW, std::string arucoH, std::string tag_arucoNu, std::string tag_PatternW, std::string tag_PatternH, std::string tag_Square);
     /**
     * @brief Creates a Gray code pattern/Aruco board to be projected by the projector
     * 
@@ -46,7 +46,8 @@ public:
     * @param const cv::Mat& projected, const cv::Mat& acquired
     * @return int
     */
-    int findCorrespondence_Aruco(const cv::Mat& projected, const cv::Mat& acquired, cv::Mat& copyProjected, cv::Mat& copyAcquired,std::vector<cv::Point2f>& camPixels, std::vector<cv::Point2f>& projPixels);
+    void findCorrespondence_Aruco(const std::vector<CameraProjectorImagePair>& cp_images, std::vector<std::vector<cv::Point2f> >& camPixels, std::vector<std::vector<cv::Point2f> >& projPixels);
+    int findCorrespondence_GrayCode(const std::vector<CameraProjectorImagePair>& cp_images, std::vector<cv::Point2f>& camPixels, std::vector<cv::Point2f>& projPixels);
     /**
     * @brief compute Board rotation and translation according to camera plane
     * @param const vector<cv::Point2f> & img3DPts,
@@ -73,9 +74,9 @@ public:
     * @return cv::Mat
     */
     cv::Mat computeRelativePosition(const std::vector<CameraProjectorImagePair>& camera_image);
-    void computeRt_knownObjectPoints(const cv::Mat& cam_acquired, std::vector<cv::Point2f> camPxls, std::vector<cv::Point2f> projPxls, cv::Mat& transCamToProj );
-    int findCorrespondence_GrayCode(const std::vector<CameraProjectorImagePair>& cp_images, std::vector<cv::Point2f>& camPixels, std::vector<cv::Point2f>& projPixels);
-    bool computeRt_unknownObjectPoints( std::vector<cv::Point2f>& camPixels, std::vector<cv::Point2f>& projPixels, cv::Mat& transCamToProj);
+    void computeRt_knownObjectPoints(const std::vector<CameraProjectorImagePair>& cp_images, std::vector<std::vector<cv::Point2f> > camPxls, std::vector<std::vector<cv::Point2f> > projPxls, cv::Mat& transCamToProj );
+
+    bool computeRt_unknownObjectPoints( std::vector<std::vector<cv::Point2f> >& camPixels, std::vector<std::vector<cv::Point2f> >& projPixels, cv::Mat& transCamToProj);
 protected:
     std::shared_ptr<CameraProjectorInterface> cp_interface;  // Gives synchronized access to camera and projector
 
@@ -84,6 +85,7 @@ private:
     void saveExtrinsics(cv::Mat R, cv::Mat t, std::string filename) ;
     bool known3DObj;
     bool useAruco;
+    int arucoNu;
     int arucoW;
     int arucoH;
     int patternW;
