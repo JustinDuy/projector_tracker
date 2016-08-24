@@ -39,7 +39,6 @@ public:
      */
     ~CameraProjectorInterface();
     
-    
     CameraProjectorImagePair projectAndAcquire(const cv::Mat& target_image);
     std::vector<CameraProjectorImagePair> projectAndAcquire(const std::vector<cv::Mat>& target_images);
     

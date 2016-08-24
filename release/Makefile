@@ -38,19 +38,22 @@ RM = /usr/bin/cmake -E remove -f
 # Escaping for special characters.
 EQUALS = =
 
+# The program to use to edit the cache.
+CMAKE_EDIT_COMMAND = /usr/bin/ccmake
+
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /home/parallels/projector_tracker
+CMAKE_SOURCE_DIR = /home/justin/projector_tracker
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /home/parallels/projector_tracker/release
+CMAKE_BINARY_DIR = /home/justin/projector_tracker/release
 
 #=============================================================================
 # Targets provided globally by CMake.
 
 # Special rule for the target edit_cache
 edit_cache:
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Running interactive CMake command-line interface..."
-	/usr/bin/cmake -i .
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Running CMake cache editor..."
+	/usr/bin/ccmake -H$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR)
 .PHONY : edit_cache
 
 # Special rule for the target edit_cache
@@ -69,9 +72,9 @@ rebuild_cache/fast: rebuild_cache
 
 # The main all target
 all: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/parallels/projector_tracker/release/CMakeFiles /home/parallels/projector_tracker/release/CMakeFiles/progress.marks
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/justin/projector_tracker/release/CMakeFiles /home/justin/projector_tracker/release/CMakeFiles/progress.marks
 	$(MAKE) -f CMakeFiles/Makefile2 all
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/parallels/projector_tracker/release/CMakeFiles 0
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/justin/projector_tracker/release/CMakeFiles 0
 .PHONY : all
 
 # The main clean target
@@ -99,6 +102,32 @@ depend:
 .PHONY : depend
 
 #=============================================================================
+# Target rules for targets named calib_cam
+
+# Build rule for target.
+calib_cam: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 calib_cam
+.PHONY : calib_cam
+
+# fast build rule for target.
+calib_cam/fast:
+	$(MAKE) -f CMakeFiles/calib_cam.dir/build.make CMakeFiles/calib_cam.dir/build
+.PHONY : calib_cam/fast
+
+#=============================================================================
+# Target rules for targets named camera_calibration
+
+# Build rule for target.
+camera_calibration: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 camera_calibration
+.PHONY : camera_calibration
+
+# fast build rule for target.
+camera_calibration/fast:
+	$(MAKE) -f CMakeFiles/camera_calibration.dir/build.make CMakeFiles/camera_calibration.dir/build
+.PHONY : camera_calibration/fast
+
+#=============================================================================
 # Target rules for targets named hw_interface
 
 # Build rule for target.
@@ -124,18 +153,29 @@ projector_tracker/fast:
 	$(MAKE) -f CMakeFiles/projector_tracker.dir/build.make CMakeFiles/projector_tracker.dir/build
 .PHONY : projector_tracker/fast
 
-#=============================================================================
-# Target rules for targets named test_node
+src/CameraCalibration.o: src/CameraCalibration.cpp.o
+.PHONY : src/CameraCalibration.o
 
-# Build rule for target.
-test_node: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 test_node
-.PHONY : test_node
+# target to build an object file
+src/CameraCalibration.cpp.o:
+	$(MAKE) -f CMakeFiles/camera_calibration.dir/build.make CMakeFiles/camera_calibration.dir/src/CameraCalibration.cpp.o
+.PHONY : src/CameraCalibration.cpp.o
 
-# fast build rule for target.
-test_node/fast:
-	$(MAKE) -f CMakeFiles/test_node.dir/build.make CMakeFiles/test_node.dir/build
-.PHONY : test_node/fast
+src/CameraCalibration.i: src/CameraCalibration.cpp.i
+.PHONY : src/CameraCalibration.i
+
+# target to preprocess a source file
+src/CameraCalibration.cpp.i:
+	$(MAKE) -f CMakeFiles/camera_calibration.dir/build.make CMakeFiles/camera_calibration.dir/src/CameraCalibration.cpp.i
+.PHONY : src/CameraCalibration.cpp.i
+
+src/CameraCalibration.s: src/CameraCalibration.cpp.s
+.PHONY : src/CameraCalibration.s
+
+# target to generate assembly for a file
+src/CameraCalibration.cpp.s:
+	$(MAKE) -f CMakeFiles/camera_calibration.dir/build.make CMakeFiles/camera_calibration.dir/src/CameraCalibration.cpp.s
+.PHONY : src/CameraCalibration.cpp.s
 
 src/CameraInterface.o: src/CameraInterface.cpp.o
 .PHONY : src/CameraInterface.o
@@ -257,29 +297,29 @@ src/ProjectorTracker.cpp.s:
 	$(MAKE) -f CMakeFiles/projector_tracker.dir/build.make CMakeFiles/projector_tracker.dir/src/ProjectorTracker.cpp.s
 .PHONY : src/ProjectorTracker.cpp.s
 
-test/test.o: test/test.cpp.o
-.PHONY : test/test.o
+test/calib_cam.o: test/calib_cam.cpp.o
+.PHONY : test/calib_cam.o
 
 # target to build an object file
-test/test.cpp.o:
-	$(MAKE) -f CMakeFiles/test_node.dir/build.make CMakeFiles/test_node.dir/test/test.cpp.o
-.PHONY : test/test.cpp.o
+test/calib_cam.cpp.o:
+	$(MAKE) -f CMakeFiles/calib_cam.dir/build.make CMakeFiles/calib_cam.dir/test/calib_cam.cpp.o
+.PHONY : test/calib_cam.cpp.o
 
-test/test.i: test/test.cpp.i
-.PHONY : test/test.i
+test/calib_cam.i: test/calib_cam.cpp.i
+.PHONY : test/calib_cam.i
 
 # target to preprocess a source file
-test/test.cpp.i:
-	$(MAKE) -f CMakeFiles/test_node.dir/build.make CMakeFiles/test_node.dir/test/test.cpp.i
-.PHONY : test/test.cpp.i
+test/calib_cam.cpp.i:
+	$(MAKE) -f CMakeFiles/calib_cam.dir/build.make CMakeFiles/calib_cam.dir/test/calib_cam.cpp.i
+.PHONY : test/calib_cam.cpp.i
 
-test/test.s: test/test.cpp.s
-.PHONY : test/test.s
+test/calib_cam.s: test/calib_cam.cpp.s
+.PHONY : test/calib_cam.s
 
 # target to generate assembly for a file
-test/test.cpp.s:
-	$(MAKE) -f CMakeFiles/test_node.dir/build.make CMakeFiles/test_node.dir/test/test.cpp.s
-.PHONY : test/test.cpp.s
+test/calib_cam.cpp.s:
+	$(MAKE) -f CMakeFiles/calib_cam.dir/build.make CMakeFiles/calib_cam.dir/test/calib_cam.cpp.s
+.PHONY : test/calib_cam.cpp.s
 
 # Help Target
 help:
@@ -287,11 +327,15 @@ help:
 	@echo "... all (the default if no target is provided)"
 	@echo "... clean"
 	@echo "... depend"
+	@echo "... calib_cam"
+	@echo "... camera_calibration"
 	@echo "... edit_cache"
 	@echo "... hw_interface"
 	@echo "... projector_tracker"
 	@echo "... rebuild_cache"
-	@echo "... test_node"
+	@echo "... src/CameraCalibration.o"
+	@echo "... src/CameraCalibration.i"
+	@echo "... src/CameraCalibration.s"
 	@echo "... src/CameraInterface.o"
 	@echo "... src/CameraInterface.i"
 	@echo "... src/CameraInterface.s"
@@ -307,9 +351,9 @@ help:
 	@echo "... src/ProjectorTracker.o"
 	@echo "... src/ProjectorTracker.i"
 	@echo "... src/ProjectorTracker.s"
-	@echo "... test/test.o"
-	@echo "... test/test.i"
-	@echo "... test/test.s"
+	@echo "... test/calib_cam.o"
+	@echo "... test/calib_cam.i"
+	@echo "... test/calib_cam.s"
 .PHONY : help
 
 

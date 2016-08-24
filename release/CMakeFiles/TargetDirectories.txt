@@ -1,3 +1,4 @@
-/home/parallels/projector_tracker/release/CMakeFiles/hw_interface.dir
-/home/parallels/projector_tracker/release/CMakeFiles/projector_tracker.dir
-/home/parallels/projector_tracker/release/CMakeFiles/test_node.dir
+/home/justin/projector_tracker/release/CMakeFiles/calib_cam.dir
+/home/justin/projector_tracker/release/CMakeFiles/camera_calibration.dir
+/home/justin/projector_tracker/release/CMakeFiles/hw_interface.dir
+/home/justin/projector_tracker/release/CMakeFiles/projector_tracker.dir

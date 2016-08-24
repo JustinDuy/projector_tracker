@@ -4,7 +4,7 @@ SET(CMAKE_DEPENDS_LANGUAGES
   )
 # The set of files for implicit dependencies of each language:
 SET(CMAKE_DEPENDS_CHECK_CXX
-  "/home/parallels/projector_tracker/test/test.cpp" "/home/parallels/projector_tracker/release/CMakeFiles/test_node.dir/test/test.cpp.o"
+  "/home/justin/projector_tracker/test/test.cpp" "/home/justin/projector_tracker/release/CMakeFiles/test_node.dir/test/test.cpp.o"
   )
 SET(CMAKE_CXX_COMPILER_ID "GNU")
 
@@ -17,8 +17,8 @@ SET(CMAKE_TARGET_DEFINITIONS
 
 # Targets to which this target links.
 SET(CMAKE_TARGET_LINKED_INFO_FILES
-  "/home/parallels/projector_tracker/release/CMakeFiles/hw_interface.dir/DependInfo.cmake"
-  "/home/parallels/projector_tracker/release/CMakeFiles/projector_tracker.dir/DependInfo.cmake"
+  "/home/justin/projector_tracker/release/CMakeFiles/hw_interface.dir/DependInfo.cmake"
+  "/home/justin/projector_tracker/release/CMakeFiles/projector_tracker.dir/DependInfo.cmake"
   )
 
 # The include file search paths:
@@ -27,8 +27,8 @@ SET(CMAKE_C_TARGET_INCLUDE_PATH
   "/usr/include/qt4/QtGui"
   "/usr/include/qt4/QtCore"
   "../include"
-  "/usr/local/include/opencv"
-  "/usr/local/include"
+  "/opt/ros/indigo/include/opencv-3.1.0-dev/opencv"
+  "/opt/ros/indigo/include/opencv-3.1.0-dev"
   )
 SET(CMAKE_CXX_TARGET_INCLUDE_PATH ${CMAKE_C_TARGET_INCLUDE_PATH})
 SET(CMAKE_Fortran_TARGET_INCLUDE_PATH ${CMAKE_C_TARGET_INCLUDE_PATH})

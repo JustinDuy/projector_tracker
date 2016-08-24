@@ -69,10 +69,12 @@ vector<Mat> ProjectorTracker::getPatternImages () {
     int width = cp_interface->getProjectorCalibration().width;
     int height = cp_interface->getProjectorCalibration().height;
     if(useAruco){//USE ARUCO MARKERS
-        cv::Ptr<cv::aruco::Dictionary> dictionary = cv::aruco::getPredefinedDictionary(cv::aruco::DICT_6X6_250);
-        cv::Ptr<cv::aruco::CharucoBoard> board = cv::aruco::CharucoBoard::create(arucoW, arucoH, 0.04f, 0.02f, dictionary);
+        cv::aruco::Dictionary dictionary= cv::aruco::getPredefinedDictionary(aruco::DICT_6X6_250);
+        cv::aruco::CharucoBoard board = cv::aruco::CharucoBoard::create(arucoW, arucoH, 0.04f, 0.02f, dictionary);
+        //cv::Ptr<cv::aruco::Dictionary> dictionary = cv::aruco::getPredefinedDictionary(cv::aruco::DICT_6X6_250);
+        //cv::Ptr<cv::aruco::CharucoBoard> board = cv::aruco::CharucoBoard::create(arucoW, arucoH, 0.04f, 0.02f, dictionary);
         cv::Mat boardImage;
-        board->draw( cv::Size(width, height), boardImage, 10, 1 );
+        board.draw( cv::Size(width, height), boardImage, 10, 1 );
         vector<Mat> ret;
         for(int i = 0; i < arucoNu ; i++)
             ret.push_back(boardImage);//projecting the same charuco markers on different boards
@@ -357,10 +359,10 @@ void ProjectorTracker::findCorrespondence_Aruco(const std::vector<CameraProjecto
         std::vector<cv::Point2f> camPixels;
         std::vector<cv::Point2f> projPixels;
         //define Aruco Board
-        cv::Ptr<cv::aruco::Dictionary> dictionary = cv::aruco::getPredefinedDictionary(cv::aruco::DICT_6X6_250);
-        cv::Ptr< cv::aruco::CharucoBoard > board = cv::aruco::CharucoBoard::create(5, 7, 0.04f, 0.02f, dictionary);
-        cv::Ptr<cv::aruco::DetectorParameters > params = cv::aruco::DetectorParameters::create();
-        params->doCornerRefinement = false;
+        cv::aruco::Dictionary dictionary = cv::aruco::getPredefinedDictionary(cv::aruco::DICT_6X6_250);//cv::Ptr<>
+        cv::aruco::CharucoBoard  board = cv::aruco::CharucoBoard::create(5, 7, 0.04f, 0.02f, dictionary);
+        cv::aruco::DetectorParameters  params;// = cv::aruco::DetectorParameters::create();
+        params.doCornerRefinement = false;
         //detect Aruco corners on projector image
         std::vector<int> proj_ids;
         std::vector<std::vector<cv::Point2f> > proj_corners;

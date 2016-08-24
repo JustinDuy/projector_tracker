@@ -11,10 +11,10 @@ SET(CMAKE_MAKEFILE_DEPENDS
   "CMakeFiles/2.8.12.2/CMakeCCompiler.cmake"
   "CMakeFiles/2.8.12.2/CMakeCXXCompiler.cmake"
   "CMakeFiles/2.8.12.2/CMakeSystem.cmake"
-  "/usr/local/share/OpenCV/OpenCVConfig-version.cmake"
-  "/usr/local/share/OpenCV/OpenCVConfig.cmake"
-  "/usr/local/share/OpenCV/OpenCVModules-release.cmake"
-  "/usr/local/share/OpenCV/OpenCVModules.cmake"
+  "/opt/ros/indigo/share/OpenCV-3.1.0-dev/OpenCVConfig-version.cmake"
+  "/opt/ros/indigo/share/OpenCV-3.1.0-dev/OpenCVConfig.cmake"
+  "/opt/ros/indigo/share/OpenCV-3.1.0-dev/OpenCVModules-none.cmake"
+  "/opt/ros/indigo/share/OpenCV-3.1.0-dev/OpenCVModules.cmake"
   "/usr/share/cmake-2.8/Modules/CMakeCInformation.cmake"
   "/usr/share/cmake-2.8/Modules/CMakeCXXInformation.cmake"
   "/usr/share/cmake-2.8/Modules/CMakeCommonLanguageInclude.cmake"
@@ -53,7 +53,8 @@ SET(CMAKE_MAKEFILE_PRODUCTS
 
 # Dependency information for all targets:
 SET(CMAKE_DEPEND_INFO_FILES
+  "CMakeFiles/calib_cam.dir/DependInfo.cmake"
+  "CMakeFiles/camera_calibration.dir/DependInfo.cmake"
   "CMakeFiles/hw_interface.dir/DependInfo.cmake"
   "CMakeFiles/projector_tracker.dir/DependInfo.cmake"
-  "CMakeFiles/test_node.dir/DependInfo.cmake"
   )

@@ -34,11 +34,14 @@ RM = /usr/bin/cmake -E remove -f
 # Escaping for special characters.
 EQUALS = =
 
+# The program to use to edit the cache.
+CMAKE_EDIT_COMMAND = /usr/bin/ccmake
+
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /home/parallels/projector_tracker
+CMAKE_SOURCE_DIR = /home/justin/projector_tracker
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /home/parallels/projector_tracker/release
+CMAKE_BINARY_DIR = /home/justin/projector_tracker/release
 
 # Include any dependencies generated for this target.
 include CMakeFiles/test_node.dir/depend.make
@@ -51,17 +54,17 @@ include CMakeFiles/test_node.dir/flags.make
 
 CMakeFiles/test_node.dir/test/test.cpp.o: CMakeFiles/test_node.dir/flags.make
 CMakeFiles/test_node.dir/test/test.cpp.o: ../test/test.cpp
-	$(CMAKE_COMMAND) -E cmake_progress_report /home/parallels/projector_tracker/release/CMakeFiles $(CMAKE_PROGRESS_1)
+	$(CMAKE_COMMAND) -E cmake_progress_report /home/justin/projector_tracker/release/CMakeFiles $(CMAKE_PROGRESS_1)
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Building CXX object CMakeFiles/test_node.dir/test/test.cpp.o"
-	/usr/bin/c++   $(CXX_DEFINES) $(CXX_FLAGS) -o CMakeFiles/test_node.dir/test/test.cpp.o -c /home/parallels/projector_tracker/test/test.cpp
+	/usr/bin/c++   $(CXX_DEFINES) $(CXX_FLAGS) -o CMakeFiles/test_node.dir/test/test.cpp.o -c /home/justin/projector_tracker/test/test.cpp
 
 CMakeFiles/test_node.dir/test/test.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/test_node.dir/test/test.cpp.i"
-	/usr/bin/c++  $(CXX_DEFINES) $(CXX_FLAGS) -E /home/parallels/projector_tracker/test/test.cpp > CMakeFiles/test_node.dir/test/test.cpp.i
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_FLAGS) -E /home/justin/projector_tracker/test/test.cpp > CMakeFiles/test_node.dir/test/test.cpp.i
 
 CMakeFiles/test_node.dir/test/test.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/test_node.dir/test/test.cpp.s"
-	/usr/bin/c++  $(CXX_DEFINES) $(CXX_FLAGS) -S /home/parallels/projector_tracker/test/test.cpp -o CMakeFiles/test_node.dir/test/test.cpp.s
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_FLAGS) -S /home/justin/projector_tracker/test/test.cpp -o CMakeFiles/test_node.dir/test/test.cpp.s
 
 CMakeFiles/test_node.dir/test/test.cpp.o.requires:
 .PHONY : CMakeFiles/test_node.dir/test/test.cpp.o.requires
@@ -85,46 +88,47 @@ test_node: libhw_interface.a
 test_node: libprojector_tracker.a
 test_node: /usr/lib/x86_64-linux-gnu/libQtGui.so
 test_node: /usr/lib/x86_64-linux-gnu/libQtCore.so
-test_node: /usr/local/lib/libopencv_xphoto.so.3.1.0
-test_node: /usr/local/lib/libopencv_xobjdetect.so.3.1.0
-test_node: /usr/local/lib/libopencv_tracking.so.3.1.0
-test_node: /usr/local/lib/libopencv_surface_matching.so.3.1.0
-test_node: /usr/local/lib/libopencv_structured_light.so.3.1.0
-test_node: /usr/local/lib/libopencv_stereo.so.3.1.0
-test_node: /usr/local/lib/libopencv_saliency.so.3.1.0
-test_node: /usr/local/lib/libopencv_rgbd.so.3.1.0
-test_node: /usr/local/lib/libopencv_reg.so.3.1.0
-test_node: /usr/local/lib/libopencv_plot.so.3.1.0
-test_node: /usr/local/lib/libopencv_optflow.so.3.1.0
-test_node: /usr/local/lib/libopencv_ximgproc.so.3.1.0
-test_node: /usr/local/lib/libopencv_line_descriptor.so.3.1.0
-test_node: /usr/local/lib/libopencv_fuzzy.so.3.1.0
-test_node: /usr/local/lib/libopencv_dpm.so.3.1.0
-test_node: /usr/local/lib/libopencv_dnn.so.3.1.0
-test_node: /usr/local/lib/libopencv_datasets.so.3.1.0
-test_node: /usr/local/lib/libopencv_text.so.3.1.0
-test_node: /usr/local/lib/libopencv_face.so.3.1.0
-test_node: /usr/local/lib/libopencv_ccalib.so.3.1.0
-test_node: /usr/local/lib/libopencv_bioinspired.so.3.1.0
-test_node: /usr/local/lib/libopencv_bgsegm.so.3.1.0
-test_node: /usr/local/lib/libopencv_aruco.so.3.1.0
-test_node: /usr/local/lib/libopencv_videostab.so.3.1.0
-test_node: /usr/local/lib/libopencv_superres.so.3.1.0
-test_node: /usr/local/lib/libopencv_stitching.so.3.1.0
-test_node: /usr/local/lib/libopencv_xfeatures2d.so.3.1.0
-test_node: /usr/local/lib/libopencv_shape.so.3.1.0
-test_node: /usr/local/lib/libopencv_video.so.3.1.0
-test_node: /usr/local/lib/libopencv_photo.so.3.1.0
-test_node: /usr/local/lib/libopencv_objdetect.so.3.1.0
-test_node: /usr/local/lib/libopencv_calib3d.so.3.1.0
-test_node: /usr/local/lib/libopencv_features2d.so.3.1.0
-test_node: /usr/local/lib/libopencv_ml.so.3.1.0
-test_node: /usr/local/lib/libopencv_highgui.so.3.1.0
-test_node: /usr/local/lib/libopencv_videoio.so.3.1.0
-test_node: /usr/local/lib/libopencv_imgcodecs.so.3.1.0
-test_node: /usr/local/lib/libopencv_imgproc.so.3.1.0
-test_node: /usr/local/lib/libopencv_flann.so.3.1.0
-test_node: /usr/local/lib/libopencv_core.so.3.1.0
+test_node: /opt/ros/indigo/lib/libopencv_xphoto3.so.3.1.0
+test_node: /opt/ros/indigo/lib/libopencv_xobjdetect3.so.3.1.0
+test_node: /opt/ros/indigo/lib/libopencv_tracking3.so.3.1.0
+test_node: /opt/ros/indigo/lib/libopencv_surface_matching3.so.3.1.0
+test_node: /opt/ros/indigo/lib/libopencv_structured_light3.so.3.1.0
+test_node: /opt/ros/indigo/lib/libopencv_stereo3.so.3.1.0
+test_node: /opt/ros/indigo/lib/libopencv_saliency3.so.3.1.0
+test_node: /opt/ros/indigo/lib/libopencv_rgbd3.so.3.1.0
+test_node: /opt/ros/indigo/lib/libopencv_reg3.so.3.1.0
+test_node: /opt/ros/indigo/lib/libopencv_plot3.so.3.1.0
+test_node: /opt/ros/indigo/lib/libopencv_optflow3.so.3.1.0
+test_node: /opt/ros/indigo/lib/libopencv_ximgproc3.so.3.1.0
+test_node: /opt/ros/indigo/lib/libopencv_line_descriptor3.so.3.1.0
+test_node: /opt/ros/indigo/lib/libopencv_fuzzy3.so.3.1.0
+test_node: /opt/ros/indigo/lib/libopencv_dpm3.so.3.1.0
+test_node: /opt/ros/indigo/lib/libopencv_dnn3.so.3.1.0
+test_node: /opt/ros/indigo/lib/libopencv_datasets3.so.3.1.0
+test_node: /opt/ros/indigo/lib/libopencv_text3.so.3.1.0
+test_node: /opt/ros/indigo/lib/libopencv_face3.so.3.1.0
+test_node: /opt/ros/indigo/lib/libopencv_ccalib3.so.3.1.0
+test_node: /opt/ros/indigo/lib/libopencv_bioinspired3.so.3.1.0
+test_node: /opt/ros/indigo/lib/libopencv_bgsegm3.so.3.1.0
+test_node: /opt/ros/indigo/lib/libopencv_aruco3.so.3.1.0
+test_node: /opt/ros/indigo/lib/libopencv_viz3.so.3.1.0
+test_node: /opt/ros/indigo/lib/libopencv_videostab3.so.3.1.0
+test_node: /opt/ros/indigo/lib/libopencv_superres3.so.3.1.0
+test_node: /opt/ros/indigo/lib/libopencv_stitching3.so.3.1.0
+test_node: /opt/ros/indigo/lib/libopencv_xfeatures2d3.so.3.1.0
+test_node: /opt/ros/indigo/lib/libopencv_shape3.so.3.1.0
+test_node: /opt/ros/indigo/lib/libopencv_video3.so.3.1.0
+test_node: /opt/ros/indigo/lib/libopencv_photo3.so.3.1.0
+test_node: /opt/ros/indigo/lib/libopencv_objdetect3.so.3.1.0
+test_node: /opt/ros/indigo/lib/libopencv_calib3d3.so.3.1.0
+test_node: /opt/ros/indigo/lib/libopencv_features2d3.so.3.1.0
+test_node: /opt/ros/indigo/lib/libopencv_ml3.so.3.1.0
+test_node: /opt/ros/indigo/lib/libopencv_highgui3.so.3.1.0
+test_node: /opt/ros/indigo/lib/libopencv_videoio3.so.3.1.0
+test_node: /opt/ros/indigo/lib/libopencv_imgcodecs3.so.3.1.0
+test_node: /opt/ros/indigo/lib/libopencv_imgproc3.so.3.1.0
+test_node: /opt/ros/indigo/lib/libopencv_flann3.so.3.1.0
+test_node: /opt/ros/indigo/lib/libopencv_core3.so.3.1.0
 test_node: CMakeFiles/test_node.dir/link.txt
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --red --bold "Linking CXX executable test_node"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/test_node.dir/link.txt --verbose=$(VERBOSE)
@@ -141,6 +145,6 @@ CMakeFiles/test_node.dir/clean:
 .PHONY : CMakeFiles/test_node.dir/clean
 
 CMakeFiles/test_node.dir/depend:
-	cd /home/parallels/projector_tracker/release && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/parallels/projector_tracker /home/parallels/projector_tracker /home/parallels/projector_tracker/release /home/parallels/projector_tracker/release /home/parallels/projector_tracker/release/CMakeFiles/test_node.dir/DependInfo.cmake --color=$(COLOR)
+	cd /home/justin/projector_tracker/release && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/justin/projector_tracker /home/justin/projector_tracker /home/justin/projector_tracker/release /home/justin/projector_tracker/release /home/justin/projector_tracker/release/CMakeFiles/test_node.dir/DependInfo.cmake --color=$(COLOR)
 .PHONY : CMakeFiles/test_node.dir/depend
 
