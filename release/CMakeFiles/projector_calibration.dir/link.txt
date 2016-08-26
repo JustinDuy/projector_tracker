@@ -1,0 +1,2 @@
+/usr/bin/ar cr libprojector_calibration.a  CMakeFiles/projector_calibration.dir/src/ProjectorCalibration.cpp.o
+/usr/bin/ranlib libprojector_calibration.a

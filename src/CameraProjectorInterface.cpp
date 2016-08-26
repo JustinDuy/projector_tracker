@@ -10,13 +10,13 @@ CameraProjectorInterface::CameraProjectorInterface(std::shared_ptr<CameraInterfa
 , projector(projector_interface)
 , delay_ms(delay_ms)
 {
-    
+
 }
 
 
 CameraProjectorInterface::~CameraProjectorInterface()
-{ 
-    
+{
+
 }
 
 CameraProjectorInterface::CameraProjectorImagePair CameraProjectorInterface::projectAndAcquire(const cv::Mat& target_image)

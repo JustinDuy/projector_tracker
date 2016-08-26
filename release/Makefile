@@ -115,6 +115,19 @@ calib_cam/fast:
 .PHONY : calib_cam/fast
 
 #=============================================================================
+# Target rules for targets named calib_proj
+
+# Build rule for target.
+calib_proj: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 calib_proj
+.PHONY : calib_proj
+
+# fast build rule for target.
+calib_proj/fast:
+	$(MAKE) -f CMakeFiles/calib_proj.dir/build.make CMakeFiles/calib_proj.dir/build
+.PHONY : calib_proj/fast
+
+#=============================================================================
 # Target rules for targets named camera_calibration
 
 # Build rule for target.
@@ -139,6 +152,19 @@ hw_interface: cmake_check_build_system
 hw_interface/fast:
 	$(MAKE) -f CMakeFiles/hw_interface.dir/build.make CMakeFiles/hw_interface.dir/build
 .PHONY : hw_interface/fast
+
+#=============================================================================
+# Target rules for targets named projector_calibration
+
+# Build rule for target.
+projector_calibration: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 projector_calibration
+.PHONY : projector_calibration
+
+# fast build rule for target.
+projector_calibration/fast:
+	$(MAKE) -f CMakeFiles/projector_calibration.dir/build.make CMakeFiles/projector_calibration.dir/build
+.PHONY : projector_calibration/fast
 
 #=============================================================================
 # Target rules for targets named projector_tracker
@@ -249,6 +275,30 @@ src/ImageLabel.cpp.s:
 	$(MAKE) -f CMakeFiles/hw_interface.dir/build.make CMakeFiles/hw_interface.dir/src/ImageLabel.cpp.s
 .PHONY : src/ImageLabel.cpp.s
 
+src/ProjectorCalibration.o: src/ProjectorCalibration.cpp.o
+.PHONY : src/ProjectorCalibration.o
+
+# target to build an object file
+src/ProjectorCalibration.cpp.o:
+	$(MAKE) -f CMakeFiles/projector_calibration.dir/build.make CMakeFiles/projector_calibration.dir/src/ProjectorCalibration.cpp.o
+.PHONY : src/ProjectorCalibration.cpp.o
+
+src/ProjectorCalibration.i: src/ProjectorCalibration.cpp.i
+.PHONY : src/ProjectorCalibration.i
+
+# target to preprocess a source file
+src/ProjectorCalibration.cpp.i:
+	$(MAKE) -f CMakeFiles/projector_calibration.dir/build.make CMakeFiles/projector_calibration.dir/src/ProjectorCalibration.cpp.i
+.PHONY : src/ProjectorCalibration.cpp.i
+
+src/ProjectorCalibration.s: src/ProjectorCalibration.cpp.s
+.PHONY : src/ProjectorCalibration.s
+
+# target to generate assembly for a file
+src/ProjectorCalibration.cpp.s:
+	$(MAKE) -f CMakeFiles/projector_calibration.dir/build.make CMakeFiles/projector_calibration.dir/src/ProjectorCalibration.cpp.s
+.PHONY : src/ProjectorCalibration.cpp.s
+
 src/ProjectorInterface.o: src/ProjectorInterface.cpp.o
 .PHONY : src/ProjectorInterface.o
 
@@ -321,6 +371,30 @@ test/calib_cam.cpp.s:
 	$(MAKE) -f CMakeFiles/calib_cam.dir/build.make CMakeFiles/calib_cam.dir/test/calib_cam.cpp.s
 .PHONY : test/calib_cam.cpp.s
 
+test/calib_proj.o: test/calib_proj.cpp.o
+.PHONY : test/calib_proj.o
+
+# target to build an object file
+test/calib_proj.cpp.o:
+	$(MAKE) -f CMakeFiles/calib_proj.dir/build.make CMakeFiles/calib_proj.dir/test/calib_proj.cpp.o
+.PHONY : test/calib_proj.cpp.o
+
+test/calib_proj.i: test/calib_proj.cpp.i
+.PHONY : test/calib_proj.i
+
+# target to preprocess a source file
+test/calib_proj.cpp.i:
+	$(MAKE) -f CMakeFiles/calib_proj.dir/build.make CMakeFiles/calib_proj.dir/test/calib_proj.cpp.i
+.PHONY : test/calib_proj.cpp.i
+
+test/calib_proj.s: test/calib_proj.cpp.s
+.PHONY : test/calib_proj.s
+
+# target to generate assembly for a file
+test/calib_proj.cpp.s:
+	$(MAKE) -f CMakeFiles/calib_proj.dir/build.make CMakeFiles/calib_proj.dir/test/calib_proj.cpp.s
+.PHONY : test/calib_proj.cpp.s
+
 # Help Target
 help:
 	@echo "The following are some of the valid targets for this Makefile:"
@@ -328,9 +402,11 @@ help:
 	@echo "... clean"
 	@echo "... depend"
 	@echo "... calib_cam"
+	@echo "... calib_proj"
 	@echo "... camera_calibration"
 	@echo "... edit_cache"
 	@echo "... hw_interface"
+	@echo "... projector_calibration"
 	@echo "... projector_tracker"
 	@echo "... rebuild_cache"
 	@echo "... src/CameraCalibration.o"
@@ -345,6 +421,9 @@ help:
 	@echo "... src/ImageLabel.o"
 	@echo "... src/ImageLabel.i"
 	@echo "... src/ImageLabel.s"
+	@echo "... src/ProjectorCalibration.o"
+	@echo "... src/ProjectorCalibration.i"
+	@echo "... src/ProjectorCalibration.s"
 	@echo "... src/ProjectorInterface.o"
 	@echo "... src/ProjectorInterface.i"
 	@echo "... src/ProjectorInterface.s"
@@ -354,6 +433,9 @@ help:
 	@echo "... test/calib_cam.o"
 	@echo "... test/calib_cam.i"
 	@echo "... test/calib_cam.s"
+	@echo "... test/calib_proj.o"
+	@echo "... test/calib_proj.i"
+	@echo "... test/calib_proj.s"
 .PHONY : help
 
 

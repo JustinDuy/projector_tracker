@@ -1,0 +1,11 @@
+%YAML:1.0
+pattern type: 0 
+pattern width: 10
+pattern height: 7
+square size: 2.4
+checker width: 10
+checker height: 7
+checker square: 2.4
+max reprojection error: 0.2
+numBoardsBeforeCleaning: 5
+numBoardsFinalCamera: 10

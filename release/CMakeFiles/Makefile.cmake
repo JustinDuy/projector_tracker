@@ -54,7 +54,9 @@ SET(CMAKE_MAKEFILE_PRODUCTS
 # Dependency information for all targets:
 SET(CMAKE_DEPEND_INFO_FILES
   "CMakeFiles/calib_cam.dir/DependInfo.cmake"
+  "CMakeFiles/calib_proj.dir/DependInfo.cmake"
   "CMakeFiles/camera_calibration.dir/DependInfo.cmake"
   "CMakeFiles/hw_interface.dir/DependInfo.cmake"
+  "CMakeFiles/projector_calibration.dir/DependInfo.cmake"
   "CMakeFiles/projector_tracker.dir/DependInfo.cmake"
   )

@@ -4,7 +4,7 @@
 #include <QApplication>
 #include <thread>
 #include <iostream>
-
+using namespace cv;
 int test_fullscreen_window(int argc, char **argv);
 int test_framegrabbing(int argc, char **argv);
 int test_cameraprojector(int argc, char **argv);
@@ -40,14 +40,9 @@ int test_framegrabbing(int argc, char **argv) {
     
     app.exec();
 }
-bool calibrateCamera(cv::Mat img, std::shared_ptr<CameraCalibration> calibrationCamera){
 
-    //CameraCalibration & calibrationCamera = camProjCalib.getCalibrationCamera();
-	//int numBoardsBeforeCleaning = 10;
-	//int numBoardsFinalCamera = 5;
-	//float maxReprojErrorCamera = 0.25;
+bool calibrateCamera(cv::Mat img, std::shared_ptr<CameraCalibration> calibrationCamera){
 	vector<cv::Point2f> corners;
-	cout << "add image ... for calibration" << endl; 
     bool bFound = calibrationCamera->add(img,corners);
     bool bCalibDone = false;
     if(bFound){
