@@ -13,6 +13,43 @@
 #pragma mark - CameraCalibration
 using namespace cv;
 using namespace std;
+bool CameraCalibration::loadSetting(string configFile, string tag_pattern_type, string tag_pattern_w,
+		string tag_pattern_h, string tag_square_sz,
+		string tag_max_repr_error,
+		string tag_num_clean, string tag_num_final){
+	 cv::FileStorage fs( configFile, cv::FileStorage::READ );
+	if( !fs.isOpened() )
+	{
+	  std::cout << "Failed to open Setting File." << std::endl;
+	  return false;
+	}
+	// Loading calibration parameters
+	int type = -1;
+	fs[tag_pattern_type] >> type;
+	switch(type ) {
+		case 0:
+			patternType = CHESSBOARD;
+			break;
+		case 1:
+			patternType = CIRCLES_GRID;
+			break;
+		case 2:
+			patternType = ASYMMETRIC_CIRCLES_GRID;
+	}
+
+	int patternW, patternH;
+	fs[tag_pattern_w] >> patternW;
+	std::cout << "patternW : "<< patternW << std::endl;
+	fs[tag_pattern_h] >> patternH;
+	std::cout << "patternH : "<< patternH << std::endl;
+	patternSize = Size(patternW, patternH);
+	fs[tag_square_sz] >> squareSize;
+	std::cout << "squareSize : "<< squareSize << std::endl;
+	fs[tag_max_repr_error] >> maxReprojectionError;
+	fs[tag_num_clean] >> numBoardsBeforeCleaning;
+	fs[tag_num_final] >> numBoardsFinalCamera;
+	return true;
+}
 void CameraCalibration::setupCandidateObjectPoints(){
 candidateObjectPts.clear();
 for(int i = 0; i < patternSize.height; i++) {
@@ -31,10 +68,10 @@ cv::solvePnP(candidateObjectPts, imgPts,
 int CameraCalibration::size() const {
     return imagePoints.size();
 }
-bool CameraCalibration::clean(float minReprojectionError) {
+bool CameraCalibration::clean() {
     int removed = 0;
     for(int i = size() - 1; i >= 0; i--) {
-        if(getReprojectionError(i) > minReprojectionError) {
+        if(getReprojectionError(i) > maxReprojectionError) {
             objectPoints.erase(objectPoints.begin() + i);
             imagePoints.erase(imagePoints.begin() + i);
             removed++;
@@ -47,7 +84,7 @@ bool CameraCalibration::clean(float minReprojectionError) {
             return true;
         }
     } else {
-        cout << "Calibration::clean() removed the last object/image point pair" << endl;;
+        cout << "Calibration::clean() removed the last object/image point pair" << endl;
         return false;
     }
 }
@@ -83,6 +120,7 @@ bool CameraCalibration::calibrate() {
 		cout << "Calibration::calibrate() doesn't have any image data to calibrate from." << endl;
 		return false;
 	}
+	cout << "pose #"<< size() << endl;
 	Mat cameraMatrix = Mat::eye(3, 3, CV_64F);
 
     updateObjectPoints();
@@ -92,7 +130,10 @@ bool CameraCalibration::calibrate() {
 	ready = checkRange(cameraMatrix) && checkRange(distCoeffs);
 
 	if(!ready) {
-		cout <<  "Calibration::calibrate() failed to calibrate the camera" << endl;;
+		cout <<  "Calibration::calibrate() failed to calibrate the camera" << endl;
+	}
+	else {
+		cout <<  "Calibration::calibrate() succeeded to calibrate the camera" << endl;
 	}
 	updateReprojectionError();
 	updateUndistortion();
@@ -150,16 +191,24 @@ void CameraCalibration::save(string filename, bool absolute) const {
 	}
 	fs << "]";
 }
-bool CameraCalibration::add(Mat img) {
+void CameraCalibration::drawCheckerBoard(Mat img, vector<Point2f> pointBuf){
+	// Draw the corners.
+	drawChessboardCorners( img, patternSize, Mat(pointBuf), true );
+	cv::namedWindow( "checkerboard", cv::WINDOW_AUTOSIZE );// Create a window for display.
+	imshow( "checkerboard", img );                   // Show our image inside it.
+	waitKey(5);
+}
+bool CameraCalibration::add(Mat img, vector<Point2f>& pointBuf) {
     addedImageSize = img.size();
 
-    vector<Point2f> pointBuf;
+    //vector<Point2f> pointBuf;
 
     // find corners
     bool found = findBoard(img, pointBuf);
 
-    if (found)
+    if (found){
         imagePoints.push_back(pointBuf);
+    }
     else
         std::cout << "Calibration::add() failed, maybe your patternSize is wrong or the image has poor lighting?" << std::endl;;
     return found;

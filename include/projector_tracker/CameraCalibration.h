@@ -15,18 +15,21 @@ enum CalibrationPattern {CHESSBOARD, CIRCLES_GRID, ASYMMETRIC_CIRCLES_GRID};
 class CameraCalibration {
 
 public:
+	bool loadSetting(string configFile, string tag_pattern_type, string tag_pattern_w,
+			string tag_pattern_h,string tag_square_sz, string tag_max_reprojection_error, string tag_num_clean, string tag_num_final);
 	void computeCandidateBoardPose(const vector<cv::Point2f> & imgPts, cv::Mat& boardRot, cv::Mat& boardTrans);
 	bool backProject(const cv::Mat& boardRot64, const cv::Mat& boardTrans64,
 					 const vector<cv::Point2f>& imgPt,
 					 vector<cv::Point3f>& worldPt);
 	void setupCandidateObjectPoints();
 	vector<cv::Point3f> getCandidateObjectPoints() { return candidateObjectPts; }
-	bool add(cv::Mat img);
+	void drawCheckerBoard(cv::Mat img, vector<cv::Point2f> pointBuf);
+	bool add(cv::Mat img, vector<cv::Point2f>& pointBuf);
 	bool calibrate();
 	bool findBoard(cv::Mat img, std::vector<cv::Point2f> &pointBuf, bool refine = true);
 	void save(std::string filename, bool absolute = false) const;
 	int size() const;
-	bool clean(float minReprojectionError = 2.f);
+	bool clean();
 	float getReprojectionError() const;
 	float getReprojectionError(int i) const;
 	void updateReprojectionError();
@@ -34,6 +37,9 @@ public:
 	bool isReady();
 	void updateUndistortion();
 	static std::vector<cv::Point3f> createObjectPoints(cv::Size patternSize, float squareSize, CalibrationPattern patternType);
+	float maxReprojectionError;
+	int numBoardsFinalCamera;
+	int numBoardsBeforeCleaning;
 private:
 	vector<cv::Point3f> candidateObjectPts;
 	std::vector<std::vector<cv::Point2f> > imagePoints;
