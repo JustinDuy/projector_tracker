@@ -12,11 +12,22 @@
 
 using namespace cv;
 using namespace std;
+void ProjectorCalibration::loadCamIntrinsic(string camcalib, string tag_K, string tag_D){
+    cv::FileStorage fs( camcalib, cv::FileStorage::READ );
+    if( !fs.isOpened() )
+    {
+      std::cout << "Failed to open Camera Calibration Data File." << std::endl;
+      return false;
+    }
+    // Loading calibration parameters
+    fs[tag_K] >> cam_intrinsics;
+    fs[tag_D] >> cam_distortion_coeffs;
+}
 bool ProjectorCalibration::loadSetting(string configFile, string tag_pattern_type,
 		string tag_pattern_w, string tag_pattern_h, string tag_square_sz,
 		string tag_checker_w, string tag_checker_h, string tag_checker_sz,
 		string tag_max_repr_error,
-		string tag_num_clean, string tag_num_final){
+		string tag_num_clean, string tag_num_final, string cam_matrix, string tag_k, string tag_d){
 	 cv::FileStorage fs( configFile, cv::FileStorage::READ );
 	if( !fs.isOpened() )
 	{
@@ -62,14 +73,17 @@ bool ProjectorCalibration::loadSetting(string configFile, string tag_pattern_typ
 	std::cout << "numBoardsBeforeCleaning : "<< numBoardsBeforeCleaning << std::endl;
 	fs[tag_num_final] >> numBoardsFinalCamera;
 	std::cout << "numBoardsFinalCamera : "<< numBoardsFinalCamera << std::endl;
+	//reading Kc
+	std::cout << "reading camera intrinsic from " << tag_cam_intrinsic << std::endl;
+	loadCamIntrinsic(cam_matrix, tag_k, tag_d);
 	return true;
 }
 
 
 void ProjectorCalibration::computeCandidateBoardPose(const vector<cv::Point2f> & imgPts, const vector<cv::Point3f> & objPts, cv::Mat& boardRot, cv::Mat& boardTrans){
 cv::solvePnP(objPts, imgPts,
-			 distortedIntrinsics,
-			 distCoeffs,
+		cam_intrinsics,
+		cam_distortion_coeffs,
 			 boardRot, boardTrans);
 }
 int ProjectorCalibration::size() const {

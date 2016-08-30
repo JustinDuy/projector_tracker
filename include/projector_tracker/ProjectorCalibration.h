@@ -15,8 +15,12 @@ enum CalibrationPattern {CHESSBOARD, CIRCLES_GRID, ASYMMETRIC_CIRCLES_GRID};
 class ProjectorCalibration {
 public:
 	void setStaticCandidateImagePoints();
+	void loadCamIntrinsic(string camcalib, string tag_k, string tag_d);
 	bool loadSetting(string configFile, string tag_pattern_type, string tag_pattern_w,
-			string tag_pattern_h,string tag_square_sz, string tag_checker_w, string tag_checker_h, string tag_checker_square, string tag_max_reprojection_error, string tag_num_clean, string tag_num_final);
+			string tag_pattern_h,string tag_square_sz, string tag_checker_w, string tag_checker_h,
+			string tag_checker_square, string tag_max_reprojection_error,
+			string tag_num_clean, string tag_num_final
+			string camera_matrix, string tag_k, string tag_d);
 	void computeCandidateBoardPose(const vector<cv::Point2f> & imgPts,const vector<cv::Point3f> & objPts, cv::Mat& boardRot, cv::Mat& boardTrans);
 	bool backProject(const cv::Mat& boardRot64, const cv::Mat& boardTrans64,
 					 const vector<cv::Point2f>& imgPt,
@@ -49,7 +53,7 @@ private:
 	vector<cv::Point2f> candidateImagePoints;
 	std::vector<std::vector<cv::Point2f> > imagePoints;
 protected:
-	//bool fillFrame;
+
 	int projectorWidth;
 	int projectorHeight;
 	bool ready;
@@ -64,6 +68,10 @@ protected:
 
 	float reprojectionError;
 	std::vector<float> perViewErrors;
+	//camera intrinsic
+	cv::Mat cam_distortion_coeffs;
+	cv::Mat cam_intrinsics;
+	//projector intrinsic
 	cv::Mat distortedIntrinsics;
 	cv::Mat undistortedIntrinsics;
 	CalibrationPattern patternType;

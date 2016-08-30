@@ -97,7 +97,10 @@ void calib_proj( std::shared_ptr<CameraProjectorInterface> cpi){
     std::shared_ptr<ProjectorCalibration> projCalib = std::make_shared<ProjectorCalibration>();
 	//load configuration for tracking algorithm
     projCalib->loadSetting("../data/proj_calib_setting.yml", "pattern type",
-    		"pattern width", "pattern height", "square size", "checker width", "checker height", "checker square", "max reprojection error", "numBoardsBeforeCleaning", "numBoardsFinalCamera");
+    		"pattern width", "pattern height", "square size",
+    		"checker width", "checker height", "checker square",
+    		"max reprojection error", "numBoardsBeforeCleaning", "numBoardsFinalCamera"
+    		,"../data/calibrationCamera.yml", "cameraMatrix", "distCoeffs");
 	bool finished = false;
 
     while(!finished){
