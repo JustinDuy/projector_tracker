@@ -19,7 +19,7 @@ public:
 	bool loadSetting(string configFile, string tag_pattern_type, string tag_pattern_w,
 			string tag_pattern_h,string tag_square_sz, string tag_checker_w, string tag_checker_h,
 			string tag_checker_square, string tag_max_reprojection_error,
-			string tag_num_clean, string tag_num_final
+			string tag_num_clean, string tag_num_final,
 			string camera_matrix, string tag_k, string tag_d);
 	void computeCandidateBoardPose(const vector<cv::Point2f> & imgPts,const vector<cv::Point3f> & objPts, cv::Mat& boardRot, cv::Mat& boardTrans);
 	bool backProject(const cv::Mat& boardRot64, const cv::Mat& boardTrans64,
@@ -27,7 +27,7 @@ public:
 					 vector<cv::Point3f>& worldPt);
 
 	vector<cv::Point3f> getCandidateObjectPoints() { return candidateObjectPts; }
-	void drawCheckerBoard(cv::Mat img, vector<cv::Point2f> pointBuf);
+	void drawCircleGrid(cv::Mat img, vector<cv::Point2f> pointBuf);
 	bool add(Mat img, Mat processedImg,  vector<Point2f>& circlesImgPts) ;
 	bool calibrate();
 	bool findBoard(cv::Mat img, std::vector<cv::Point2f> &pointBuf);

@@ -17,7 +17,7 @@ void ProjectorCalibration::loadCamIntrinsic(string camcalib, string tag_K, strin
     if( !fs.isOpened() )
     {
       std::cout << "Failed to open Camera Calibration Data File." << std::endl;
-      return false;
+      return ;
     }
     // Loading calibration parameters
     fs[tag_K] >> cam_intrinsics;
@@ -74,7 +74,7 @@ bool ProjectorCalibration::loadSetting(string configFile, string tag_pattern_typ
 	fs[tag_num_final] >> numBoardsFinalCamera;
 	std::cout << "numBoardsFinalCamera : "<< numBoardsFinalCamera << std::endl;
 	//reading Kc
-	std::cout << "reading camera intrinsic from " << tag_cam_intrinsic << std::endl;
+	std::cout << "reading camera intrinsic from " << cam_matrix << std::endl;
 	loadCamIntrinsic(cam_matrix, tag_k, tag_d);
 	return true;
 }
@@ -213,11 +213,14 @@ void ProjectorCalibration::save(string filename, bool absolute) const {
 	}
 	fs << "]";
 }
-void ProjectorCalibration::drawCheckerBoard(Mat img, vector<Point2f> pointBuf){
+void ProjectorCalibration::drawCircleGrid(Mat img, vector<Point2f> pointBuf){
 	// Draw the corners.
-	drawChessboardCorners( img, patternSize, Mat(pointBuf), true );
-	cv::namedWindow( "checkerboard", cv::WINDOW_AUTOSIZE );// Create a window for display.
-	imshow( "checkerboard", img );                   // Show our image inside it.
+	//drawChessboardCorners( img, patternSize, Mat(pointBuf), true );
+	for(const auto & p : pointBuf) {
+		circle(img, p, 20, Scalar( 255, 0, 0), CV_FILLED); //blue circles
+	}
+	cv::namedWindow( "circle grid", cv::WINDOW_AUTOSIZE );// Create a window for display.
+	imshow( "circle grid", img );                   // Show our image inside it.
 	waitKey(5);
 }
 bool ProjectorCalibration::add(Mat img, Mat processedImg,  vector<Point2f>& circlesImgPts) {

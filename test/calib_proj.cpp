@@ -61,7 +61,7 @@ bool calibrateProjector(cv::Mat img, std::shared_ptr<ProjectorCalibration> calib
     bool bFound = calibrationProjector->add(img, processedImg,corners);
     bool bCalibDone = false;
 	if(bFound){
-		calibrationProjector->drawCheckerBoard(img,corners);
+		calibrationProjector->drawCircleGrid(img,corners);
 		cout << "Found board!" << endl;
 
 		calibrationProjector->calibrate();
@@ -107,7 +107,8 @@ void calib_proj( std::shared_ptr<CameraProjectorInterface> cpi){
         cv::Mat test_image;
         projCalib->getPattern(test_image);
         CameraProjectorInterface::CameraProjectorImagePair cp_img_pairs = cpi->projectAndAcquire(test_image);
-    	finished = false;//calibrateProjector(cp_img_pairs.acquired, projCalib );
+    	//finished = false;
+        finished = calibrateProjector(cp_img_pairs.acquired, projCalib );
     	cv::namedWindow( "acquired image", cv::WINDOW_AUTOSIZE );// Create a window for display.
 		imshow( "acquired image", cp_img_pairs.acquired );                   // Show our image inside it.
 		waitKey(5);
