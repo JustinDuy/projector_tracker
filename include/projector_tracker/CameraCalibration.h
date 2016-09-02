@@ -18,9 +18,9 @@ public:
 	bool loadSetting(string configFile, string tag_pattern_type, string tag_pattern_w,
 			string tag_pattern_h,string tag_square_sz, string tag_max_reprojection_error, string tag_num_clean, string tag_num_final);
 	void computeCandidateBoardPose(const vector<cv::Point2f> & imgPts, cv::Mat& boardRot, cv::Mat& boardTrans);
-	bool backProject(const cv::Mat& boardRot64, const cv::Mat& boardTrans64,
+	/*bool backProject(const cv::Mat& boardRot64, const cv::Mat& boardTrans64,
 					 const vector<cv::Point2f>& imgPt,
-					 vector<cv::Point3f>& worldPt);
+					 vector<cv::Point3f>& worldPt);*/
 	void setupCandidateObjectPoints();
 	vector<cv::Point3f> getCandidateObjectPoints() { return candidateObjectPts; }
 	void drawCheckerBoard(cv::Mat img, vector<cv::Point2f> pointBuf);

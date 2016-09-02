@@ -64,31 +64,31 @@ bool calibrateProjector(cv::Mat img, std::shared_ptr<ProjectorCalibration> calib
     bool bFound = calibrationProjector->add(img, processedImg,corners);
     bool bCalibDone = false;
     if(bFound){
-            //cout << "Found board!" << endl;
-            calibrationProjector->calibrate();
-            if(calibrationProjector->size() >= calibrationProjector->numBoardsBeforeCleaning) {
+        //cout << "Found board!" << endl;
+        calibrationProjector->calibrate();
+        if(calibrationProjector->size() >= calibrationProjector->numBoardsBeforeCleaning) {
 
-                    cout << "Cleaning" << endl;
+                cout << "Cleaning" << endl;
 
-                    calibrationProjector->clean();
+                //calibrationProjector->clean();
 
-                    if(calibrationProjector->getReprojectionError(calibrationProjector->size()-1) > calibrationProjector->maxReprojectionError) {
-                            cout << "Board found, but reproj. error is too high, skipping" << endl;
-                            return false;
-                    }
-            }
+                /*if(calibrationProjector->getReprojectionError(calibrationProjector->size()-1) > calibrationProjector->maxReprojectionError) {
+                        cout << "Board found, but reproj. error is too high, skipping" << endl;
+                        return false;
+                }*/
+        }
 
-            if (calibrationProjector->size()>= calibrationProjector->numBoardsFinalCamera) {
-                    if(calibrationProjector->getReprojectionError() < calibrationProjector->maxReprojectionError)
-                    {
-                            calibrationProjector->save("../data/calibrationProjector.yml");
-                            cout << "Projector calibration finished & saved to calibrationProjector.yml" << endl;
-                            bCalibDone = true;
-                    }
-            }
+        if (calibrationProjector->size()>= calibrationProjector->numBoardsFinalCamera) {
+                if(calibrationProjector->getReprojectionError() < calibrationProjector->maxReprojectionError)
+                {
+                        //calibrationProjector->save("../data/calibrationProjector.yml");
+                        cout << "Projector calibration finished & saved to calibrationProjector.yml" << endl;
+                        bCalibDone = true;
+                }
+        }
     }
     else 
-        cout << "Could not find board" << endl;
+        cout << "Could not add board" << endl;
 
     return bCalibDone;
 

@@ -26,19 +26,18 @@ public:
 					 const vector<cv::Point2f>& imgPt,
 					 vector<cv::Point3f>& worldPt);
 
-	vector<cv::Point3f> getCandidateObjectPoints() { return candidateObjectPts; }
 	void drawCheckerBoard(const Mat& img, vector<Point2f> pointBuf);
 	void drawCircleGrid(const cv::Mat& img, vector<cv::Point2f> checkerpointBuf, vector<cv::Point2f> circlepointBuf);
 	bool add(const Mat& img, const Mat& processedImg,  vector<Point2f>& circlesImgPts) ;
 	bool calibrate();
-	bool findBoard(cv::Mat img, std::vector<cv::Point2f> &pointBuf);
+	//bool findBoard(cv::Mat img, std::vector<cv::Point2f> &pointBuf);
 	void save(std::string filename, bool absolute = false) const;
 	int size() const;
 	bool clean();
 	float getReprojectionError() const;
 	float getReprojectionError(int i) const;
 	void updateReprojectionError();
-	void updateImagePoints() ;
+	//void updateImagePoints() ;
 	bool isReady();
 	void updateUndistortion();
 	void setPatternPosition(float px, float py) ;
@@ -49,35 +48,49 @@ public:
 	int numBoardsBeforeCleaning;
 	void getPattern(Mat& out);
 private:
-	Point2f patternPosition ;
-	vector<cv::Point3f> candidateObjectPts;
 	vector<cv::Point2f> candidateImagePoints;
+     	std::vector<std::vector<cv::Point2f> > cam_imagePoints;
+  
 	std::vector<std::vector<cv::Point2f> > imagePoints;
+        std::vector<std::vector<cv::Point3f> > objectPoints;
 protected:
 
 	int projectorWidth;
 	int projectorHeight;
 	bool ready;
-	cv::Size patternSize, checkerBoardSize, addedImageSize;
-	float squareSize;
-        float corner_x, corner_y;//start drawing pattern at corner_x, corner_y on projector screen
         
+        cv::Size addedImageSize;
+        
+        //circle grid parameters:
+	cv::Size patternSize;
+	float squareSize;
+        cv::Point2f patternPosition ;//start drawing pattern at (corner_x, corner_y) on projector screen
+        
+        //checkboard parameters:
+        cv::Size checkerBoardSize;
 	float checkerSquareSize;
 	cv::Mat grayMat;
-	cv::Mat distCoeffs;
+
 
 	std::vector<cv::Mat> boardRotations, boardTranslations;
-	std::vector<std::vector<cv::Point3f> > objectPoints;
-
 	float reprojectionError;
 	std::vector<float> perViewErrors;
+        
 	//camera intrinsic
+        cv::Mat cam_distortedIntrinsics;
 	cv::Mat cam_distortion_coeffs;
-	cv::Mat cam_intrinsics;
+
+        
 	//projector intrinsic
 	cv::Mat distortedIntrinsics;
 	cv::Mat undistortedIntrinsics;
-	CalibrationPattern patternType;
+        cv::Mat distCoeffs;
+	//CalibrationPattern patternType;
+        
+        //extrinsic cam to projector
+        cv::Mat rotCamToProj;
+        cv::Mat transCamToProj;
+        cv::Mat fundamentalMatrix, essentialMatrix;
 };
 
 #endif /* PROJECTORCALIBRATOR_H_ */

@@ -121,13 +121,13 @@ bool CameraCalibration::calibrate() {
 		return false;
 	}
 	cout << "pose #"<< size() << endl;
-	Mat cameraMatrix = Mat::eye(3, 3, CV_64F);
+	//Mat cameraMatrix = Mat::eye(3, 3, CV_64F);
 
-    updateObjectPoints();
+        updateObjectPoints();
 
 	int calibFlags = 0;
 	float rms = calibrateCamera(objectPoints, imagePoints, addedImageSize, distortedIntrinsics, distCoeffs, boardRotations, boardTranslations, calibFlags);
-	ready = checkRange(cameraMatrix) && checkRange(distCoeffs);
+	ready = checkRange(distortedIntrinsics) && checkRange(distCoeffs);
 
 	if(!ready) {
 		cout <<  "Calibration::calibrate() failed to calibrate the camera" << endl;
@@ -227,7 +227,7 @@ bool CameraCalibration::findBoard(Mat img, vector<Point2f>& pointBuf, bool refin
 }
 
 
-
+/*
 bool CameraCalibration::backProject(const cv::Mat& boardRot64,
 								const cv::Mat& boardTrans64,
 								const vector<cv::Point2f>& imgPt,
@@ -275,4 +275,4 @@ else
 return true;
 }
 
-
+*/
