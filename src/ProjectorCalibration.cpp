@@ -23,8 +23,8 @@ void ProjectorCalibration::loadCamIntrinsic(string camcalib, string tag_K, strin
     fs[tag_K] >> cam_intrinsics;
     fs[tag_D] >> cam_distortion_coeffs;
 }
-bool ProjectorCalibration::loadSetting(string configFile, string tag_pattern_type,
-		string tag_pattern_w, string tag_pattern_h, string tag_square_sz,
+bool ProjectorCalibration::loadSetting(string configFile, string tag_w, string tag_h, string tag_pattern_type,
+		string tag_pattern_w, string tag_pattern_h, string tag_square_sz, string tag_x, string tag_y,
 		string tag_checker_w, string tag_checker_h, string tag_checker_sz,
 		string tag_max_repr_error,
 		string tag_num_clean, string tag_num_final, string cam_matrix, string tag_k, string tag_d){
@@ -47,22 +47,32 @@ bool ProjectorCalibration::loadSetting(string configFile, string tag_pattern_typ
 		case 2:
 			patternType = ASYMMETRIC_CIRCLES_GRID;
 	}
-
+        fs[tag_w] >> projectorWidth;
+        std::cout << "projectorWidth : "<< projectorWidth << std::endl;
+        fs[tag_h] >> projectorHeight;
+        std::cout << "projectorHeight : "<< projectorHeight << std::endl;
+        
+        fs[tag_x] >> corner_x;
+        std::cout << "corner_x : "<< corner_x << std::endl;
+        fs[tag_y] >> corner_y;
+        std::cout << "corner_y : "<< corner_y << std::endl;
+        
 	int patternW, patternH, checkerW, checkerH;
 	fs[tag_pattern_w] >> patternW;
 	std::cout << "patternW : "<< patternW << std::endl;
 	fs[tag_pattern_h] >> patternH;
 	std::cout << "patternH : "<< patternH << std::endl;
 	patternSize = Size(patternW, patternH);
-	checkerBoardSize = Size(checkerW, checkerH);
+	
 
 	fs[tag_square_sz] >> squareSize;
 	std::cout << "squareSize : "<< squareSize << std::endl;
 
-	fs[tag_pattern_w] >> checkerW;
+	fs[tag_checker_w] >> checkerW;
 	std::cout << "checkerboard patternW : "<< checkerW << std::endl;
-	fs[tag_pattern_h] >> checkerH;
+	fs[tag_checker_h] >> checkerH;
 	std::cout << "checkerboard patternH : "<< checkerH << std::endl;
+        checkerBoardSize = Size(checkerW, checkerH);
 
 	fs[tag_checker_sz] >> checkerSquareSize;
 	std::cout << "checker squareSize : "<< checkerSquareSize << std::endl;
@@ -85,6 +95,7 @@ cv::solvePnP(objPts, imgPts,
 		cam_intrinsics,
 		cam_distortion_coeffs,
 			 boardRot, boardTrans);
+
 }
 int ProjectorCalibration::size() const {
     return imagePoints.size();
@@ -213,24 +224,41 @@ void ProjectorCalibration::save(string filename, bool absolute) const {
 	}
 	fs << "]";
 }
-void ProjectorCalibration::drawCircleGrid(Mat img, vector<Point2f> pointBuf){
+void ProjectorCalibration::drawCircleGrid(const Mat& img, vector<Point2f> checkerPointBuf, vector<Point2f> circlePointBuf){
 	// Draw the corners.
-	//drawChessboardCorners( img, patternSize, Mat(pointBuf), true );
-	for(const auto & p : pointBuf) {
-		circle(img, p, 20, Scalar( 255, 0, 0), CV_FILLED); //blue circles
+        Mat drawImg = img.clone();
+        drawChessboardCorners( drawImg, checkerBoardSize, Mat(checkerPointBuf), true );
+	for(const auto & p : circlePointBuf) {
+            circle(drawImg, p, 5, Scalar( 0, 0, 255), CV_FILLED); 
 	}
-	cv::namedWindow( "circle grid", cv::WINDOW_AUTOSIZE );// Create a window for display.
-	imshow( "circle grid", img );                   // Show our image inside it.
+	cv::imwrite("detected_circle.jpg", drawImg);
+	cv::namedWindow( "circlegrid", cv:: WINDOW_NORMAL );// Create a window for display.
+        resizeWindow( "circlegrid", 640, 480 );
+        // Moving window of circlegrid to see the image at first screen
+        moveWindow( "circlegrid", 0, 0 );
+	imshow( "circlegrid", drawImg );                   // Show our image inside it.
 	waitKey(5);
 }
-bool ProjectorCalibration::add(Mat img, Mat processedImg,  vector<Point2f>& circlesImgPts) {
+void ProjectorCalibration::drawCheckerBoard(const Mat& img, vector<Point2f> pointBuf){
+	// Draw the corners.
+        Mat drawImg = img.clone();
+	drawChessboardCorners( drawImg, checkerBoardSize, Mat(pointBuf), true );
+        cv::imwrite("detected_checkerboard.jpg", drawImg);
+	//cv::namedWindow( "checkerboard", cv::WINDOW_AUTOSIZE );// Create a window for display.
+	//imshow( "checkerboard", img );                   // Show our image inside it.
+	//waitKey(5);
+}
+bool ProjectorCalibration::add(const Mat& img, const Mat& processedImg,  vector<Point2f>& circlesImgPts) {
     addedImageSize = img.size();
 
     // find corners
     vector<Point2f> chessImgPts;
-	int chessFlags = CV_CALIB_CB_ADAPTIVE_THRESH;// | CV_CALIB_CB_NORMALIZE_IMAGE;
-	bool foundCheckerBoard = findChessboardCorners(img, checkerBoardSize, chessImgPts, chessFlags);
+    int chessFlags = CV_CALIB_CB_ADAPTIVE_THRESH;// | CV_CALIB_CB_NORMALIZE_IMAGE;
+    bool foundCheckerBoard = findChessboardCorners(img, checkerBoardSize, chessImgPts, chessFlags);
     if(foundCheckerBoard){
+        
+                cout << "found checker board" << endl;
+                //drawCheckerBoard(img, chessImgPts);
 		vector<cv::Point2f> circlesImgPts;
 
 		SimpleBlobDetector::Params params;
@@ -240,10 +268,11 @@ bool ProjectorCalibration::add(Mat img, Mat processedImg,  vector<Point2f>& circ
 		Ptr<FeatureDetector> blobDetector = SimpleBlobDetector::create(params);
 
 		bool bProjectedPatternFound = cv::findCirclesGrid(processedImg, patternSize, circlesImgPts, cv::CALIB_CB_ASYMMETRIC_GRID, blobDetector);
-
+                
 		if(bProjectedPatternFound){
-
-			vector<cv::Point3f> circlesObjectPts;
+                        cout << "found circle grid" << endl;
+                        drawCircleGrid(img,chessImgPts, circlesImgPts);
+                        vector<cv::Point3f> circlesObjectPts;
 			cv::Mat boardRot;
 			cv::Mat boardTrans;
 			computeCandidateBoardPose(chessImgPts, createObjectPoints(checkerBoardSize, checkerSquareSize, CHESSBOARD), boardRot, boardTrans);
@@ -299,7 +328,7 @@ else
 		imgPt_h.at<float>(1,h) = imgPt[h].y;
 		imgPt_h.at<float>(2,h) = 1.0f;
 	}
-	Mat Kinv64 = undistortedIntrinsics.inv();
+	Mat Kinv64 = cam_intrinsics.inv();
 	Mat Kinv,boardRot,boardTrans;
 	Kinv64.convertTo(Kinv, CV_32F);
 	boardRot64.convertTo(boardRot, CV_32F);
@@ -333,9 +362,10 @@ return true;
 
 void ProjectorCalibration::getPattern(Mat& out){
 	if(candidateImagePoints.size() == 0) setStaticCandidateImagePoints();
-	out = Mat::zeros(projectorWidth, projectorHeight, CV_8UC3);
+        cout << "generating pattern for projector width and height : " << projectorWidth << "," << projectorHeight << endl;
+	out = Mat::zeros(projectorHeight, projectorWidth,CV_8UC3);
 	for(const auto & p : candidateImagePoints) {
-		circle(out, p, 20, Scalar( 255, 0, 0), CV_FILLED); //blue circles
+		circle(out, p + Point2f(corner_x, corner_y), 20, Scalar( 255, 0, 0), CV_FILLED); //blue circles
 	}
 }
 void ProjectorCalibration::setStaticCandidateImagePoints(){

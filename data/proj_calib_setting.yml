@@ -1,8 +1,12 @@
 %YAML:1.0
-pattern type: 0 
-pattern width: 10
-pattern height: 7
-square size: 2.4
+width:1280
+height:720
+pattern type: 2 
+pattern width: 5
+pattern height: 6
+square size: 40
+corner x: 400
+corner y: 50
 checker width: 10
 checker height: 7
 checker square: 2.4

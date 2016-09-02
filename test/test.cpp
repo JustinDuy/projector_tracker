@@ -65,7 +65,7 @@ int test_cameraprojector(int argc, char **argv) {
     int cam_deviceID = atoi(argv[1]);
     std::cout << "using camera device : " << cam_deviceID << std::endl;
     std::shared_ptr<CameraInterface> cam_interface = std::make_shared<CameraInterface>(cam_deviceID);
-    cam_interface->loadIntrinsics("../data/rgb_A00363813595051A.yaml", "camera_matrix", "distortion_coefficients", "image_width", "image_height"); //Kinect RGB Cam
+    //cam_interface->loadIntrinsics("../data/rgb_A00363813595051A.yaml", "camera_matrix", "distortion_coefficients", "image_width", "image_height"); //Kinect RGB Cam
     cam_interface->loadIntrinsics("../data/calibrationCamera.yml", "cameraMatrix", "distCoeffs", "imageSize_width", "imageSize_height"); //C92 HD Webcam
 
     std::shared_ptr<ProjectorInterface> proj_interface= std::make_shared<ProjectorInterface>();

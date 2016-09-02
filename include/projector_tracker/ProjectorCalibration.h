@@ -16,8 +16,8 @@ class ProjectorCalibration {
 public:
 	void setStaticCandidateImagePoints();
 	void loadCamIntrinsic(string camcalib, string tag_k, string tag_d);
-	bool loadSetting(string configFile, string tag_pattern_type, string tag_pattern_w,
-			string tag_pattern_h,string tag_square_sz, string tag_checker_w, string tag_checker_h,
+	bool loadSetting(string configFile, string tag_w, string tag_h, string tag_pattern_type, string tag_pattern_w,
+			string tag_pattern_h,string tag_square_sz, string tag_x, string tag_y, string tag_checker_w, string tag_checker_h,
 			string tag_checker_square, string tag_max_reprojection_error,
 			string tag_num_clean, string tag_num_final,
 			string camera_matrix, string tag_k, string tag_d);
@@ -27,8 +27,9 @@ public:
 					 vector<cv::Point3f>& worldPt);
 
 	vector<cv::Point3f> getCandidateObjectPoints() { return candidateObjectPts; }
-	void drawCircleGrid(cv::Mat img, vector<cv::Point2f> pointBuf);
-	bool add(Mat img, Mat processedImg,  vector<Point2f>& circlesImgPts) ;
+	void drawCheckerBoard(const Mat& img, vector<Point2f> pointBuf);
+	void drawCircleGrid(const cv::Mat& img, vector<cv::Point2f> checkerpointBuf, vector<cv::Point2f> circlepointBuf);
+	bool add(const Mat& img, const Mat& processedImg,  vector<Point2f>& circlesImgPts) ;
 	bool calibrate();
 	bool findBoard(cv::Mat img, std::vector<cv::Point2f> &pointBuf);
 	void save(std::string filename, bool absolute = false) const;
@@ -59,6 +60,8 @@ protected:
 	bool ready;
 	cv::Size patternSize, checkerBoardSize, addedImageSize;
 	float squareSize;
+        float corner_x, corner_y;//start drawing pattern at corner_x, corner_y on projector screen
+        
 	float checkerSquareSize;
 	cv::Mat grayMat;
 	cv::Mat distCoeffs;
