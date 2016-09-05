@@ -1,2 +1,2 @@
-/usr/bin/ar cr libcamera_calibration.a  CMakeFiles/camera_calibration.dir/src/CameraCalibration.cpp.o
+/usr/bin/ar qc libcamera_calibration.a  CMakeFiles/camera_calibration.dir/src/CameraCalibration.cpp.o
 /usr/bin/ranlib libcamera_calibration.a

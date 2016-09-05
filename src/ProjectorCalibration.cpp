@@ -35,7 +35,7 @@ bool ProjectorCalibration::loadSetting(string configFile, string tag_w, string t
 	  return false;
 	}
 	// Loading calibration parameters
-	/*int type = -1;
+	int type = -1;
 	fs[tag_pattern_type] >> type;
 	switch(type ) {
 		case 0:
@@ -46,19 +46,20 @@ bool ProjectorCalibration::loadSetting(string configFile, string tag_w, string t
 			break;
 		case 2:
 			patternType = ASYMMETRIC_CIRCLES_GRID;
-	}*/
-// 	
-        fs[tag_w] >> projectorWidth;
-        std::cout << "projectorWidth : "<< projectorWidth << std::endl;
-        fs[tag_h] >> projectorHeight;
-        std::cout << "projectorHeight : "<< projectorHeight << std::endl;
-        
-        float corner_x=0, corner_y=0;
-        fs[tag_x] >> corner_x;
-        std::cout << "corner_x : "<< corner_x << std::endl;
-        fs[tag_y] >> corner_y;
-        std::cout << "corner_y : "<< corner_y << std::endl;
-        patternPosition = Point2f(corner_x, corner_y);
+	}
+
+	fs[tag_w] >> projectorWidth;
+	std::cout << "projectorWidth : "<< projectorWidth << std::endl;
+	fs[tag_h] >> projectorHeight;
+	std::cout << "projectorHeight : "<< projectorHeight << std::endl;
+	ImagerSize = Size(projectorWidth, projectorHeight);
+
+	float corner_x=0, corner_y=0;
+	fs[tag_x] >> corner_x;
+	std::cout << "corner_x : "<< corner_x << std::endl;
+	fs[tag_y] >> corner_y;
+	std::cout << "corner_y : "<< corner_y << std::endl;
+	setPatternPosition(corner_x,corner_y);
         
 	int patternW, patternH, checkerW, checkerH;
 	fs[tag_pattern_w] >> patternW;
@@ -139,12 +140,12 @@ bool ProjectorCalibration::calibrate() {
 	cout << "pose #"<< size() << endl;
 	//Mat cameraMatrix = Mat::eye(3, 3, CV_64F);
 
-        //updateImagePoints();
+    //updateImagePoints();
 
 
-	//int calibFlags = 0;
-	//float rms = calibrateCamera(objectPoints, imagePoints, addedImageSize, distortedIntrinsics, distCoeffs, boardRotations, boardTranslations, calibFlags);
-        cv::stereoCalibrate(objectPoints,
+	int calibFlags = 0;
+	float rms = calibrateCamera(objectPoints, imagePoints, ImagerSize, distortedIntrinsics, distCoeffs, boardRotations, boardTranslations, calibFlags);
+    /*cv::stereoCalibrate(objectPoints,
                             cam_imagePoints,
                             imagePoints,
                             cam_distortedIntrinsics, cam_distortion_coeffs,
@@ -153,8 +154,8 @@ bool ProjectorCalibration::calibrate() {
                             rotation3x3, transCamToProj,
                             essentialMatrix, fundamentalMatrix, CV_CALIB_FIX_INTRINSIC);
 	cv::Rodrigues(rotation3x3, rotCamToProj);
-        ready = checkRange(distortedIntrinsics) && checkRange(distCoeffs);
-
+	*/
+	ready = checkRange(distortedIntrinsics) && checkRange(distCoeffs);
 	if(!ready) {
 		cout <<  "Calibration::calibrate() failed to calibrate the projector" << endl;
 	}
@@ -186,8 +187,8 @@ void ProjectorCalibration::updateReprojectionError() {
     perViewErrors.resize(objectPoints.size());
     
     for(int i = 0; i < (int)objectPoints.size(); i++) {
-        //projectPoints(Mat(objectPoints[i]), rotation3x3, boardTranslations[i], distortedIntrinsics, distCoeffs, imagePoints2);
-        Todo's
+        projectPoints(Mat(objectPoints[i]), boardRotations[i], boardTranslations[i], distortedIntrinsics, distCoeffs, imagePoints2);
+       // Todo's
         double err = norm(Mat(imagePoints[i]), Mat(imagePoints2), CV_L2);//imagePoints2
         int n = objectPoints[i].size();
         perViewErrors[i] = sqrt(err * err / n);
@@ -227,9 +228,9 @@ void ProjectorCalibration::drawCircleGrid(const Mat& img, vector<Point2f> checke
 	}
 	cv::imwrite("detected_circle.jpg", drawImg);
 	cv::namedWindow( "circlegrid", cv:: WINDOW_NORMAL );// Create a window for display.
-        resizeWindow( "circlegrid", 640, 480 );
-        // Moving window of circlegrid to see the image at first screen
-        moveWindow( "circlegrid", 0, 0 );
+	resizeWindow( "circlegrid", 640, 480 );
+	// Moving window of circlegrid to see the image at first screen
+	moveWindow( "circlegrid", 0, 0 );
 	imshow( "circlegrid", drawImg );                   // Show our image inside it.
 	waitKey(5);
 }
@@ -285,19 +286,19 @@ bool ProjectorCalibration::add(const Mat& img, const Mat& processedImg,  vector<
         std::cout << "Calibration::add() failed, maybe your patternSize is wrong or the image has poor lighting?" << std::endl;;
     return false;
 }
-vector<Point3f> ProjectorCalibration::createObjectPoints(cv::Size patternSize, float squareSize, CalibrationPattern patternType) {
+vector<Point3f> ProjectorCalibration::createObjectPoints(cv::Size _patternSize, float _squareSize, CalibrationPattern _patternType) {
     vector<Point3f> corners;
-    switch(patternType) {
+    switch(_patternType) {
         case CHESSBOARD:
         case CIRCLES_GRID:
-            for(int i = 0; i < patternSize.height; i++)
-                for(int j = 0; j < patternSize.width; j++)
-                    corners.push_back(Point3f(float(j * squareSize), float(i * squareSize), 0));
+            for(int i = 0; i < _patternSize.height; i++)
+                for(int j = 0; j < _patternSize.width; j++)
+                    corners.push_back(Point3f(float(j * _squareSize), float(i * _squareSize), 0));
             break;
         case ASYMMETRIC_CIRCLES_GRID:
-            for(int i = 0; i < patternSize.height; i++)
-                for(int j = 0; j < patternSize.width; j++)
-                    corners.push_back(Point3f(float(((2 * j) + (i % 2)) * squareSize), float(i * squareSize), 0));
+            for(int i = 0; i < _patternSize.height; i++)
+                for(int j = 0; j < _patternSize.width; j++)
+                    corners.push_back(Point3f(float(((2 * j) + (i % 2)) * _squareSize), float(i * _squareSize), 0));
 //             break;
     }
     return corners;
@@ -322,7 +323,7 @@ else
 	//Mat Kinv64 = cam_intrinsics.inv();
 	//use cam_undistorted_intrinsics
 	Mat cam_undistorted_intrinsics = getOptimalNewCameraMatrix(cam_distortedIntrinsics, cam_distortion_coeffs, addedImageSize, 1); //fillFrame ? 0 : 1s
-        Mat Kinv64 = cam_undistorted_intrinsics.inv();
+    Mat Kinv64 = cam_undistorted_intrinsics.inv();
 	Mat Kinv,boardRot,boardTrans;
 	Kinv64.convertTo(Kinv, CV_32F);
 	boardRot64.convertTo(boardRot, CV_32F);
@@ -357,7 +358,7 @@ return true;
 void ProjectorCalibration::getPattern(Mat& out){
 	if(candidateImagePoints.size() == 0) setStaticCandidateImagePoints();
         cout << "generating pattern for projector width and height : " << projectorWidth << "," << projectorHeight << endl;
-	out = Mat::zeros(projectorHeight, projectorWidth,CV_8UC3);
+	out = Mat::zeros(ImagerSize,CV_8UC3);
 	for(const auto & p : candidateImagePoints) {
 		circle(out, p , 20, Scalar( 255, 0, 0), CV_FILLED); //blue circles
 	}
@@ -365,12 +366,23 @@ void ProjectorCalibration::getPattern(Mat& out){
 void ProjectorCalibration::setStaticCandidateImagePoints(){
     candidateImagePoints.clear();
     Point2f p;
-    for(int i = 0; i < patternSize.height; i++) {
-        for(int j = 0; j < patternSize.width; j++) {
-            p.x = patternPosition.x + float(((2 * j) + (i % 2)) * squareSize);
-            p.y = patternPosition.y + float(i * squareSize);
-            candidateImagePoints.push_back(p);
-        }
+    if(patternType == ASYMMETRIC_CIRCLES_GRID ){
+		for(int i = 0; i < patternSize.height; i++) {
+			for(int j = 0; j < patternSize.width; j++) {
+				p.x = patternPosition.x + float(((2 * j) + (i % 2)) * squareSize);
+				p.y = patternPosition.y + float(i * squareSize);
+				candidateImagePoints.push_back(p);
+			}
+		}
+    }
+    else if(patternType == CIRCLES_GRID || patternType == CHESSBOARD ){
+    	for(int i = 0; i < patternSize.height; i++) {
+			for(int j = 0; j < patternSize.width; j++) {
+				p.x = patternPosition.x + float(j * squareSize);
+				p.y = patternPosition.y + float(i * squareSize);
+				candidateImagePoints.push_back(p);
+			}
+		}
     }
 }
 

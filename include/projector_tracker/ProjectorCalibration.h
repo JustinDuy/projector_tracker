@@ -59,18 +59,18 @@ protected:
 	int projectorHeight;
 	bool ready;
         
-        cv::Size addedImageSize;
-        
-        //circle grid parameters:
+	cv::Size addedImageSize;
+	cv::Size ImagerSize;
+
+	//circle grid parameters:
 	cv::Size patternSize;
 	float squareSize;
-        cv::Point2f patternPosition ;//start drawing pattern at (corner_x, corner_y) on projector screen
-        
-        //checkboard parameters:
-        cv::Size checkerBoardSize;
+	cv::Point2f patternPosition ;//start drawing pattern at (corner_x, corner_y) on projector screen
+
+	//checkboard parameters:
+	cv::Size checkerBoardSize;
 	float checkerSquareSize;
 	cv::Mat grayMat;
-
 
 	std::vector<cv::Mat> boardRotations, boardTranslations;
 	float reprojectionError;

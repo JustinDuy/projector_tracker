@@ -1,23 +1,71 @@
-Determining if the Q_WS_WIN exist failed with the following output:
-Change Dir: /home/justin/projector_tracker/release/CMakeFiles/CMakeTmp
+Determining if the pthread_create exist failed with the following output:
+Change Dir: /home/dynadev/projector_tracker/release/CMakeFiles/CMakeTmp
 
-Run Build Command:"/usr/bin/make" "cmTryCompileExec2129884684/fast"
-/usr/bin/make -f CMakeFiles/cmTryCompileExec2129884684.dir/build.make CMakeFiles/cmTryCompileExec2129884684.dir/build
-make[1]: Entering directory '/home/justin/projector_tracker/release/CMakeFiles/CMakeTmp'
-/usr/bin/cmake -E cmake_progress_report /home/justin/projector_tracker/release/CMakeFiles/CMakeTmp/CMakeFiles 1
-Building CXX object CMakeFiles/cmTryCompileExec2129884684.dir/CheckSymbolExists.cxx.o
-/usr/bin/c++    -std=c++11 -pthread  -I/usr/include/qt4    -o CMakeFiles/cmTryCompileExec2129884684.dir/CheckSymbolExists.cxx.o -c /home/justin/projector_tracker/release/CMakeFiles/CMakeTmp/CheckSymbolExists.cxx
-/home/justin/projector_tracker/release/CMakeFiles/CMakeTmp/CheckSymbolExists.cxx: In function ‘int main(int, char**)’:
-/home/justin/projector_tracker/release/CMakeFiles/CMakeTmp/CheckSymbolExists.cxx:8:19: error: ‘Q_WS_WIN’ was not declared in this scope
+Run Build Command:"/home/dynadev/VRMAGIC/dsp_toolchain/xdct_3.16.02.32/xdctools_3_16_02_32/gmake" "cmTC_6b2fc/fast"
+/home/dynadev/VRMAGIC/dsp_toolchain/xdct_3.16.02.32/xdctools_3_16_02_32/gmake -f CMakeFiles/cmTC_6b2fc.dir/build.make CMakeFiles/cmTC_6b2fc.dir/build
+gmake[1]: Entering directory `/home/dynadev/projector_tracker/release/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_6b2fc.dir/CheckSymbolExists.c.o
+/usr/bin/cc    -fPIC    -o CMakeFiles/cmTC_6b2fc.dir/CheckSymbolExists.c.o   -c /home/dynadev/projector_tracker/release/CMakeFiles/CMakeTmp/CheckSymbolExists.c
+Linking C executable cmTC_6b2fc
+/usr/local/bin/cmake -E cmake_link_script CMakeFiles/cmTC_6b2fc.dir/link.txt --verbose=1
+/usr/bin/cc  -fPIC     CMakeFiles/cmTC_6b2fc.dir/CheckSymbolExists.c.o  -o cmTC_6b2fc -rdynamic 
+CMakeFiles/cmTC_6b2fc.dir/CheckSymbolExists.c.o: In function `main':
+CheckSymbolExists.c:(.text+0x1b): undefined reference to `pthread_create'
+collect2: error: ld returned 1 exit status
+gmake[1]: Leaving directory `/home/dynadev/projector_tracker/release/CMakeFiles/CMakeTmp'
+gmake[1]: *** [cmTC_6b2fc] Error 1
+gmake: *** [cmTC_6b2fc/fast] Error 2
+
+File /home/dynadev/projector_tracker/release/CMakeFiles/CMakeTmp/CheckSymbolExists.c:
+/* */
+#include <pthread.h>
+
+int main(int argc, char** argv)
+{
+  (void)argv;
+#ifndef pthread_create
+  return ((int*)(&pthread_create))[argc];
+#else
+  (void)argc;
+  return 0;
+#endif
+}
+
+Determining if the function pthread_create exists in the pthreads failed with the following output:
+Change Dir: /home/dynadev/projector_tracker/release/CMakeFiles/CMakeTmp
+
+Run Build Command:"/home/dynadev/VRMAGIC/dsp_toolchain/xdct_3.16.02.32/xdctools_3_16_02_32/gmake" "cmTC_dea0c/fast"
+/home/dynadev/VRMAGIC/dsp_toolchain/xdct_3.16.02.32/xdctools_3_16_02_32/gmake -f CMakeFiles/cmTC_dea0c.dir/build.make CMakeFiles/cmTC_dea0c.dir/build
+gmake[1]: Entering directory `/home/dynadev/projector_tracker/release/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_dea0c.dir/CheckFunctionExists.c.o
+/usr/bin/cc    -fPIC -DCHECK_FUNCTION_EXISTS=pthread_create   -o CMakeFiles/cmTC_dea0c.dir/CheckFunctionExists.c.o   -c /usr/local/share/cmake-3.4/Modules/CheckFunctionExists.c
+Linking C executable cmTC_dea0c
+/usr/local/bin/cmake -E cmake_link_script CMakeFiles/cmTC_dea0c.dir/link.txt --verbose=1
+/usr/bin/cc  -fPIC -DCHECK_FUNCTION_EXISTS=pthread_create    CMakeFiles/cmTC_dea0c.dir/CheckFunctionExists.c.o  -o cmTC_dea0c -rdynamic -lpthreads 
+/usr/bin/ld: cannot find -lpthreads
+collect2: error: ld returned 1 exit status
+gmake[1]: Leaving directory `/home/dynadev/projector_tracker/release/CMakeFiles/CMakeTmp'
+gmake[1]: *** [cmTC_dea0c] Error 1
+gmake: *** [cmTC_dea0c/fast] Error 2
+
+
+Determining if the Q_WS_WIN exist failed with the following output:
+Change Dir: /home/dynadev/projector_tracker/release/CMakeFiles/CMakeTmp
+
+Run Build Command:"/home/dynadev/VRMAGIC/dsp_toolchain/xdct_3.16.02.32/xdctools_3_16_02_32/gmake" "cmTC_462e4/fast"
+/home/dynadev/VRMAGIC/dsp_toolchain/xdct_3.16.02.32/xdctools_3_16_02_32/gmake -f CMakeFiles/cmTC_462e4.dir/build.make CMakeFiles/cmTC_462e4.dir/build
+gmake[1]: Entering directory `/home/dynadev/projector_tracker/release/CMakeFiles/CMakeTmp'
+Building CXX object CMakeFiles/cmTC_462e4.dir/CheckSymbolExists.cxx.o
+/usr/bin/c++    -I/home/dynadev/anaconda2/include  -std=c++11 -pthread    -o CMakeFiles/cmTC_462e4.dir/CheckSymbolExists.cxx.o -c /home/dynadev/projector_tracker/release/CMakeFiles/CMakeTmp/CheckSymbolExists.cxx
+/home/dynadev/projector_tracker/release/CMakeFiles/CMakeTmp/CheckSymbolExists.cxx: In function ‘int main(int, char**)’:
+/home/dynadev/projector_tracker/release/CMakeFiles/CMakeTmp/CheckSymbolExists.cxx:8:19: error: ‘Q_WS_WIN’ was not declared in this scope
    return ((int*)(&Q_WS_WIN))[argc];
                    ^
-CMakeFiles/cmTryCompileExec2129884684.dir/build.make:57: recipe for target 'CMakeFiles/cmTryCompileExec2129884684.dir/CheckSymbolExists.cxx.o' failed
-make[1]: Leaving directory '/home/justin/projector_tracker/release/CMakeFiles/CMakeTmp'
-make[1]: *** [CMakeFiles/cmTryCompileExec2129884684.dir/CheckSymbolExists.cxx.o] Error 1
-Makefile:118: recipe for target 'cmTryCompileExec2129884684/fast' failed
-make: *** [cmTryCompileExec2129884684/fast] Error 2
+gmake[1]: Leaving directory `/home/dynadev/projector_tracker/release/CMakeFiles/CMakeTmp'
+gmake[1]: *** [CMakeFiles/cmTC_462e4.dir/CheckSymbolExists.cxx.o] Error 1
+gmake: *** [cmTC_462e4/fast] Error 2
 
-File /home/justin/projector_tracker/release/CMakeFiles/CMakeTmp/CheckSymbolExists.cxx:
+File /home/dynadev/projector_tracker/release/CMakeFiles/CMakeTmp/CheckSymbolExists.cxx:
 /* */
 #include <QtCore/qglobal.h>
 
@@ -33,25 +81,22 @@ int main(int argc, char** argv)
 }
 
 Determining if the Q_WS_QWS exist failed with the following output:
-Change Dir: /home/justin/projector_tracker/release/CMakeFiles/CMakeTmp
+Change Dir: /home/dynadev/projector_tracker/release/CMakeFiles/CMakeTmp
 
-Run Build Command:"/usr/bin/make" "cmTryCompileExec3989609561/fast"
-/usr/bin/make -f CMakeFiles/cmTryCompileExec3989609561.dir/build.make CMakeFiles/cmTryCompileExec3989609561.dir/build
-make[1]: Entering directory '/home/justin/projector_tracker/release/CMakeFiles/CMakeTmp'
-/usr/bin/cmake -E cmake_progress_report /home/justin/projector_tracker/release/CMakeFiles/CMakeTmp/CMakeFiles 1
-Building CXX object CMakeFiles/cmTryCompileExec3989609561.dir/CheckSymbolExists.cxx.o
-/usr/bin/c++    -std=c++11 -pthread  -I/usr/include/qt4    -o CMakeFiles/cmTryCompileExec3989609561.dir/CheckSymbolExists.cxx.o -c /home/justin/projector_tracker/release/CMakeFiles/CMakeTmp/CheckSymbolExists.cxx
-/home/justin/projector_tracker/release/CMakeFiles/CMakeTmp/CheckSymbolExists.cxx: In function ‘int main(int, char**)’:
-/home/justin/projector_tracker/release/CMakeFiles/CMakeTmp/CheckSymbolExists.cxx:8:19: error: ‘Q_WS_QWS’ was not declared in this scope
+Run Build Command:"/home/dynadev/VRMAGIC/dsp_toolchain/xdct_3.16.02.32/xdctools_3_16_02_32/gmake" "cmTC_7349c/fast"
+/home/dynadev/VRMAGIC/dsp_toolchain/xdct_3.16.02.32/xdctools_3_16_02_32/gmake -f CMakeFiles/cmTC_7349c.dir/build.make CMakeFiles/cmTC_7349c.dir/build
+gmake[1]: Entering directory `/home/dynadev/projector_tracker/release/CMakeFiles/CMakeTmp'
+Building CXX object CMakeFiles/cmTC_7349c.dir/CheckSymbolExists.cxx.o
+/usr/bin/c++    -I/home/dynadev/anaconda2/include  -std=c++11 -pthread    -o CMakeFiles/cmTC_7349c.dir/CheckSymbolExists.cxx.o -c /home/dynadev/projector_tracker/release/CMakeFiles/CMakeTmp/CheckSymbolExists.cxx
+/home/dynadev/projector_tracker/release/CMakeFiles/CMakeTmp/CheckSymbolExists.cxx: In function ‘int main(int, char**)’:
+/home/dynadev/projector_tracker/release/CMakeFiles/CMakeTmp/CheckSymbolExists.cxx:8:19: error: ‘Q_WS_QWS’ was not declared in this scope
    return ((int*)(&Q_WS_QWS))[argc];
                    ^
-CMakeFiles/cmTryCompileExec3989609561.dir/build.make:57: recipe for target 'CMakeFiles/cmTryCompileExec3989609561.dir/CheckSymbolExists.cxx.o' failed
-make[1]: Leaving directory '/home/justin/projector_tracker/release/CMakeFiles/CMakeTmp'
-make[1]: *** [CMakeFiles/cmTryCompileExec3989609561.dir/CheckSymbolExists.cxx.o] Error 1
-Makefile:118: recipe for target 'cmTryCompileExec3989609561/fast' failed
-make: *** [cmTryCompileExec3989609561/fast] Error 2
+gmake[1]: Leaving directory `/home/dynadev/projector_tracker/release/CMakeFiles/CMakeTmp'
+gmake[1]: *** [CMakeFiles/cmTC_7349c.dir/CheckSymbolExists.cxx.o] Error 1
+gmake: *** [cmTC_7349c/fast] Error 2
 
-File /home/justin/projector_tracker/release/CMakeFiles/CMakeTmp/CheckSymbolExists.cxx:
+File /home/dynadev/projector_tracker/release/CMakeFiles/CMakeTmp/CheckSymbolExists.cxx:
 /* */
 #include <QtCore/qglobal.h>
 
@@ -67,25 +112,22 @@ int main(int argc, char** argv)
 }
 
 Determining if the Q_WS_MAC exist failed with the following output:
-Change Dir: /home/justin/projector_tracker/release/CMakeFiles/CMakeTmp
+Change Dir: /home/dynadev/projector_tracker/release/CMakeFiles/CMakeTmp
 
-Run Build Command:"/usr/bin/make" "cmTryCompileExec1576893769/fast"
-/usr/bin/make -f CMakeFiles/cmTryCompileExec1576893769.dir/build.make CMakeFiles/cmTryCompileExec1576893769.dir/build
-make[1]: Entering directory '/home/justin/projector_tracker/release/CMakeFiles/CMakeTmp'
-/usr/bin/cmake -E cmake_progress_report /home/justin/projector_tracker/release/CMakeFiles/CMakeTmp/CMakeFiles 1
-Building CXX object CMakeFiles/cmTryCompileExec1576893769.dir/CheckSymbolExists.cxx.o
-/usr/bin/c++    -std=c++11 -pthread  -I/usr/include/qt4    -o CMakeFiles/cmTryCompileExec1576893769.dir/CheckSymbolExists.cxx.o -c /home/justin/projector_tracker/release/CMakeFiles/CMakeTmp/CheckSymbolExists.cxx
-/home/justin/projector_tracker/release/CMakeFiles/CMakeTmp/CheckSymbolExists.cxx: In function ‘int main(int, char**)’:
-/home/justin/projector_tracker/release/CMakeFiles/CMakeTmp/CheckSymbolExists.cxx:8:19: error: ‘Q_WS_MAC’ was not declared in this scope
+Run Build Command:"/home/dynadev/VRMAGIC/dsp_toolchain/xdct_3.16.02.32/xdctools_3_16_02_32/gmake" "cmTC_9afda/fast"
+/home/dynadev/VRMAGIC/dsp_toolchain/xdct_3.16.02.32/xdctools_3_16_02_32/gmake -f CMakeFiles/cmTC_9afda.dir/build.make CMakeFiles/cmTC_9afda.dir/build
+gmake[1]: Entering directory `/home/dynadev/projector_tracker/release/CMakeFiles/CMakeTmp'
+Building CXX object CMakeFiles/cmTC_9afda.dir/CheckSymbolExists.cxx.o
+/usr/bin/c++    -I/home/dynadev/anaconda2/include  -std=c++11 -pthread    -o CMakeFiles/cmTC_9afda.dir/CheckSymbolExists.cxx.o -c /home/dynadev/projector_tracker/release/CMakeFiles/CMakeTmp/CheckSymbolExists.cxx
+/home/dynadev/projector_tracker/release/CMakeFiles/CMakeTmp/CheckSymbolExists.cxx: In function ‘int main(int, char**)’:
+/home/dynadev/projector_tracker/release/CMakeFiles/CMakeTmp/CheckSymbolExists.cxx:8:19: error: ‘Q_WS_MAC’ was not declared in this scope
    return ((int*)(&Q_WS_MAC))[argc];
                    ^
-CMakeFiles/cmTryCompileExec1576893769.dir/build.make:57: recipe for target 'CMakeFiles/cmTryCompileExec1576893769.dir/CheckSymbolExists.cxx.o' failed
-make[1]: Leaving directory '/home/justin/projector_tracker/release/CMakeFiles/CMakeTmp'
-make[1]: *** [CMakeFiles/cmTryCompileExec1576893769.dir/CheckSymbolExists.cxx.o] Error 1
-Makefile:118: recipe for target 'cmTryCompileExec1576893769/fast' failed
-make: *** [cmTryCompileExec1576893769/fast] Error 2
+gmake[1]: Leaving directory `/home/dynadev/projector_tracker/release/CMakeFiles/CMakeTmp'
+gmake[1]: *** [CMakeFiles/cmTC_9afda.dir/CheckSymbolExists.cxx.o] Error 1
+gmake: *** [cmTC_9afda/fast] Error 2
 
-File /home/justin/projector_tracker/release/CMakeFiles/CMakeTmp/CheckSymbolExists.cxx:
+File /home/dynadev/projector_tracker/release/CMakeFiles/CMakeTmp/CheckSymbolExists.cxx:
 /* */
 #include <QtCore/qglobal.h>
 
