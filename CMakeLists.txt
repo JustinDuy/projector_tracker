@@ -33,8 +33,8 @@ target_link_libraries(hw_interface ${OpenCV_LIBS} ${QT_LIBRARIES})
 # target_link_libraries(projector_tracker_app projector_tracker hw_interface)
 
 # TEST
-#add_executable(test_node test/test.cpp)
-#target_link_libraries(test_node hw_interface projector_tracker)
+add_executable(test_node test/test.cpp)
+target_link_libraries(test_node hw_interface projector_tracker)
 add_executable(calib_cam test/calib_cam.cpp)
 target_link_libraries(calib_cam hw_interface camera_calibration  )
 add_executable(calib_proj test/calib_proj.cpp)

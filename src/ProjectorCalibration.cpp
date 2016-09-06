@@ -31,7 +31,7 @@ bool ProjectorCalibration::loadSetting(string configFile, string tag_w, string t
 	 cv::FileStorage fs( configFile, cv::FileStorage::READ );
 	if( !fs.isOpened() )
 	{
-	  std::cout << "Failed to open Setting File." << std::endl;
+// 	  std::cout << "Failed to open Setting File." << std::endl;
 	  return false;
 	}
 	// Loading calibration parameters
@@ -136,7 +136,6 @@ void ProjectorCalibration::updateImagePoints(){
     imagePoints.resize(objectPoints.size(), candidateImagePoints);
 }
 bool ProjectorCalibration::calibrate() {
-        //updateImagePoints();
 	if(size() < 1) {
 		cout << "Calibration::calibrate() doesn't have any image data to calibrate from." << endl;
 		return false;

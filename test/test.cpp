@@ -43,12 +43,14 @@ int test_framegrabbing(int argc, char **argv) {
 
 void test_tracker_helper( std::shared_ptr<CameraProjectorInterface> cpi){
     //create cameraprojector interface
-    std::shared_ptr<ProjectorTracker> projTracker = std::make_shared<ProjectorTracker>  (cpi);
+    std::shared_ptr<ProjectorTracker> projTracker = std::make_shared<ProjectorTracker>  ();
     //load configuration for tracking algorithm
-    projTracker->loadSetting("../data/setting.yml", "use aruco pattern", "known 3D Object", "aruco width", "aruco height","aruco board number", "pattern width", "pattern height", "square size");
-    std::vector<cv::Mat> patterns = projTracker->getPatternImages();
-    std::vector<CameraProjectorInterface::CameraProjectorImagePair> cp_img_pairs = cpi->projectAndAcquire(patterns);
-    projTracker->computeRelativePosition(cp_img_pairs);
+    projTracker->loadSetting("../data/setting.yml", "use aruco pattern", "known 3D Object", "aruco width", "aruco height","aruco board number", "pattern width", "pattern height", "square size",
+        "../data/calibrationCamera.yml", "cameraMatrix", "distCoeffs", "imageSize_width", "imageSize_height", "../data/calibrationProjector.yml", "projectorMatrix", "distCoeffs", "projectorWidth", "projectorHeight"
+    );
+    //std::vector<cv::Mat> patterns = projTracker->getPatternImages();
+    //std::vector<CameraProjectorInterface::CameraProjectorImagePair> cp_img_pairs = cpi->projectAndAcquire(patterns);
+    //projTracker->computeRelativePosition(cp_img_pairs);
 }
 void test_cameraprojector_helper( std::shared_ptr<CameraProjectorInterface> cpi) {
     std::vector<cv::Mat> test_images;
@@ -69,7 +71,7 @@ int test_cameraprojector(int argc, char **argv) {
     cam_interface->loadIntrinsics("../data/calibrationCamera.yml", "cameraMatrix", "distCoeffs", "imageSize_width", "imageSize_height"); //C92 HD Webcam
 
     std::shared_ptr<ProjectorInterface> proj_interface= std::make_shared<ProjectorInterface>();
-    proj_interface->loadIntrinsics("../data/calibrationProjector.yml", "cameraMatrix", "distCoeffs", "imageSize_width", "imageSize_height");
+    proj_interface->loadIntrinsics("../data/calibrationProjector.yml", "projectorMatrix", "distCoeffs", "projectorWidth", "projectorHeight");
 
     std::shared_ptr<CameraProjectorInterface> cpi = std::make_shared<CameraProjectorInterface>(cam_interface, proj_interface, 400);
     std::thread t(test_tracker_helper, cpi);

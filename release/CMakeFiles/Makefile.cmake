@@ -18,7 +18,6 @@ set(CMAKE_MAKEFILE_DEPENDS
   "/usr/share/cmake-3.0/Modules/CMakeCInformation.cmake"
   "/usr/share/cmake-3.0/Modules/CMakeCXXInformation.cmake"
   "/usr/share/cmake-3.0/Modules/CMakeCommonLanguageInclude.cmake"
-  "/usr/share/cmake-3.0/Modules/CMakeConfigurableFile.in"
   "/usr/share/cmake-3.0/Modules/CMakeGenericSystem.cmake"
   "/usr/share/cmake-3.0/Modules/CMakeParseArguments.cmake"
   "/usr/share/cmake-3.0/Modules/CMakeSystemSpecificInformation.cmake"
@@ -60,4 +59,5 @@ set(CMAKE_DEPEND_INFO_FILES
   "CMakeFiles/hw_interface.dir/DependInfo.cmake"
   "CMakeFiles/projector_calibration.dir/DependInfo.cmake"
   "CMakeFiles/projector_tracker.dir/DependInfo.cmake"
+  "CMakeFiles/test_node.dir/DependInfo.cmake"
   )

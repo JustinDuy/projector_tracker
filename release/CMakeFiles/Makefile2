@@ -56,8 +56,8 @@ CMAKE_BINARY_DIR = /home/justin/projector_tracker/release
 # Target rules for target CMakeFiles/calib_cam.dir
 
 # All Build rule for target.
-CMakeFiles/calib_cam.dir/all: CMakeFiles/hw_interface.dir/all
 CMakeFiles/calib_cam.dir/all: CMakeFiles/camera_calibration.dir/all
+CMakeFiles/calib_cam.dir/all: CMakeFiles/hw_interface.dir/all
 	$(MAKE) -f CMakeFiles/calib_cam.dir/build.make CMakeFiles/calib_cam.dir/depend
 	$(MAKE) -f CMakeFiles/calib_cam.dir/build.make CMakeFiles/calib_cam.dir/build
 	$(CMAKE_COMMAND) -E cmake_progress_report /home/justin/projector_tracker/release/CMakeFiles  1
@@ -92,8 +92,8 @@ clean: CMakeFiles/calib_cam.dir/clean
 # Target rules for target CMakeFiles/calib_proj.dir
 
 # All Build rule for target.
-CMakeFiles/calib_proj.dir/all: CMakeFiles/hw_interface.dir/all
 CMakeFiles/calib_proj.dir/all: CMakeFiles/projector_calibration.dir/all
+CMakeFiles/calib_proj.dir/all: CMakeFiles/hw_interface.dir/all
 	$(MAKE) -f CMakeFiles/calib_proj.dir/build.make CMakeFiles/calib_proj.dir/depend
 	$(MAKE) -f CMakeFiles/calib_proj.dir/build.make CMakeFiles/calib_proj.dir/build
 	$(CMAKE_COMMAND) -E cmake_progress_report /home/justin/projector_tracker/release/CMakeFiles  2
@@ -262,6 +262,42 @@ CMakeFiles/projector_tracker.dir/clean:
 
 # clean rule for target.
 clean: CMakeFiles/projector_tracker.dir/clean
+.PHONY : clean
+
+#=============================================================================
+# Target rules for target CMakeFiles/test_node.dir
+
+# All Build rule for target.
+CMakeFiles/test_node.dir/all: CMakeFiles/hw_interface.dir/all
+CMakeFiles/test_node.dir/all: CMakeFiles/projector_tracker.dir/all
+	$(MAKE) -f CMakeFiles/test_node.dir/build.make CMakeFiles/test_node.dir/depend
+	$(MAKE) -f CMakeFiles/test_node.dir/build.make CMakeFiles/test_node.dir/build
+	$(CMAKE_COMMAND) -E cmake_progress_report /home/justin/projector_tracker/release/CMakeFiles  10
+	@echo "Built target test_node"
+.PHONY : CMakeFiles/test_node.dir/all
+
+# Include target in all.
+all: CMakeFiles/test_node.dir/all
+.PHONY : all
+
+# Build rule for subdir invocation for target.
+CMakeFiles/test_node.dir/rule: cmake_check_build_system
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/justin/projector_tracker/release/CMakeFiles 6
+	$(MAKE) -f CMakeFiles/Makefile2 CMakeFiles/test_node.dir/all
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/justin/projector_tracker/release/CMakeFiles 0
+.PHONY : CMakeFiles/test_node.dir/rule
+
+# Convenience name for target.
+test_node: CMakeFiles/test_node.dir/rule
+.PHONY : test_node
+
+# clean rule for target.
+CMakeFiles/test_node.dir/clean:
+	$(MAKE) -f CMakeFiles/test_node.dir/build.make CMakeFiles/test_node.dir/clean
+.PHONY : CMakeFiles/test_node.dir/clean
+
+# clean rule for target.
+clean: CMakeFiles/test_node.dir/clean
 .PHONY : clean
 
 #=============================================================================

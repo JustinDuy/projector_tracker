@@ -180,6 +180,19 @@ projector_tracker/fast:
 	$(MAKE) -f CMakeFiles/projector_tracker.dir/build.make CMakeFiles/projector_tracker.dir/build
 .PHONY : projector_tracker/fast
 
+#=============================================================================
+# Target rules for targets named test_node
+
+# Build rule for target.
+test_node: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 test_node
+.PHONY : test_node
+
+# fast build rule for target.
+test_node/fast:
+	$(MAKE) -f CMakeFiles/test_node.dir/build.make CMakeFiles/test_node.dir/build
+.PHONY : test_node/fast
+
 src/CameraCalibration.o: src/CameraCalibration.cpp.o
 .PHONY : src/CameraCalibration.o
 
@@ -396,6 +409,30 @@ test/calib_proj.cpp.s:
 	$(MAKE) -f CMakeFiles/calib_proj.dir/build.make CMakeFiles/calib_proj.dir/test/calib_proj.cpp.s
 .PHONY : test/calib_proj.cpp.s
 
+test/test.o: test/test.cpp.o
+.PHONY : test/test.o
+
+# target to build an object file
+test/test.cpp.o:
+	$(MAKE) -f CMakeFiles/test_node.dir/build.make CMakeFiles/test_node.dir/test/test.cpp.o
+.PHONY : test/test.cpp.o
+
+test/test.i: test/test.cpp.i
+.PHONY : test/test.i
+
+# target to preprocess a source file
+test/test.cpp.i:
+	$(MAKE) -f CMakeFiles/test_node.dir/build.make CMakeFiles/test_node.dir/test/test.cpp.i
+.PHONY : test/test.cpp.i
+
+test/test.s: test/test.cpp.s
+.PHONY : test/test.s
+
+# target to generate assembly for a file
+test/test.cpp.s:
+	$(MAKE) -f CMakeFiles/test_node.dir/build.make CMakeFiles/test_node.dir/test/test.cpp.s
+.PHONY : test/test.cpp.s
+
 # Help Target
 help:
 	@echo "The following are some of the valid targets for this Makefile:"
@@ -410,6 +447,7 @@ help:
 	@echo "... projector_calibration"
 	@echo "... projector_tracker"
 	@echo "... rebuild_cache"
+	@echo "... test_node"
 	@echo "... src/CameraCalibration.o"
 	@echo "... src/CameraCalibration.i"
 	@echo "... src/CameraCalibration.s"
@@ -437,6 +475,9 @@ help:
 	@echo "... test/calib_proj.o"
 	@echo "... test/calib_proj.i"
 	@echo "... test/calib_proj.s"
+	@echo "... test/test.o"
+	@echo "... test/test.i"
+	@echo "... test/test.s"
 .PHONY : help
 
 

@@ -64,7 +64,7 @@ protected:
 	cv::Size ImagerSize;
 
 	//circle grid parameters:
-        int patternType;
+	CalibrationPattern patternType;
 	cv::Size patternSize;
 	float squareSize;
 	cv::Point2f patternPosition ;//start drawing pattern at (corner_x, corner_y) on projector screen
@@ -87,8 +87,7 @@ protected:
 	cv::Mat distortedIntrinsics;
 	cv::Mat undistortedIntrinsics;
         cv::Mat distCoeffs;
-	//CalibrationPattern patternType;
-        
+
         //extrinsic cam to projector
         cv::Mat rotCamToProj;
         cv::Mat transCamToProj;
