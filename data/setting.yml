@@ -7,3 +7,6 @@ aruco board number: 20
 pattern width: 10
 pattern height: 7
 square size: 2.4
+max reprojection error: 0.5
+numBoardsBeforeCleaning: 8
+numBoardsFinalCamera: 6

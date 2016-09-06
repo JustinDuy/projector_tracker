@@ -57,6 +57,8 @@ projector_tracker/CameraProjectorInterface.h
 -
 opencv2/core.hpp
 -
+opencv2/aruco/charuco.hpp
+-
 
 /home/justin/projector_tracker/test/test.cpp
 projector_tracker/CameraProjectorInterface.h
@@ -73,6 +75,26 @@ iostream
 /opt/ros/jade/include/opencv-3.1.0-dev/opencv/cxcore.h
 opencv2/core/core_c.h
 /opt/ros/jade/include/opencv-3.1.0-dev/opencv/opencv2/core/core_c.h
+
+/opt/ros/jade/include/opencv-3.1.0-dev/opencv2/aruco.hpp
+opencv2/core.hpp
+-
+vector
+-
+opencv2/aruco/dictionary.hpp
+/opt/ros/jade/include/opencv-3.1.0-dev/opencv2/opencv2/aruco/dictionary.hpp
+
+/opt/ros/jade/include/opencv-3.1.0-dev/opencv2/aruco/charuco.hpp
+opencv2/core.hpp
+-
+vector
+-
+opencv2/aruco.hpp
+-
+
+/opt/ros/jade/include/opencv-3.1.0-dev/opencv2/aruco/dictionary.hpp
+opencv2/core.hpp
+-
 
 /opt/ros/jade/include/opencv-3.1.0-dev/opencv2/calib3d.hpp
 opencv2/core.hpp

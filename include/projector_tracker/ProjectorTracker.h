@@ -4,7 +4,7 @@
 
 #include <projector_tracker/CameraProjectorInterface.h>
 #include <opencv2/core.hpp>
-
+#include <opencv2/aruco/charuco.hpp>
 const unsigned int DEFAULT_BLACK_THRESHOLD = 40;  // 3D_underworld default value 40
 const unsigned int DEFAULT_WHITE_THRESHOLD = 5;   // 3D_underworld default value  5
 using namespace std;
@@ -27,11 +27,12 @@ public:
     *
     * @param std::string matrix_file, std::string tag,...
     */
-    bool loadSetting(std::string matrix_file , std::string tag_aruco, std::string tag_known, std::string tag_arucoW, std::string arucoH, std::string tag_arucoNu, 
-                     std::string tag_PatternW, std::string tag_PatternH, std::string tag_Square,
-                     std::string cam_intrinsic, std::string tag_cam_k, std::string tag_cam_d,  std::string tag_cam_w, std::string tag_cam_h, 
-                     std::string pro_intrinsic, std::string tag_pro_k, std::string tag_pro_d ,std::string tag_pro_w, std::string tag_pro_h
-    );
+    bool loadSetting(std::string matrix_file , std::string tag_useAruco, std::string tag_knownObj, std::string tag_arucoW, std::string tag_arucoH, std::string tag_arucoNu, 
+                                   std::string tag_PatternW, std::string tag_PatternH, std::string tag_Square,
+                                   std::string tag_reproj_err, std::string tag_num_before_clean, std::string tag_num_before_calib,
+                                   std::string cam_intrinsic, std::string tag_cam_k, std::string tag_cam_d,  std::string tag_cam_w, std::string tag_cam_h, 
+                                   std::string pro_intrinsic, std::string tag_pro_k, std::string tag_pro_d ,std::string tag_pro_w, std::string tag_pro_h
+                                  );
     /**
     * @brief Creates a Gray code pattern/Aruco board to be projected by the projector
     * 
@@ -78,21 +79,25 @@ public:
     */
     bool addProjected(const cv::Mat& patternImg, const cv::Mat& projectedImg) ;
     bool stereoCalibrate();
+    bool calibrateProjector();
+
     static std::vector<Point3f> createObjectPoints(cv::Size patternSize, float squareSize, CalibrationPattern patternType);
     //cv::Mat computeRelativePosition(const std::vector<CameraProjectorImagePair>& camera_image);
     //void computeRt_knownObjectPoints(const std::vector<CameraProjectorImagePair>& cp_images, std::vector<std::vector<cv::Point2f> > camPxls, std::vector<std::vector<cv::Point2f> > projPxls, cv::Mat& transCamToProj );
 
     //bool computeRt_unknownObjectPoints( std::vector<std::vector<cv::Point2f> >& camPixels, std::vector<std::vector<cv::Point2f> >& projPixels, cv::Mat& transCamToProj);
     
-    void drawAruco(const cv::Mat& img, std::vector<cv::Point2f> arucoPts, std::vector<int> arucoIds);
-    bool findAruco(const cv::Mat& img, vector<cv::Point2f>& pointBuf);
+    void drawAruco(const cv::Mat& img, std::vector<cv::Point2f> checkerCorners, std::vector<std::vector<cv::Point2f> > arucoPts, std::vector<int> arucoIds);
+    bool findAruco(const cv::Mat& img, std::vector<std::vector<cv::Point2f> >& pointBuf, std::vector<int>& cam_ids);
     int size() const;
-    bool clean();
+
     float getReprojectionError() const;
     float getReprojectionError(int i) const;
     void updateReprojectionError();
+    int cleanStereo();
     float maxReprojectionError;
     
+    std::vector<cv::Mat> boardRotations, boardTranslations;
     float reprojectionError;
     std::vector<float> perViewErrors;
     
@@ -119,19 +124,25 @@ public:
     
 //protected:
 //    std::shared_ptr<CameraProjectorInterface> cp_interface;  // Gives synchronized access to camera and projector
-
+    void saveExtrinsic(string filename) const;
+    void saveProjectorIntrinsic(string filename) const ;
 private:
     cv::Mat pattern;  /// cached pattern
-    void saveExtrinsics(cv::Mat R, cv::Mat t, std::string filename) ;
+
     bool known3DObj;
     bool useAruco;
     int arucoNu;
     int arucoW;
     int arucoH;
     
+    aruco::Dictionary dictionary ;
+    aruco::CharucoBoard  board ;
+    
     cv::Size checkerBoardSize;
     double checkerSquareSize;
-
+    
+    bool intrinsic_ready;
+    bool extrinsic_ready;
 };
 
 #endif // PROJECTORTRACKER_H

@@ -203,10 +203,9 @@ void ProjectorCalibration::updateReprojectionError() {
 }
 void ProjectorCalibration::save(string filename, bool absolute) const {
 	if(!ready){
-		cout << "Calibration::save() failed, because your calibration isn't ready yet!" << endl;
+		cout << "ProjectorCalibration::save() failed, because your calibration isn't ready yet!" << endl;
 	}
 	FileStorage fs(filename, FileStorage::WRITE);
-	cv::Size imageSize = addedImageSize;
 	fs << "projectorMatrix" << distortedIntrinsics;
 	fs << "projectorWidth" << projectorWidth;
 	fs << "projectorHeight" << projectorHeight;

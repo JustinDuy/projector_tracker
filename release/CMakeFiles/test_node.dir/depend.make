@@ -8,6 +8,9 @@ CMakeFiles/test_node.dir/test/test.cpp.o: ../include/projector_tracker/Projector
 CMakeFiles/test_node.dir/test/test.cpp.o: ../include/projector_tracker/ProjectorTracker.h
 CMakeFiles/test_node.dir/test/test.cpp.o: ../test/test.cpp
 CMakeFiles/test_node.dir/test/test.cpp.o: /opt/ros/jade/include/opencv-3.1.0-dev/opencv/cxcore.h
+CMakeFiles/test_node.dir/test/test.cpp.o: /opt/ros/jade/include/opencv-3.1.0-dev/opencv2/aruco.hpp
+CMakeFiles/test_node.dir/test/test.cpp.o: /opt/ros/jade/include/opencv-3.1.0-dev/opencv2/aruco/charuco.hpp
+CMakeFiles/test_node.dir/test/test.cpp.o: /opt/ros/jade/include/opencv-3.1.0-dev/opencv2/aruco/dictionary.hpp
 CMakeFiles/test_node.dir/test/test.cpp.o: /opt/ros/jade/include/opencv-3.1.0-dev/opencv2/calib3d.hpp
 CMakeFiles/test_node.dir/test/test.cpp.o: /opt/ros/jade/include/opencv-3.1.0-dev/opencv2/calib3d/calib3d_c.h
 CMakeFiles/test_node.dir/test/test.cpp.o: /opt/ros/jade/include/opencv-3.1.0-dev/opencv2/core.hpp

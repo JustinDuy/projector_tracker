@@ -1,0 +1,17 @@
+%YAML:1.0
+projectorWidth: 1280
+projectorHeight: 720
+cameraWidth: 1920
+cameraHeight: 1080
+rotation: !!opencv-matrix
+   rows: 3
+   cols: 1
+   dt: d
+   data: [ 1.0676075039326988e-01, -6.0919861858718033e-02,
+       2.7757965047766811e-04 ]
+translation: !!opencv-matrix
+   rows: 3
+   cols: 1
+   dt: d
+   data: [ -6.8830723840942794e+00, -2.3801415682025562e+00,
+       6.2050024331548542e+01 ]

@@ -57,6 +57,8 @@ projector_tracker/CameraProjectorInterface.h
 -
 opencv2/core.hpp
 -
+opencv2/aruco/charuco.hpp
+-
 
 /home/justin/projector_tracker/src/ProjectorTracker.cpp
 projector_tracker/ProjectorTracker.h
@@ -72,8 +74,6 @@ iostream
 stdexcept
 -
 string
--
-opencv2/aruco/charuco.hpp
 -
 
 /opt/ros/jade/include/opencv-3.1.0-dev/opencv/cxcore.h
