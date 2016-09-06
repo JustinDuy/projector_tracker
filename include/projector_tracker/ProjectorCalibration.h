@@ -47,6 +47,7 @@ public:
 	int numBoardsFinalCamera;
 	int numBoardsBeforeCleaning;
 	void getPattern(Mat& out);
+        void updateImagePoints();
 private:
 	vector<cv::Point2f> candidateImagePoints;
      	std::vector<std::vector<cv::Point2f> > cam_imagePoints;
@@ -63,6 +64,7 @@ protected:
 	cv::Size ImagerSize;
 
 	//circle grid parameters:
+        int patternType;
 	cv::Size patternSize;
 	float squareSize;
 	cv::Point2f patternPosition ;//start drawing pattern at (corner_x, corner_y) on projector screen

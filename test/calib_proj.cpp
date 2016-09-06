@@ -70,18 +70,18 @@ bool calibrateProjector(cv::Mat img, std::shared_ptr<ProjectorCalibration> calib
 
                 cout << "Cleaning" << endl;
 
-                //calibrationProjector->clean();
+                calibrationProjector->clean();
 
-                /*if(calibrationProjector->getReprojectionError(calibrationProjector->size()-1) > calibrationProjector->maxReprojectionError) {
+                if(calibrationProjector->getReprojectionError(calibrationProjector->size()-1) > calibrationProjector->maxReprojectionError) {
                         cout << "Board found, but reproj. error is too high, skipping" << endl;
                         return false;
-                }*/
+                }
         }
 
         if (calibrationProjector->size()>= calibrationProjector->numBoardsFinalCamera) {
                 if(calibrationProjector->getReprojectionError() < calibrationProjector->maxReprojectionError)
                 {
-                        //calibrationProjector->save("../data/calibrationProjector.yml");
+                        calibrationProjector->save("../data/calibrationProjector.yml");
                         cout << "Projector calibration finished & saved to calibrationProjector.yml" << endl;
                         bCalibDone = true;
                 }

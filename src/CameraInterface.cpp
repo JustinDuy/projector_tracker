@@ -12,8 +12,8 @@ CameraInterface::CameraInterface(int device_number)
     }
     //only for cam calibration
     capture.set(CV_CAP_PROP_FPS,10);
-    capture.set(CV_CAP_PROP_FRAME_WIDTH, 1280);
-    capture.set(CV_CAP_PROP_FRAME_HEIGHT, 720);
+    capture.set(CV_CAP_PROP_FRAME_WIDTH, 1920);
+    capture.set(CV_CAP_PROP_FRAME_HEIGHT, 1080);
      
     std::cout << "init camera done" << std::endl;
 }

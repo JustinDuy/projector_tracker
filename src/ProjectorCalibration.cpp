@@ -131,17 +131,18 @@ float ProjectorCalibration::getReprojectionError() const {
 float ProjectorCalibration::getReprojectionError(int i) const {
     return perViewErrors[i];
 }
-
+void ProjectorCalibration::updateImagePoints(){
+    setStaticCandidateImagePoints();
+    imagePoints.resize(objectPoints.size(), candidateImagePoints);
+}
 bool ProjectorCalibration::calibrate() {
+        //updateImagePoints();
 	if(size() < 1) {
 		cout << "Calibration::calibrate() doesn't have any image data to calibrate from." << endl;
 		return false;
 	}
 	cout << "pose #"<< size() << endl;
 	//Mat cameraMatrix = Mat::eye(3, 3, CV_64F);
-
-    //updateImagePoints();
-
 
 	int calibFlags = 0;
 	float rms = calibrateCamera(objectPoints, imagePoints, ImagerSize, distortedIntrinsics, distCoeffs, boardRotations, boardTranslations, calibFlags);
@@ -261,7 +262,7 @@ bool ProjectorCalibration::add(const Mat& img, const Mat& processedImg,  vector<
         params.minDistBetweenBlobs = 5;
         Ptr<FeatureDetector> blobDetector = SimpleBlobDetector::create(params);
 
-        bool bProjectedPatternFound = cv::findCirclesGrid(processedImg, patternSize, circlesImgPts, cv::CALIB_CB_ASYMMETRIC_GRID, blobDetector);
+        bool bProjectedPatternFound = cv::findCirclesGrid(processedImg, patternSize, circlesImgPts, patternType, blobDetector);
         
         if(bProjectedPatternFound){
             cout << "found circle grid" << endl;
@@ -320,10 +321,10 @@ else
 		imgPt_h.at<float>(1,h) = imgPt[h].y;
 		imgPt_h.at<float>(2,h) = 1.0f;
 	}
-	//Mat Kinv64 = cam_intrinsics.inv();
+	//Mat Kinv64 = cam_distortedIntrinsics.inv();
 	//use cam_undistorted_intrinsics
 	Mat cam_undistorted_intrinsics = getOptimalNewCameraMatrix(cam_distortedIntrinsics, cam_distortion_coeffs, addedImageSize, 1); //fillFrame ? 0 : 1s
-    Mat Kinv64 = cam_undistorted_intrinsics.inv();
+        Mat Kinv64 = cam_undistorted_intrinsics.inv();
 	Mat Kinv,boardRot,boardTrans;
 	Kinv64.convertTo(Kinv, CV_32F);
 	boardRot64.convertTo(boardRot, CV_32F);
