@@ -717,7 +717,14 @@ void ProjectorTracker::saveExtrinsic(string filename) const{
     fs << "translation" << transCamToProj;
     fs.release();
 }
-    
+bool ProjectorTracker::getCamToProjRotation(Mat& rot){
+    rot = rotCamToProj;
+    return extrinsic_ready;
+}
+bool ProjectorTracker::getCamToProjTranslation(Mat& t){
+    t = transCamToProj;
+    return extrinsic_ready;
+}
 void ProjectorTracker::saveProjectorIntrinsic(string filename) const {
     if(!intrinsic_ready){
         cout << "ProjectorTracker::saveProjectorIntrinsic() failed, because your calibration isn't ready yet!" << endl;
@@ -763,6 +770,7 @@ bool ProjectorTracker::stereoCalibrate(){
             cout <<  "ProjectorTracker::stereoCalibrate() succeeded to calibrate the projector" << endl;
     }
     cout << "Stereo calib reprojection error : " << reprojErr << endl;
+    extrinsic_ready = extrinsic_ready && reprojErr < maxReprojectionError;
     //updateReprojectionError();
     //updateUndistortion();
     //if(reprojErr < maxReprojectionError) {

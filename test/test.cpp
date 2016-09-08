@@ -81,6 +81,7 @@ bool calib_proj( std::shared_ptr<CameraProjectorInterface> cpi){
                         projTracker->saveProjectorIntrinsic("../data/calibrationProjector.yml");
                         cout << "Projector calibration finished & saved to calibrationProjector.yml" << endl;
                         projTracker->stereoCalibrate();
+                        cout << "Camera Projector extrinsic calibrated & saved to cam_proj_trans.yml" << endl;
                         projTracker->saveExtrinsic("../data/cam_proj_trans.yml");
                         finished = true;
                 }

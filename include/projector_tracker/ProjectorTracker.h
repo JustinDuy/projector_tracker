@@ -33,12 +33,41 @@ public:
                                    std::string cam_intrinsic, std::string tag_cam_k, std::string tag_cam_d,  std::string tag_cam_w, std::string tag_cam_h, 
                                    std::string pro_intrinsic, std::string tag_pro_k, std::string tag_pro_d ,std::string tag_pro_w, std::string tag_pro_h
                                   );
+    void loadIntrinsic(string camcalib, string tag_k, string tag_d,  std::string tag_w, std::string tag_h, bool forProjector);
+    void saveExtrinsic(string filename) const;
+    void saveProjectorIntrinsic(string filename) const ;
+    
+    bool getCamToProjRotation(Mat& rot);
+    bool getCamToProjTranslation(Mat& trans);
+    
+    
     /**
     * @brief Creates a Gray code pattern/Aruco board to be projected by the projector
     * 
     * @return std::vector<cv::Mat>
     */
     std::vector<cv::Mat> getPatternImages();
+    
+    bool addProjected(const cv::Mat& patternImg, const cv::Mat& projectedImg) ;
+    bool stereoCalibrate();
+    bool calibrateProjector();
+    int size() const;
+    float getReprojectionError() const;
+    float getReprojectionError(int i) const;
+    int cleanStereo();
+    float maxReprojectionError;
+    int numBoardsFinalCamera;
+    int numBoardsBeforeCleaning;
+
+        
+    //cv::Mat computeRelativePosition(const std::vector<CameraProjectorImagePair>& camera_image);
+    //void computeRt_knownObjectPoints(const std::vector<CameraProjectorImagePair>& cp_images, std::vector<std::vector<cv::Point2f> > camPxls, std::vector<std::vector<cv::Point2f> > projPxls, cv::Mat& transCamToProj );
+    //bool computeRt_unknownObjectPoints( std::vector<std::vector<cv::Point2f> >& camPixels, std::vector<std::vector<cv::Point2f> >& projPixels, cv::Mat& transCamToProj);
+protected:
+    static std::vector<Point3f> createObjectPoints(cv::Size patternSize, float squareSize, CalibrationPattern patternType);
+    void updateReprojectionError();
+    void drawAruco(const cv::Mat& img, std::vector<cv::Point2f> checkerCorners, std::vector<std::vector<cv::Point2f> > arucoPts, std::vector<int> arucoIds);
+    bool findAruco(const cv::Mat& img, std::vector<std::vector<cv::Point2f> >& pointBuf, std::vector<int>& cam_ids);
     /**
     * @brief find the 2D points of calibration board on camera image
     * @param const Mat& img, bool refine
@@ -71,45 +100,15 @@ public:
                                         const cv::Mat& boardTrans64,
                                         const std::vector<cv::Point2f>& imgPt,
                                         std::vector<cv::Point3f>& worldPt);
-    /**
-    * @brief Given the current frame grabbed by the camera, compute the relative position of the projector.
-    * 
-    * @param camera_image Current frame as grabbed by the RGB camera.
-    * @return cv::Mat
-    */
-    bool addProjected(const cv::Mat& patternImg, const cv::Mat& projectedImg) ;
-    bool stereoCalibrate();
-    bool calibrateProjector();
 
-    static std::vector<Point3f> createObjectPoints(cv::Size patternSize, float squareSize, CalibrationPattern patternType);
-    //cv::Mat computeRelativePosition(const std::vector<CameraProjectorImagePair>& camera_image);
-    //void computeRt_knownObjectPoints(const std::vector<CameraProjectorImagePair>& cp_images, std::vector<std::vector<cv::Point2f> > camPxls, std::vector<std::vector<cv::Point2f> > projPxls, cv::Mat& transCamToProj );
-
-    //bool computeRt_unknownObjectPoints( std::vector<std::vector<cv::Point2f> >& camPixels, std::vector<std::vector<cv::Point2f> >& projPixels, cv::Mat& transCamToProj);
-    
-    void drawAruco(const cv::Mat& img, std::vector<cv::Point2f> checkerCorners, std::vector<std::vector<cv::Point2f> > arucoPts, std::vector<int> arucoIds);
-    bool findAruco(const cv::Mat& img, std::vector<std::vector<cv::Point2f> >& pointBuf, std::vector<int>& cam_ids);
-    int size() const;
-
-    float getReprojectionError() const;
-    float getReprojectionError(int i) const;
-    void updateReprojectionError();
-    int cleanStereo();
-    float maxReprojectionError;
-    
-    std::vector<cv::Mat> boardRotations, boardTranslations;
-    float reprojectionError;
-    std::vector<float> perViewErrors;
-    
-    int numBoardsFinalCamera;
-    int numBoardsBeforeCleaning;
-    
     std::vector<std::vector<cv::Point3f> > objectPoints;
     std::vector<std::vector<cv::Point2f> > cam_imgPoints;
     std::vector<std::vector<cv::Point2f> > pro_imgPoints;
     cv::Size addedImageSize;
     cv::Size ImagerSize;
-    
+    std::vector<cv::Mat> boardRotations, boardTranslations;
+    float reprojectionError;
+    std::vector<float> perViewErrors;
     cv::Mat projectorMatrix     ;
     cv::Mat projectorDistCoeffs ;
     cv::Mat cameraMatrix        ;
@@ -119,13 +118,9 @@ public:
     cv::Mat rotCamToProj;
     cv::Mat transCamToProj;
     cv::Mat fundamentalMatrix, essentialMatrix;
-    
-    void loadIntrinsic(string camcalib, string tag_k, string tag_d,  std::string tag_w, std::string tag_h, bool forProjector);
-    
 //protected:
 //    std::shared_ptr<CameraProjectorInterface> cp_interface;  // Gives synchronized access to camera and projector
-    void saveExtrinsic(string filename) const;
-    void saveProjectorIntrinsic(string filename) const ;
+
 private:
     cv::Mat pattern;  /// cached pattern
 

@@ -11,7 +11,7 @@ CameraInterface::CameraInterface(int device_number)
       std::cerr << "Error: camera device is not opened!" << std::endl;
     }
     //only for cam calibration
-    capture.set(CV_CAP_PROP_FPS,10);
+    capture.set(CV_CAP_PROP_FPS, 8);
     capture.set(CV_CAP_PROP_FRAME_WIDTH, 1920);
     capture.set(CV_CAP_PROP_FRAME_HEIGHT, 1080);
      
