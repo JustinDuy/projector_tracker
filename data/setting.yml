@@ -1,6 +1,6 @@
 %YAML:1.0
 use aruco pattern: 1
-known 3D Object: 1
+known 3D Object: 0
 aruco width: 5
 aruco height: 7
 aruco board number: 20

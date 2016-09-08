@@ -47,8 +47,15 @@ public:
     * @return std::vector<cv::Mat>
     */
     std::vector<cv::Mat> getPatternImages();
-    
-    bool addProjected(const cv::Mat& patternImg, const cv::Mat& projectedImg) ;
+    bool run(const Mat& patternImg, const Mat& projectedImg);
+    bool known3DObj_calib(const Mat& patternImg, const Mat& captured);
+    bool unknown3DObj_calib(const Mat& patternImg, const Mat& captured);
+    //cv::Mat computeRelativePosition(const std::vector<CameraProjectorImagePair>& camera_image);
+    //void computeRt_knownObjectPoints(const std::vector<CameraProjectorImagePair>& cp_images, std::vector<std::vector<cv::Point2f> > camPxls, std::vector<std::vector<cv::Point2f> > projPxls, cv::Mat& transCamToProj );
+    //bool computeRt_unknownObjectPoints( std::vector<std::vector<cv::Point2f> >& camPixels, std::vector<std::vector<cv::Point2f> >& projPixels, cv::Mat& transCamToProj);
+protected:
+    bool addProjected(const cv::Mat& patternImg, const cv::Mat& projectedImg);
+    bool addProjected2D(const Mat& patternImg, const Mat& projectedImg);
     bool stereoCalibrate();
     bool calibrateProjector();
     int size() const;
@@ -58,22 +65,20 @@ public:
     float maxReprojectionError;
     int numBoardsFinalCamera;
     int numBoardsBeforeCleaning;
-
-        
-    //cv::Mat computeRelativePosition(const std::vector<CameraProjectorImagePair>& camera_image);
-    //void computeRt_knownObjectPoints(const std::vector<CameraProjectorImagePair>& cp_images, std::vector<std::vector<cv::Point2f> > camPxls, std::vector<std::vector<cv::Point2f> > projPxls, cv::Mat& transCamToProj );
-    //bool computeRt_unknownObjectPoints( std::vector<std::vector<cv::Point2f> >& camPixels, std::vector<std::vector<cv::Point2f> >& projPixels, cv::Mat& transCamToProj);
-protected:
+    
     static std::vector<Point3f> createObjectPoints(cv::Size patternSize, float squareSize, CalibrationPattern patternType);
     void updateReprojectionError();
-    void drawAruco(const cv::Mat& img, std::vector<cv::Point2f> checkerCorners, std::vector<std::vector<cv::Point2f> > arucoPts, std::vector<int> arucoIds);
+    
+    void drawCheckerBoard(const cv::Mat& img, std::vector<cv::Point2f> checkerCorners, cv::Mat& out);
+    void drawAruco(const cv::Mat& img, std::vector<std::vector<cv::Point2f> > arucoPts, std::vector<int> arucoIds,  cv::Mat& out);
+    
     bool findAruco(const cv::Mat& img, std::vector<std::vector<cv::Point2f> >& pointBuf, std::vector<int>& cam_ids);
     /**
     * @brief find the 2D points of calibration board on camera image
     * @param const Mat& img, bool refine
     * @return bool
     */
-    bool findBoard(const cv::Mat& img, std::vector<cv::Point2f>& pointBuf, bool refine);
+    //bool findBoard(const cv::Mat& img, std::vector<cv::Point2f>& pointBuf, bool refine);
     /**
     * @brief detect charuco board on projector and camera image to establish correspondence
     * @param const cv::Mat& projected, const cv::Mat& acquired

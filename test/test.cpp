@@ -55,38 +55,7 @@ bool calib_proj( std::shared_ptr<CameraProjectorInterface> cpi){
     while(!finished){
         CameraProjectorInterface::CameraProjectorImagePair img_pair= cpi->projectAndAcquire(test_image);
         Mat captured = img_pair.acquired;
-        bool addOK = projTracker->addProjected(test_image, captured);
-        if(addOK) projTracker->calibrateProjector();
-        //display for debug
-        cv::namedWindow( "captured", cv:: WINDOW_NORMAL );// Create a window for display.
-        resizeWindow( "captured", 640, 480 );
-        // Moving window of captured to see the image at first screen
-        moveWindow( "captured", 640, 0 );
-	imshow( "captured", captured );                   // Show our image inside it.
-	waitKey(5);
-        if(projTracker->size() >= projTracker->numBoardsBeforeCleaning) {
-
-                cout << "Cleaning" << endl;
-
-                projTracker->cleanStereo();
-
-                if(projTracker->getReprojectionError(projTracker->size()-1) > projTracker->maxReprojectionError) {
-                        cout << "Board found, but reproj. error is too high, skipping" << endl;
-                }
-        }
-
-        if (projTracker->size()>= projTracker->numBoardsFinalCamera) {
-                if(projTracker->getReprojectionError() < projTracker->maxReprojectionError)
-                {
-                        projTracker->saveProjectorIntrinsic("../data/calibrationProjector.yml");
-                        cout << "Projector calibration finished & saved to calibrationProjector.yml" << endl;
-                        projTracker->stereoCalibrate();
-                        cout << "Camera Projector extrinsic calibrated & saved to cam_proj_trans.yml" << endl;
-                        projTracker->saveExtrinsic("../data/cam_proj_trans.yml");
-                        finished = true;
-                }
-                
-        }
+        finished = projTracker->run(test_image, captured);
     }
    
 
