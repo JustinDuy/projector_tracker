@@ -1,12 +1,13 @@
 %YAML:1.0
 use aruco pattern: 1
-known 3D Object: 0
+known 3D Object: 1
 aruco width: 5
 aruco height: 7
 aruco board number: 20
 pattern width: 10
 pattern height: 7
 square size: 2.4
-max reprojection error: 0.6
+max intrinsic reprojection error : 0.7
+max extrinsic reprojection error: 5
 numBoardsBeforeCleaning: 8
 numBoardsFinalCamera: 6

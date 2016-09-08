@@ -29,7 +29,7 @@ public:
     */
     bool loadSetting(std::string matrix_file , std::string tag_useAruco, std::string tag_knownObj, std::string tag_arucoW, std::string tag_arucoH, std::string tag_arucoNu, 
                                    std::string tag_PatternW, std::string tag_PatternH, std::string tag_Square,
-                                   std::string tag_reproj_err, std::string tag_num_before_clean, std::string tag_num_before_calib,
+                                   std::string tag_in_reproj_err , std::string tag_ex_reproj_err,std::string tag_num_before_clean, std::string tag_num_before_calib,
                                    std::string cam_intrinsic, std::string tag_cam_k, std::string tag_cam_d,  std::string tag_cam_w, std::string tag_cam_h, 
                                    std::string pro_intrinsic, std::string tag_pro_k, std::string tag_pro_d ,std::string tag_pro_w, std::string tag_pro_h
                                   );
@@ -37,9 +37,27 @@ public:
     void saveExtrinsic(string filename) const;
     void saveProjectorIntrinsic(string filename) const ;
     
+    /**
+    * @brief get rotation from camera to projector if the calibration is ready
+    * @output rot
+    * @return false if calibration not ready
+    */
     bool getCamToProjRotation(Mat& rot);
+    
+    /**
+    * @brief get translation from camera to projector if the calibration is ready
+    * @output translation
+    * @return false if calibration not ready
+    */
     bool getCamToProjTranslation(Mat& trans);
     
+        
+    /**
+    * @brief do the calibration according to mode defined in setting.yml
+    * @input patternImg (projector image) and projected image that is captured by the camera
+    * @return false if calibration not ready
+    */
+    bool run(const Mat& patternImg, const Mat& projectedImg);
     
     /**
     * @brief Creates a Gray code pattern/Aruco board to be projected by the projector
@@ -47,22 +65,26 @@ public:
     * @return std::vector<cv::Mat>
     */
     std::vector<cv::Mat> getPatternImages();
-    bool run(const Mat& patternImg, const Mat& projectedImg);
-    bool known3DObj_calib(const Mat& patternImg, const Mat& captured);
-    bool unknown3DObj_calib(const Mat& patternImg, const Mat& captured);
-    //cv::Mat computeRelativePosition(const std::vector<CameraProjectorImagePair>& camera_image);
-    //void computeRt_knownObjectPoints(const std::vector<CameraProjectorImagePair>& cp_images, std::vector<std::vector<cv::Point2f> > camPxls, std::vector<std::vector<cv::Point2f> > projPxls, cv::Mat& transCamToProj );
-    //bool computeRt_unknownObjectPoints( std::vector<std::vector<cv::Point2f> >& camPixels, std::vector<std::vector<cv::Point2f> >& projPixels, cv::Mat& transCamToProj);
+
+
 protected:
-    bool addProjected(const cv::Mat& patternImg, const cv::Mat& projectedImg);
+    int size() const;
+        
+    bool unknown3DObj_calib(const Mat& patternImg, const Mat& captured);
     bool addProjected2D(const Mat& patternImg, const Mat& projectedImg);
+    
+    
+    bool known3DObj_calib(const Mat& patternImg, const Mat& captured);
+    bool addProjected(const cv::Mat& patternImg, const cv::Mat& projectedImg);
     bool stereoCalibrate();
     bool calibrateProjector();
-    int size() const;
     float getReprojectionError() const;
     float getReprojectionError(int i) const;
     int cleanStereo();
-    float maxReprojectionError;
+    
+    
+    float maxExtrinsicReprojectionError;
+    float maxIntrinsicReprojectionError;
     int numBoardsFinalCamera;
     int numBoardsBeforeCleaning;
     
@@ -70,9 +92,8 @@ protected:
     void updateReprojectionError();
     
     void drawCheckerBoard(const cv::Mat& img, std::vector<cv::Point2f> checkerCorners, cv::Mat& out);
-    void drawAruco(const cv::Mat& img, std::vector<std::vector<cv::Point2f> > arucoPts, std::vector<int> arucoIds,  cv::Mat& out);
-    
-    bool findAruco(const cv::Mat& img, std::vector<std::vector<cv::Point2f> >& pointBuf, std::vector<int>& cam_ids);
+    void drawAruco(const cv::Mat& image, std::vector<vector<cv::Point2f> >  markerCorners, std::vector<int> markerIds, std::vector<cv::Point2f> interpolated_corners,std::vector<int> interpolated_ids, cv::Mat& out);
+    bool findAruco(const cv::Mat& image, std::vector<vector<cv::Point2f> > & markerCorners, std::vector<int>& markerIds,  std::vector<cv::Point2f> & interpolated_charucoCorners,  std::vector<int>& interpolated_charucoIds);
     /**
     * @brief find the 2D points of calibration board on camera image
     * @param const Mat& img, bool refine

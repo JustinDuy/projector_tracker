@@ -45,7 +45,7 @@ bool calib_proj( std::shared_ptr<CameraProjectorInterface> cpi){
     std::shared_ptr<ProjectorTracker> projTracker = std::make_shared<ProjectorTracker>  ();
     //load configuration for tracking algorithm
     projTracker->loadSetting("../data/setting.yml", "use aruco pattern", "known 3D Object", "aruco width", "aruco height","aruco board number", "pattern width", "pattern height", "square size", 
-                             "max reprojection error", "numBoardsBeforeCleaning", "numBoardsFinalCamera",
+                             "max intrinsic reprojection error", "max extrinsic reprojection error", "numBoardsBeforeCleaning", "numBoardsFinalCamera",
         "../data/calibrationCamera.yml", "cameraMatrix", "distCoeffs", "imageSize_width", "imageSize_height", "../data/calibrationProjector.yml", "projectorMatrix", "distCoeffs", "projectorWidth", "projectorHeight"
     );
     vector<cv::Mat> test_images = projTracker->getPatternImages();
@@ -77,7 +77,7 @@ int test_cameraprojector(int argc, char **argv) {
     std::cout << "using camera device : " << cam_deviceID << std::endl;
     std::shared_ptr<CameraInterface> cam_interface = std::make_shared<CameraInterface>(cam_deviceID);
     std::shared_ptr<ProjectorInterface> proj_interface= std::make_shared<ProjectorInterface>();
-	std::shared_ptr<CameraProjectorInterface> cpi = std::make_shared<CameraProjectorInterface>(cam_interface, proj_interface, 500);
+	std::shared_ptr<CameraProjectorInterface> cpi = std::make_shared<CameraProjectorInterface>(cam_interface, proj_interface, 300);
 	std::thread t(calib_proj, cpi);
     app.exec();
 }
