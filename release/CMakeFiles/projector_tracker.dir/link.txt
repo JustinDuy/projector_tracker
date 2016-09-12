@@ -1,2 +1,0 @@
-/usr/bin/ar cr libprojector_tracker.a  CMakeFiles/projector_tracker.dir/src/ProjectorTracker.cpp.o
-/usr/bin/ranlib libprojector_tracker.a
