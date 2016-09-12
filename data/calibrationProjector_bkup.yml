@@ -1,0 +1,17 @@
+%YAML:1.0
+projectorMatrix: !!opencv-matrix
+   rows: 3
+   cols: 3
+   dt: d
+   data: [ 2.7499984397624671e+03, 0., 5.9853567179164702e+02, 0.,
+       2.7703276876173363e+03, 3.8663405530429071e+02, 0., 0., 1. ]
+projectorWidth: 1280
+projectorHeight: 720
+distCoeffs: !!opencv-matrix
+   rows: 1
+   cols: 5
+   dt: d
+   data: [ 2.3573715005558880e+00, -1.1140560518552697e+02,
+       1.9742434302962887e-02, -1.4183468312111331e-02,
+       -1.0922082991368116e+00 ]
+reprojectionError: 8.2554645836353302e-02

@@ -68,8 +68,10 @@ public:
 
 
 protected:
+    Mat prevMat;
+    bool updateCamDiff(cv::Mat camMat);
     int size() const;
-        
+    void clear();
     bool unknown3DObj_calib(const Mat& patternImg, const Mat& captured);
     bool addProjected2D(const Mat& patternImg, const Mat& projectedImg);
     

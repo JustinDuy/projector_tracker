@@ -56,6 +56,7 @@ bool calib_proj( std::shared_ptr<CameraProjectorInterface> cpi){
         CameraProjectorInterface::CameraProjectorImagePair img_pair= cpi->projectAndAcquire(test_image);
         Mat captured = img_pair.acquired;
         finished = projTracker->run(test_image, captured);
+        
     }
    
 
@@ -77,7 +78,7 @@ int test_cameraprojector(int argc, char **argv) {
     std::cout << "using camera device : " << cam_deviceID << std::endl;
     std::shared_ptr<CameraInterface> cam_interface = std::make_shared<CameraInterface>(cam_deviceID);
     std::shared_ptr<ProjectorInterface> proj_interface= std::make_shared<ProjectorInterface>();
-	std::shared_ptr<CameraProjectorInterface> cpi = std::make_shared<CameraProjectorInterface>(cam_interface, proj_interface, 300);
+	std::shared_ptr<CameraProjectorInterface> cpi = std::make_shared<CameraProjectorInterface>(cam_interface, proj_interface, 200);
 	std::thread t(calib_proj, cpi);
     app.exec();
 }

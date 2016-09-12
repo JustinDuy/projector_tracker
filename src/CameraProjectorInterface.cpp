@@ -4,7 +4,7 @@
 #include <iostream>
 #include <chrono>
 #include <thread>
-
+using namespace std;
 CameraProjectorInterface::CameraProjectorInterface(std::shared_ptr<CameraInterfaceBase> camera_interface, std::shared_ptr<ProjectorInterfaceBase> projector_interface, int delay_ms)
 : camera(camera_interface)
 , projector(projector_interface)
@@ -24,7 +24,12 @@ CameraProjectorInterface::CameraProjectorImagePair CameraProjectorInterface::pro
     CameraProjectorImagePair ret;
     ret.projected = target_image;
     projector->projectFullscreen(target_image);
-    std::this_thread::sleep_for(std::chrono::milliseconds(delay_ms));
+    //std::this_thread::sleep_for(std::chrono::milliseconds(delay_ms));
+    do 
+    {
+        cout << '\n' << "Press a key to capture...";
+    } 
+    while (cin.get() != '\n');
     ret.acquired = camera->grabFrame();
     return ret;
 }

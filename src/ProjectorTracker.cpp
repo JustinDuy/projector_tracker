@@ -9,6 +9,7 @@
 using namespace std;
 using namespace cv;
 
+#define diffMinBetweenFrames 3
 ProjectorTracker::ProjectorTracker ()
 {
 
@@ -76,7 +77,9 @@ void ProjectorTracker::loadIntrinsic(std::string camcalib, std::string tag_K, st
     // Loading calibration parameters
     if(isProjector)
     {
+        cout << "loading camera intrinsic" << endl;
         fs[tag_K] >> cameraMatrix;
+        cout << cameraMatrix.size() << endl;
         fs[tag_D] >> cameraDistCoeffs;
         int w, h;
         fs[tag_w] >> w;
@@ -85,7 +88,9 @@ void ProjectorTracker::loadIntrinsic(std::string camcalib, std::string tag_K, st
     }
     else
     {
+        cout << "loading projector intrinsic" << endl;
         fs[tag_K] >> projectorMatrix;
+        cout << projectorMatrix.size() << endl; 
         fs[tag_D] >> projectorDistCoeffs;
         int w, h;
         fs[tag_w] >> w;
@@ -599,7 +604,7 @@ bool ProjectorTracker::addProjected(const cv::Mat& patternImg, const cv::Mat& pr
         vector<int> arucoIds_interpolated;
         
         bool bProjectedPatternFound = findAruco(projectedImg, aruco_corners, arucoIds, aruco_corners_interpolated, arucoIds_interpolated) ;
-        if(bProjectedPatternFound && arucoIds.size() >= 4){
+        if(bProjectedPatternFound && aruco_corners_interpolated.size() >= 4){
             std::cout << "found aruco board with " << aruco_corners_interpolated.size() << " corners " << std::endl;
             drawAruco(displayImg, aruco_corners, arucoIds, aruco_corners_interpolated, arucoIds_interpolated, displayImg);
             vector<cv::Point3f> arucoObjectPts;
@@ -685,19 +690,21 @@ int ProjectorTracker::cleanStereo(){
             objectPoints.erase(objectPoints.begin() + i);
             pro_imgPoints.erase(pro_imgPoints.begin() + i);
             cam_imgPoints.erase(cam_imgPoints.begin() + i);
+            perViewErrors.erase(perViewErrors.begin() + i);
             removed++;
         }
     }
-    if(size() > 0) {
+    /*if(size() > 0) {
         if(removed > 0) {
             return calibrateProjector();
         } else {
             return true;
         }
-    } else {
+    } else */
+    //{
         cout << "ProjectorTracker::clean() removed the last object/image point pair" << endl;
-        return false;
-    }
+        //return 0;
+    //}
     return removed;
 }
 float ProjectorTracker::getReprojectionError() const {
@@ -719,19 +726,24 @@ bool ProjectorTracker::calibrateProjector(){
 
     intrinsic_ready = checkRange(projectorMatrix) && checkRange(projectorDistCoeffs);
     if(!intrinsic_ready) {
-            cout <<  "ProjectorTracker::calibrateProjector() failed to calibrate the projector" << endl;
+        cout <<  "ProjectorTracker::calibrateProjector() failed to calibrate the projector" << endl;
     }
-    else {
-            cout <<  "ProjectorTracker::calibrateProjector() succeeded to calibrate the projector" << endl;
+    else 
+    {
+        updateReprojectionError();
+        cout <<  "ProjectorTracker::calibrateProjector() succeeded to calibrate the projector" << endl;
     }
-    updateReprojectionError();
+    
     //updateUndistortion();
 
     return intrinsic_ready;
 }
 void ProjectorTracker::saveExtrinsic(string filename) const{
     if(!extrinsic_ready){
-            cout << "ProjectorTracker::saveExtrinsic() failed, because your calibration isn't ready yet!" << endl;
+        cout << "ProjectorTracker::saveExtrinsic() failed, because your calibration isn't ready yet!" << endl;
+    }
+    else{
+        cout << "saving camera to projector transformation to " << filename << endl;
     }
     FileStorage fs(filename, FileStorage::WRITE);
 
@@ -777,7 +789,7 @@ bool ProjectorTracker::stereoCalibrate(){
         cout << "ProjectorTracker::stereoCalibrate() doesn't have enough image data to calibrate from." << endl;
         return false;
     }
-    cout << "pose #"<< size() << endl;
+    cout << "pose #"<< size() -1 << endl;
     
     //Mat rotation3x3;
     double reprojErr = cv::stereoCalibrate(objectPoints,
@@ -799,13 +811,24 @@ bool ProjectorTracker::stereoCalibrate(){
     }
     cout << "Stereo calib reprojection error : " << reprojErr << endl;
     extrinsic_ready = extrinsic_ready && reprojErr < maxExtrinsicReprojectionError;
+    /*if(!extrinsic_ready) {
+        clear();
+    }*/
     return extrinsic_ready;
+}
+void ProjectorTracker::clear(){
+    objectPoints.clear();
+    pro_imgPoints.clear();
+    cam_imgPoints.clear();
+    perViewErrors.clear();
 }
 bool ProjectorTracker::known3DObj_calib(const Mat& patternImg, const Mat& captured)
 {
     bool finished = false;
     bool addOK = addProjected(patternImg, captured);
-    if(addOK) calibrateProjector();
+    if(addOK ) {
+        calibrateProjector();
+    }
     //display for debug
     cv::namedWindow( "captured", cv:: WINDOW_NORMAL );// Create a window for display.
     resizeWindow( "captured", 640, 480 );
@@ -827,12 +850,8 @@ bool ProjectorTracker::known3DObj_calib(const Mat& patternImg, const Mat& captur
         if(getReprojectionError() < maxIntrinsicReprojectionError)
         {
             saveProjectorIntrinsic("../data/calibrationProjector.yml");
-            cout << "Projector calibration finished & saved to calibrationProjector.yml" << endl;
-            finished = stereoCalibrate();
-            if(finished){
-                cout << "Camera Projector extrinsic calibrated & saved to cam_proj_trans.yml" << endl;
-                saveExtrinsic("../data/cam_proj_trans.yml");
-            }
+            extrinsic_ready = stereoCalibrate();
+            saveExtrinsic("../data/cam_proj_trans.yml");
         }
     }
     return finished;
@@ -844,7 +863,7 @@ bool ProjectorTracker::addProjected2D(const Mat& patternImg, const Mat& projecte
     vector<int> arucoIds;
     vector<int> arucoIds_interpolated;
     bool bProjectedPatternFound = findAruco(projectedImg,aruco_corners, arucoIds, aruco_corners_interpolated, arucoIds_interpolated) ;
-    if(bProjectedPatternFound && arucoIds_interpolated.size() >= 4){
+    if(bProjectedPatternFound && aruco_corners_interpolated.size() >= 4){
         std::cout << "found aruco board with " << aruco_corners_interpolated.size() << " corners " << std::endl;
         //Mat displayImg;
         //drawAruco(projectedImg, aruco_corners, aruco_pts, arucoIds, displayImg);
@@ -852,6 +871,7 @@ bool ProjectorTracker::addProjected2D(const Mat& patternImg, const Mat& projecte
         //camera points:
         cam_imgPoints.push_back(aruco_corners_interpolated);
         
+         //detect 2D aruco on projector pattern image
         vector<vector<cv::Point2f> > pro_aruco_pts;
         vector<cv::Point2f> pro_aruco_pts_interpolated;
         vector<cv::Point2f> pro_aruco_corners;
@@ -875,15 +895,36 @@ bool ProjectorTracker::addProjected2D(const Mat& patternImg, const Mat& projecte
     return false;
 }
 bool ProjectorTracker::run(const Mat& patternImg, const Mat& projectedImg){
-    if(known3DObj) 
+    /*if(!updateCamDiff(projectedImg)){
+        //cout << "move the board around ..." << endl;
+        return false;
+    }*/
+
+    if(known3DObj) {
         known3DObj_calib(patternImg, projectedImg);
-    else
+    }
+    else{
         unknown3DObj_calib(patternImg, projectedImg);
+        
+    }
+
+}
+bool ProjectorTracker::updateCamDiff(cv::Mat camMat) {
+    if(prevMat.size() != Size(0,0)){
+        Mat diffMat;
+        absdiff(prevMat, camMat, diffMat);
+        float diffMean = mean(Mat(mean(diffMat)))[0];
+        camMat.copyTo(prevMat);
+        //cout << "diff mean : " << diffMean << endl;
+        return diffMinBetweenFrames < diffMean;
+    }
+    else 
+        camMat.copyTo(prevMat);
 }
 bool ProjectorTracker::unknown3DObj_calib(const Mat& patternImg, const Mat& projectedImg){
     bool finished = false;
     bool addOK = addProjected2D(patternImg, projectedImg);
-    if (size() > 9 ) {
+    if(addOK){
         std::vector<cv::Point2f> camPixels;
         std::vector<cv::Point2f> projPixels;
         //merge correspondence into same vectors
@@ -893,69 +934,80 @@ bool ProjectorTracker::unknown3DObj_calib(const Mat& patternImg, const Mat& proj
                 projPixels.push_back(pro_imgPoints[board][i]);
             }
         }
+        if(camPixels.size() >= 9){
+            cout << camPixels.size() << endl;
+            cout << "find fundamental matrix ..." << endl;
+            Mat F = findFundamentalMat (camPixels, projPixels, CV_FM_8POINT);
+            Mat F_64;
+            F.convertTo(F_64, CV_64F); 
+            if(F_64.size() != Size(0,0))
+            {
+                cout << "find essential matrix ..." << endl;
+                cout << projectorMatrix.type() << ", " << F_64.type() << ", " << cameraMatrix.type() << endl;
+                cout << F.size() << endl;
+                Mat E = projectorMatrix.t() * F_64 * cameraMatrix;
+                cout << "perform SVD on Essential matrix" << endl;
+                //Perform SVD on E
+                SVD decomp = SVD (E);
 
-        cout << "find fundamental matrix ..." << endl;
-        Mat F = findFundamentalMat (camPixels, projPixels, FM_RANSAC, 3, 0.99);
-        Mat E = projectorMatrix.t() * F * cameraMatrix;
-        //Perform SVD on E
-        SVD decomp = SVD (E);
+                //U
+                Mat U = decomp.u;
 
-        //U
-        Mat U = decomp.u;
+                //S
+                Mat S (3, 3, CV_64F, Scalar (0));
+                S.at<double> (0, 0) = decomp.w.at<double> (0, 0);
+                S.at<double> (1, 1) = decomp.w.at<double> (0, 1);
+                S.at<double> (2, 2) = decomp.w.at<double> (0, 2);
 
-        //S
-        Mat S (3, 3, CV_64F, Scalar (0));
-        S.at<double> (0, 0) = decomp.w.at<double> (0, 0);
-        S.at<double> (1, 1) = decomp.w.at<double> (0, 1);
-        S.at<double> (2, 2) = decomp.w.at<double> (0, 2);
+                //Vt
+                Mat Vt = decomp.vt;
 
-        //Vt
-        Mat Vt = decomp.vt;
+                //W
+                Mat W (3, 3, CV_64F, Scalar (0));
+                W.at<double> (0, 1) = -1;
+                W.at<double> (1, 0) = 1;
+                W.at<double> (2, 2) = 1;
 
-        //W
-        Mat W (3, 3, CV_64F, Scalar (0));
-        W.at<double> (0, 1) = -1;
-        W.at<double> (1, 0) = 1;
-        W.at<double> (2, 2) = 1;
+                Mat Wt (3, 3, CV_64F, Scalar (0));
+                Wt.at<double> (0, 1) = 1;
+                Wt.at<double> (1, 0) = -1;
+                Wt.at<double> (2, 2) = 1;
 
-        Mat Wt (3, 3, CV_64F, Scalar (0));
-        Wt.at<double> (0, 1) = 1;
-        Wt.at<double> (1, 0) = -1;
-        Wt.at<double> (2, 2) = 1;
-
-        Mat R1 = U * W * Vt;
-        //Mat R2 = U * Wt * Vt;
-        Mat u1 = U.col (2);
-        //Mat u2 = -U.col (2);
-        //4 candidates
-        //cout << "computed rotation, translation: " << endl;
-        //cout << R1 << "," << u1 << endl;
-        //check if R1 u1 are in correct range
-        extrinsic_ready = true;
-        rotCamToProj = R1;
-        transCamToProj = u1;
-        cout << "saving cam to projector extrinsic ..." << endl;
-        //save R1, u1 to "cam_proj_trans.yaml"
-        saveExtrinsic("../data/cam_proj_trans_nochecker.yml");
-
-        /*ret.at<double> (3, 3) = 1;
-        for(int i = 0; i < 3; i++){
-            for(int j =0 ; j < 3; j++){
-                ret.at<double> (j,i) = R1.at<double> (j,i);
+                Mat R1 = U * W * Vt;
+                //Mat R2 = U * Wt * Vt;
+                Mat u1 = U.col (2);
+                //Mat u2 = -U.col (2);
+                //4 candidates
+                //cout << "computed rotation, translation: " << endl;
+                //cout << R1 << "," << u1 << endl;
+                //check if R1 u1 are in correct range
+                extrinsic_ready = true;
+                rotCamToProj = R1;
+                transCamToProj = u1;
+                cout << "saving cam to projector extrinsic ..." << endl;
+                //save R1, u1 to "cam_proj_trans.yaml"
+                saveExtrinsic("../data/cam_proj_trans_nochecker.yml");
+                
+                /*ret.at<double> (3, 3) = 1;
+                for(int i = 0; i < 3; i++){
+                    for(int j =0 ; j < 3; j++){
+                        ret.at<double> (j,i) = R1.at<double> (j,i);
+                    }
+                }
+                for(int i=0;i<3;i++)
+                    ret.at<double> (i,0) = u1.at<double> (0,i);
+                ret.at<double> (3,3) = 1;
+                for(int i=0;i<3;i++)
+                    ret.at<double> (3,i) = 0;*/
+                
+                return true;
             }
         }
-        for(int i=0;i<3;i++)
-            ret.at<double> (i,0) = u1.at<double> (0,i);
-        ret.at<double> (3,3) = 1;
-        for(int i=0;i<3;i++)
-            ret.at<double> (3,i) = 0;*/
-        
-        return true;
-    }
-    else
-    {
-        //cerr << "correspodence lists size mismatched or not enough correspondences" << endl;
-        return false;
+        else
+        {
+            cerr << "correspodence lists size mismatched or not enough correspondences" << endl;
+            return false;
+        }
     }
 }
 /*void ProjectorTracker::computeRt_knownObjectPoints(const std::vector<CameraProjectorImagePair>& cp_images,
