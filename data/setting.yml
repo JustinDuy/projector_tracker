@@ -6,8 +6,8 @@ aruco height: 7
 aruco board number: 20
 pattern width: 10
 pattern height: 7
-square size: 2.4
-max intrinsic reprojection error : 0.7
-max extrinsic reprojection error: 5
+square size: 0.0024
+max intrinsic reprojection error : 0.007
+max extrinsic reprojection error: 0.005
 numBoardsBeforeCleaning: 8
 numBoardsFinalCamera: 6

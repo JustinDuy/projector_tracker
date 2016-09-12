@@ -779,16 +779,16 @@ bool ProjectorTracker::stereoCalibrate(){
     }
     cout << "pose #"<< size() << endl;
     
-    Mat rotation3x3;
+    //Mat rotation3x3;
     double reprojErr = cv::stereoCalibrate(objectPoints,
                         cam_imgPoints,
                         pro_imgPoints,
                         cameraMatrix, cameraDistCoeffs,
                         projectorMatrix, projectorDistCoeffs,
                         addedImageSize,
-                        rotation3x3, transCamToProj,
+                        rotCamToProj, transCamToProj,
                         essentialMatrix, fundamentalMatrix);
-    cv::Rodrigues(rotation3x3, rotCamToProj);
+    //cv::Rodrigues(rotation3x3, rotCamToProj);
     
     extrinsic_ready = checkRange(essentialMatrix) && checkRange(transCamToProj);
     if(!extrinsic_ready) {
