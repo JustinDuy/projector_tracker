@@ -1,3 +1,6 @@
 calib_cam
 calib_proj
 test_node
+../data/*
+*.jpg
+*.jpeg
