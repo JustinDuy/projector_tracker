@@ -1,7 +1,0 @@
-/home/justin/projector_tracker/release/CMakeFiles/calib_cam.dir
-/home/justin/projector_tracker/release/CMakeFiles/calib_proj.dir
-/home/justin/projector_tracker/release/CMakeFiles/camera_calibration.dir
-/home/justin/projector_tracker/release/CMakeFiles/hw_interface.dir
-/home/justin/projector_tracker/release/CMakeFiles/projector_calibration.dir
-/home/justin/projector_tracker/release/CMakeFiles/projector_tracker.dir
-/home/justin/projector_tracker/release/CMakeFiles/test_node.dir
