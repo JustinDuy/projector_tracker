@@ -44,7 +44,7 @@ bool calib_proj( std::shared_ptr<CameraProjectorInterface> cpi){
     //load configuration for tracking algorithm
     std::shared_ptr<ProjectorTracker> projTracker = std::make_shared<ProjectorTracker>  ();
     //load configuration for tracking algorithm
-    projTracker->loadSetting("../data/setting.yml", "use aruco pattern", "known 3D Object", "aruco width", "aruco height","aruco board number", "pattern width", "pattern height", "square size", 
+    projTracker->loadSetting("../data/setting.yml", "pattern type", "known 3D Object", "pattern width", "pattern height", "pattern size", "corner x", "corner y", "checker width", "checker height", "checker size", 
                              "max intrinsic reprojection error", "max extrinsic reprojection error", "numBoardsBeforeCleaning", "numBoardsFinalCamera",
         "../data/calibrationCamera.yml", "cameraMatrix", "distCoeffs", "imageSize_width", "imageSize_height", "../data/calibrationProjector.yml", "projectorMatrix", "distCoeffs", "projectorWidth", "projectorHeight"
     );

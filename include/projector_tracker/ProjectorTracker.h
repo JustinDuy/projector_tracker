@@ -9,7 +9,7 @@ const unsigned int DEFAULT_BLACK_THRESHOLD = 40;  // 3D_underworld default value
 const unsigned int DEFAULT_WHITE_THRESHOLD = 5;   // 3D_underworld default value  5
 using namespace std;
 using namespace cv;
-enum CalibrationPattern {CHESSBOARD, CIRCLES_GRID, ASYMMETRIC_CIRCLES_GRID};
+enum CalibrationPattern {CHESSBOARD, CIRCLES_GRID, ASYMMETRIC_CIRCLES_GRID, ARUCO, GRAYCODE};
 /**
  * @brief Camera-Projector relative position tracker
  * 
@@ -27,9 +27,9 @@ public:
     *
     * @param std::string matrix_file, std::string tag,...
     */
-    bool loadSetting(std::string matrix_file , std::string tag_useAruco, std::string tag_knownObj, std::string tag_arucoW, std::string tag_arucoH, std::string tag_arucoNu, 
-                                   std::string tag_PatternW, std::string tag_PatternH, std::string tag_Square,
-                                   std::string tag_in_reproj_err , std::string tag_ex_reproj_err,std::string tag_num_before_clean, std::string tag_num_before_calib,
+    bool loadSetting(std::string matrix_file , std::string tag_patternType, std::string tag_knownObj, std::string tag_W, std::string tag_H, std::string tag_squareSize, std::string tag_x, std::string tag_y,
+                                   std::string tag_CheckerPatternW, std::string tag_CheckerPatternH, std::string tag_CheckerSquare,
+                                   std::string tag_in_reproj_err, std::string tag_ex_reproj_err, std::string tag_num_before_clean, std::string tag_num_before_calib,
                                    std::string cam_intrinsic, std::string tag_cam_k, std::string tag_cam_d,  std::string tag_cam_w, std::string tag_cam_h, 
                                    std::string pro_intrinsic, std::string tag_pro_k, std::string tag_pro_d ,std::string tag_pro_w, std::string tag_pro_h
                                   );
@@ -74,10 +74,12 @@ protected:
     void clear();
     bool unknown3DObj_calib(const Mat& patternImg, const Mat& captured);
     bool addProjected2D(const Mat& patternImg, const Mat& projectedImg);
-    
-    
+    void processImageForCircleDetection(const Mat& img, Mat& processedImg);
+    void drawCircleGrid(const cv::Mat& img, vector<cv::Point2f> circlePointBuf);
     bool known3DObj_calib(const Mat& patternImg, const Mat& captured);
     bool addProjected(const cv::Mat& patternImg, const cv::Mat& projectedImg);
+    bool addProjected_aruco(const cv::Mat& patternImg, const cv::Mat& projectedImg);
+    bool addProjected_circlegrid(const cv::Mat& patternImg, const cv::Mat& projectedImg);
     bool stereoCalibrate();
     bool calibrateProjector();
     float getReprojectionError() const;
@@ -94,8 +96,10 @@ protected:
     void updateReprojectionError();
     
     void drawCheckerBoard(const cv::Mat& img, std::vector<cv::Point2f> checkerCorners, cv::Mat& out);
-    void drawAruco(const cv::Mat& image, std::vector<vector<cv::Point2f> >  markerCorners, std::vector<int> markerIds, std::vector<cv::Point2f> interpolated_corners,std::vector<int> interpolated_ids, cv::Mat& out);
-    bool findAruco(const cv::Mat& image, std::vector<vector<cv::Point2f> > & markerCorners, std::vector<int>& markerIds,  std::vector<cv::Point2f> & interpolated_charucoCorners,  std::vector<int>& interpolated_charucoIds);
+    void drawAruco_board(const cv::Mat& image, std::vector<vector<cv::Point2f> >  markerCorners, std::vector<int> markerIds, std::vector<cv::Point2f> interpolated_corners,std::vector<int> interpolated_ids, cv::Mat& out);
+    void drawAruco(const cv::Mat& image, std::vector<vector<cv::Point2f> >  markerCorners, std::vector<int> markerIds, cv::Mat& out);
+    bool findAruco_board(const cv::Mat& image, std::vector<vector<cv::Point2f> > & markerCorners, std::vector<int>& markerIds,  std::vector<cv::Point2f> & interpolated_charucoCorners,  std::vector<int>& interpolated_charucoIds);
+    bool findAruco(const cv::Mat& image, vector<cv::Point2f>& markerPts, vector<vector<cv::Point2f> > & markerCorners, std::vector<int>& markerIds);
     /**
     * @brief find the 2D points of calibration board on camera image
     * @param const Mat& img, bool refine
@@ -148,21 +152,22 @@ protected:
     cv::Mat fundamentalMatrix, essentialMatrix;
 //protected:
 //    std::shared_ptr<CameraProjectorInterface> cp_interface;  // Gives synchronized access to camera and projector
-
+    std::vector<cv::Point2f> getPatternPoints();
 private:
     cv::Mat pattern;  /// cached pattern
 
     bool known3DObj;
-    bool useAruco;
-    int arucoNu;
-    int arucoW;
-    int arucoH;
-    
+    CalibrationPattern patternType;
+
     aruco::Dictionary dictionary ;
     aruco::CharucoBoard  board ;
     
     cv::Size checkerBoardSize;
     double checkerSquareSize;
+    
+    cv::Size patternSize ;
+    double squareSize ;
+    cv::Point2f patternPosition ;//start drawing pattern at (corner_x, corner_y) on projector screen;
     
     bool intrinsic_ready;
     bool extrinsic_ready;

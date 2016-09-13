@@ -68,7 +68,6 @@ bool ProjectorCalibration::loadSetting(string configFile, string tag_w, string t
 	std::cout << "patternH : "<< patternH << std::endl;
 	patternSize = Size(patternW, patternH);
 	
-
 	fs[tag_square_sz] >> squareSize;
 	std::cout << "squareSize : "<< squareSize << std::endl;
 
