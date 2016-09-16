@@ -189,7 +189,7 @@ vector<Mat> ProjectorTracker::getPatternImages () {
         int markerSize = squareSize -10;
         for(int p = 0; p < pattern_pts.size() ; p++){
             Point2f pt = pattern_pts[p];
-            cv::aruco::drawMarker(dictionary, p, markerSize, markerImage, 1); //marker id = p
+            cv::aruco::drawMarker(dictionary, p , markerSize, markerImage, 1); //marker id = p
             //string stmp = "board_.jpg";
             //int underscore = stmp.find("_");
             //stmp.insert(underscore + 1, std::to_string(p));
@@ -197,7 +197,7 @@ vector<Mat> ProjectorTracker::getPatternImages () {
             cv::Rect roi( pt, cv::Size( markerSize , markerSize));
             cv::Mat destinationROI = boardImage( roi );
             //markerImage.copyTo( destinationROI );
-            markerImage.copyTo(boardImage.rowRange(pt.x, pt.x + markerSize).colRange(pt.y, pt.y + markerSize));
+            markerImage.copyTo(boardImage.rowRange(pt.x - markerSize/2, pt.x + markerSize/2).colRange(pt.y - markerSize/2, pt.y + markerSize/2));
             //cv::imwrite(stmp, boardImage);
         }
         //board.draw( cv::Size(width, height), boardImage, 10, 1 );
@@ -399,7 +399,7 @@ bool getProjPixel (const vector<Mat> &patternImages, size_t width, size_t height
     return error;
 }
 
-bool ProjectorTracker::backProject(const cv::Mat&  K, const cv::Mat& boardRot64,
+bool ProjectorTracker::backProject(const cv::Mat& boardRot64,
                                     const cv::Mat& boardTrans64,
                                     const vector<cv::Point2f>& imgPt,
                                     vector<cv::Point3f>& worldPt) {
@@ -414,7 +414,8 @@ bool ProjectorTracker::backProject(const cv::Mat&  K, const cv::Mat& boardRot64,
             imgPt_h.at<float>(1,h) = imgPt[h].y;
             imgPt_h.at<float>(2,h) = 1.0f;
         }
-        Mat Kinv64 = K.inv();
+        Mat cam_undistorted_intrinsics = getOptimalNewCameraMatrix(cameraMatrix, cameraDistCoeffs, addedImageSize, 1); //fillFrame ? 0 : 1s
+        Mat Kinv64 = cam_undistorted_intrinsics.inv();
         Mat Kinv,boardRot,boardTrans;
         Kinv64.convertTo(Kinv, CV_32F);
         boardRot64.convertTo(boardRot, CV_32F);
@@ -467,7 +468,11 @@ void ProjectorTracker::drawAruco_board(const cv::Mat& image, std::vector<vector<
 void ProjectorTracker::drawAruco(const cv::Mat& image, std::vector<vector<cv::Point2f> >  markerCorners, std::vector<int> markerIds, cv::Mat& out){
     out = image.clone();
     aruco::drawDetectedMarkers(out, markerCorners, markerIds);
-   
+    //drawing the centers of each marker
+    for(const auto & p : markerCorners) {
+        Point2f center = (p[0] + p[2]) /2;
+        circle(out, center, 5, Scalar( 0, 0, 255), CV_FILLED); 
+    }
     imwrite("detected_aruco.jpg", out);
     //show for debug
     cv::namedWindow( "aruco", cv:: WINDOW_NORMAL );// Create a window for display.
@@ -498,7 +503,10 @@ bool ProjectorTracker::findAruco(const cv::Mat& image, vector<cv::Point2f>& mark
 
     markerPts.resize(markerIds.size());
     for(int i=0; i < markerIds.size(); i++){
-        markerPts[i] = markerCorners[i][0];
+        //markerPts[i] = markerCorners[i][0];//take the top-left corner
+        int len = markerCorners[i].size() ;
+        //cout << len << endl;
+        markerPts[i] = (markerCorners[i][0] + markerCorners[i][2] ) / 2;//take the center of the marker 
     }
     return markerIds.size() > 0;
 }
@@ -771,7 +779,7 @@ bool ProjectorTracker::addProjected_circlegrid(const cv::Mat& patternImg, const 
             //computeCandidateBoardPose(chessImgPts, checkerObjectPts , boardRot, boardTrans);
             computeCandidateBoardPose(chessImgPts, checkerObjectPts ,cameraMatrix, cameraDistCoeffs,  boardRot, boardTrans);
             //backProject(boardRot, boardTrans, circlesImgPts, circlesObjectPts);
-            backProject(cameraMatrix, boardRot, boardTrans, circlesImgPts, circlesObjectPts);
+            backProject(boardRot, boardTrans, circlesImgPts, circlesObjectPts);
             //camera points:
             cam_imgPoints.push_back(circlesImgPts);
             
@@ -811,14 +819,8 @@ bool ProjectorTracker::addProjected_aruco(const cv::Mat& patternImg, const cv::M
         bool bProjectedPatternFound = findAruco(projectedImg, aruco_pts, aruco_corners, arucoIds) ;
         if(bProjectedPatternFound && aruco_pts.size() >= 4){
             std::cout << "found aruco board with " << aruco_pts.size() << " corners " << std::endl;
-            //testing
-            /*Mat drawImg = projectedImg.clone();
-            for(const auto & p : aruco_pts) {
-                circle(drawImg, p, 5, Scalar( 0, 0, 255), CV_FILLED); 
-            }
-            cv::imwrite("detected_aruco_points.jpg", drawImg);*/
-            
-            
+
+                    
             drawAruco(displayImg, aruco_corners, arucoIds, displayImg);
             vector<cv::Point3f> arucoObjectPts;
             cv::Mat boardRot;
@@ -826,7 +828,7 @@ bool ProjectorTracker::addProjected_aruco(const cv::Mat& patternImg, const cv::M
             vector<cv::Point3f> checkerObjectPts = createObjectPoints(checkerBoardSize, checkerSquareSize, CHESSBOARD);
         
             computeCandidateBoardPose(chessImgPts, checkerObjectPts ,cameraMatrix, cameraDistCoeffs,  boardRot, boardTrans);
-            backProject(cameraMatrix, boardRot, boardTrans, aruco_pts, arucoObjectPts);
+            backProject(boardRot, boardTrans, aruco_pts, arucoObjectPts);
             
             //camera points:
             cam_imgPoints.push_back(aruco_pts);
@@ -1011,18 +1013,19 @@ bool ProjectorTracker::stereoCalibrate(){
                         projectorMatrix, projectorDistCoeffs,
                         addedImageSize,
                         rotCamToProj, transCamToProj,
-                        essentialMatrix, fundamentalMatrix);
+                        essentialMatrix, fundamentalMatrix, CV_CALIB_FIX_INTRINSIC);
     //cv::Rodrigues(rotation3x3, rotCamToProj);
     
-    extrinsic_ready = checkRange(essentialMatrix) && checkRange(transCamToProj);
-    if(!extrinsic_ready) {
+    bool calibrated = checkRange(essentialMatrix) && checkRange(transCamToProj);
+    if(!calibrated) {
             cout <<  "ProjectorTracker::stereoCalibrate() failed to calibrate the projector" << endl;
     }
     else {
             cout <<  "ProjectorTracker::stereoCalibrate() succeeded to calibrate the projector" << endl;
     }
     cout << "Stereo calib reprojection error : " << reprojErr << endl;
-    extrinsic_ready = extrinsic_ready && reprojErr < maxExtrinsicReprojectionError;
+    extrinsic_ready = calibrated && reprojErr < maxExtrinsicReprojectionError;
+    saveExtrinsic("../data/cam_proj_trans.yml");
     /*if(!extrinsic_ready) {
         clear();
     }*/
@@ -1036,10 +1039,10 @@ void ProjectorTracker::clear(){
 }
 bool ProjectorTracker::known3DObj_calib(const Mat& patternImg, const Mat& captured)
 {
-    bool finished = false;
     bool addOK = addProjected(patternImg, captured);
     if(addOK ) {
-        calibrateProjector();
+        bool intrinsic_ok = calibrateProjector();
+        if(intrinsic_ok ) stereoCalibrate();
     }
     //display for debug
     cv::namedWindow( "captured", cv:: WINDOW_NORMAL );// Create a window for display.
@@ -1063,11 +1066,10 @@ bool ProjectorTracker::known3DObj_calib(const Mat& patternImg, const Mat& captur
         if(getReprojectionError() < maxIntrinsicReprojectionError)
         {
             saveProjectorIntrinsic("../data/calibrationProjector.yml");
-            extrinsic_ready = stereoCalibrate();
             saveExtrinsic("../data/cam_proj_trans.yml");
         }
     }
-    return finished;
+    return extrinsic_ready;
 }
 bool ProjectorTracker::addProjected2D(const Mat& patternImg, const Mat& projectedImg){
     //find camera projector pixel correspondence using aruco
@@ -1108,10 +1110,10 @@ bool ProjectorTracker::addProjected2D(const Mat& patternImg, const Mat& projecte
     return false;
 }
 bool ProjectorTracker::run(const Mat& patternImg, const Mat& projectedImg){
-    /*if(!updateCamDiff(projectedImg)){
-        //cout << "move the board around ..." << endl;
+    if(!updateCamDiff(projectedImg)){
+        cout << "move the board around ..." << endl;
         return false;
-    }*/
+    }
 
     if(known3DObj) {
         known3DObj_calib(patternImg, projectedImg);

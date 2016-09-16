@@ -58,7 +58,7 @@ bool calib_proj( std::shared_ptr<CameraProjectorInterface> cpi){
         finished = projTracker->run(test_image, captured);
         
     }
-   
+    cout << "You have finished extrinsic calibration" << endl;
 
 }
 

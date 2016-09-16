@@ -128,7 +128,7 @@ protected:
     * @param const cv::Mat& K,cv::Mat& boardRot64,const cv::Mat& boardTrans64, const vector<cv::Point2f>& imgPt
     * @return bool
     */
-    bool backProject(const cv::Mat& K, const cv::Mat& boardRot64,
+    bool backProject(const cv::Mat& boardRot64,
                                         const cv::Mat& boardTrans64,
                                         const std::vector<cv::Point2f>& imgPt,
                                         std::vector<cv::Point3f>& worldPt);
