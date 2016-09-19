@@ -6,7 +6,7 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
 if(CMAKE_COMPILER_IS_GNUCC)
         set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -pthread")
 endif(CMAKE_COMPILER_IS_GNUCC)
-
+set (OpenCV_DIR /opt/ros/jade/share/OpenCV-3.1.0-dev)
 find_package(OpenCV 3 REQUIRED)
 find_package(Qt4 REQUIRED)
 

@@ -441,6 +441,7 @@ bool ProjectorTracker::backProject(const cv::Mat& boardRot64,
             pt.x = worldPtPlaneReproject.at<float>(0);
             pt.y = worldPtPlaneReproject.at<float>(1);
             pt.z = 0;
+            cout << pt.x << "," << pt.y << endl;
             worldPt.push_back(pt);
         }
     }
@@ -504,9 +505,11 @@ bool ProjectorTracker::findAruco(const cv::Mat& image, vector<cv::Point2f>& mark
     markerPts.resize(markerIds.size());
     for(int i=0; i < markerIds.size(); i++){
         //markerPts[i] = markerCorners[i][0];//take the top-left corner
-        int len = markerCorners[i].size() ;
+        //int len = markerCorners[i].size() ;
         //cout << len << endl;
         markerPts[i] = (markerCorners[i][0] + markerCorners[i][2] ) / 2;//take the center of the marker 
+        /*for(int j=0; j < markerCorners[i].size(); j++)
+            markerPts[i*4+ j]= markerCorners[i][j];//take all four corners*/
     }
     return markerIds.size() > 0;
 }
@@ -1074,36 +1077,35 @@ bool ProjectorTracker::known3DObj_calib(const Mat& patternImg, const Mat& captur
 bool ProjectorTracker::addProjected2D(const Mat& patternImg, const Mat& projectedImg){
     //find camera projector pixel correspondence using aruco
     vector<vector<cv::Point2f> > aruco_corners;
-    vector<cv::Point2f>  aruco_corners_interpolated;
+    vector<cv::Point2f>  aruco_pts;
     vector<int> arucoIds;
-    vector<int> arucoIds_interpolated;
-    bool bProjectedPatternFound = findAruco_board(projectedImg,aruco_corners, arucoIds, aruco_corners_interpolated, arucoIds_interpolated) ;
-    if(bProjectedPatternFound && aruco_corners_interpolated.size() >= 4){
-        std::cout << "found aruco board with " << aruco_corners_interpolated.size() << " corners " << std::endl;
-        //Mat displayImg;
-        //drawAruco(projectedImg, aruco_corners, aruco_pts, arucoIds, displayImg);
+
+    bool bProjectedPatternFound = findAruco(projectedImg,aruco_pts, aruco_corners, arucoIds) ;
+    if(bProjectedPatternFound && aruco_pts.size() >= 4){
+        std::cout << "found aruco board with " << aruco_pts.size() << " corners " << std::endl;
+        Mat displayImg;
+        drawAruco(projectedImg, aruco_corners, arucoIds, displayImg);
         
         //camera points:
-        cam_imgPoints.push_back(aruco_corners_interpolated);
+        cam_imgPoints.push_back(aruco_pts);
         
          //detect 2D aruco on projector pattern image
-        vector<vector<cv::Point2f> > pro_aruco_pts;
-        vector<cv::Point2f> pro_aruco_pts_interpolated;
-        vector<cv::Point2f> pro_aruco_corners;
+        vector<vector<cv::Point2f> > pro_aruco_corners;
+        vector<cv::Point2f> pro_aruco_pts ;
+        vector<cv::Point2f> detected_aruco_pts ;
         vector<int> pro_arucoIds;
-        vector<int> pro_arucoIds_interpolated;
-        bool found = findAruco_board(patternImg, pro_aruco_pts, pro_arucoIds, pro_aruco_pts_interpolated, pro_arucoIds_interpolated);
+        bool found = findAruco(patternImg, pro_aruco_pts, pro_aruco_corners, pro_arucoIds);
         
-        pro_aruco_corners.resize(arucoIds_interpolated.size());//take only those that are detected in projected image
-        for(int i = 0; i < arucoIds_interpolated.size(); i++){
-            for(int j = 0; j < pro_arucoIds_interpolated.size(); j++){
-                if(pro_arucoIds_interpolated[j] == arucoIds_interpolated[i]) 
-                    pro_aruco_corners[i] = pro_aruco_pts_interpolated[j];
+        detected_aruco_pts.resize(aruco_pts.size());//take only those that are detected in projected image
+        for(int i = 0; i < aruco_pts.size(); i++){
+            for(int j = 0; j < pro_aruco_pts.size(); j++){
+                if(pro_arucoIds[j] == arucoIds[i]) 
+                    detected_aruco_pts[i] = pro_aruco_pts[j];
             }
         }
         
         //projector points
-        pro_imgPoints.push_back(pro_aruco_corners);
+        pro_imgPoints.push_back(detected_aruco_pts);
         
         return true;
     }
@@ -1149,10 +1151,11 @@ bool ProjectorTracker::unknown3DObj_calib(const Mat& patternImg, const Mat& proj
                 projPixels.push_back(pro_imgPoints[board][i]);
             }
         }
-        if(camPixels.size() >= 9){
+        if(camPixels.size() >= 100){
             cout << camPixels.size() << endl;
             cout << "find fundamental matrix ..." << endl;
-            Mat F = findFundamentalMat (camPixels, projPixels, CV_FM_8POINT);
+            //Mat F = findFundamentalMat (camPixels, projPixels, CV_FM_8POINT);
+            Mat F = findFundamentalMat (camPixels, projPixels, CV_FM_RANSAC);
             Mat F_64;
             F.convertTo(F_64, CV_64F); 
             if(F_64.size() != Size(0,0))
