@@ -42,7 +42,7 @@ int test_framegrabbing(int argc, char **argv) {
 }
 
 bool calibrateCamera(cv::Mat img, std::shared_ptr<CameraCalibration> calibrationCamera){
-    if(calibrationCamera->updateCamDiff(img)){
+   // if(calibrationCamera->updateCamDiff(img)){
 	vector<cv::Point2f> corners;
         bool bFound = calibrationCamera->add(img,corners);
         bool bCalibDone = false;
@@ -72,8 +72,8 @@ bool calibrateCamera(cv::Mat img, std::shared_ptr<CameraCalibration> calibration
                             bCalibDone = true;
                     }
             }
-        }
-        else cout << "Could not find board" << endl;
+        //}
+        //else cout << "Could not find board" << endl;
 
         return bCalibDone;
         

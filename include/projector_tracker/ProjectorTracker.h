@@ -68,6 +68,7 @@ public:
 
 
 protected:
+    bool interpolate3D(const cv::Mat& img, const vector<cv::Point2f> checkercorners, const vector<Point2f> markers, vector<Point3f>& marker_objectPts);
     Mat prevMat;
     bool updateCamDiff(cv::Mat camMat);
     int size() const;
@@ -144,6 +145,7 @@ protected:
     cv::Mat projectorMatrix     ;
     cv::Mat projectorDistCoeffs ;
     cv::Mat cameraMatrix        ;
+    cv::Mat cam_undistorted_intrinsics ;
     cv::Mat cameraDistCoeffs    ;
     
     //extrinsic cam to projector

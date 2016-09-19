@@ -138,7 +138,7 @@ bool CameraCalibration::calibrate() {
         updateObjectPoints();
 
 	int calibFlags = 0;
-	float rms = calibrateCamera(objectPoints, imagePoints, addedImageSize, distortedIntrinsics, distCoeffs, boardRotations, boardTranslations, CALIB_FIX_K4|CALIB_FIX_K5);
+	float rms = calibrateCamera(objectPoints, imagePoints, addedImageSize, distortedIntrinsics, distCoeffs, boardRotations, boardTranslations, calibFlags);
 	ready = checkRange(distortedIntrinsics) && checkRange(distCoeffs);
 
 	if(!ready) {

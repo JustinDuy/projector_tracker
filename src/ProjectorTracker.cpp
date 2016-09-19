@@ -399,6 +399,9 @@ bool getProjPixel (const vector<Mat> &patternImages, size_t width, size_t height
     return error;
 }
 
+bool ProjectorTracker::interpolate3D(const cv::Mat& img, const vector<cv::Point2f> checkercorners, const vector<Point2f> markers, vector<Point3f>& marker_objectPts){
+    
+}
 bool ProjectorTracker::backProject(const cv::Mat& boardRot64,
                                     const cv::Mat& boardTrans64,
                                     const vector<cv::Point2f>& imgPt,
@@ -415,28 +418,19 @@ bool ProjectorTracker::backProject(const cv::Mat& boardRot64,
             imgPt_h.at<float>(1,h) = imgPt[h].y;
             imgPt_h.at<float>(2,h) = 1.0f;
         }
-        Mat cam_undistorted_intrinsics = getOptimalNewCameraMatrix(cameraMatrix, cameraDistCoeffs, addedImageSize, 1); //fillFrame ? 0 : 1s
-        Mat Kinv64 = cam_undistorted_intrinsics.inv();
+        //Mat cam_undistorted_intrinsics = getOptimalNewCameraMatrix(cameraMatrix, cameraDistCoeffs, addedImageSize, 1); //fillFrame ? 0 : 1s
+        //Mat Kinv64 = cam_undistorted_intrinsics.inv();
+        Mat Kinv64 = cameraMatrix.inv();
         Mat Kinv,boardRot,boardTrans;
         Kinv64.convertTo(Kinv, CV_32F);
         boardRot64.convertTo(boardRot, CV_32F);
         boardTrans64.convertTo(boardTrans, CV_32F);
-        
-        //H = K*[r1, r2, t];
-        /*Mat tmp =  Mat::zeros( 3, 3, CV_32F );
-        Mat K ;
-        cam_undistorted_intrinsics.convertTo(K,CV_32F);*/
-        
-        
         // Transform all image points to world points in camera reference frame
         // and then into the plane reference frame
         Mat worldImgPt = Mat::zeros( 3, imgPt.size(), CV_32F );
         Mat rot3x3;
         Rodrigues(boardRot, rot3x3);
-        //Mat T = rot3x3.inv()*boardTrans;
-        //cout << boardTrans.at<float> (0) << "," << boardTrans.at<float> (1) << "," << boardTrans.at<float> (2) << endl;
         Mat transPlaneToCam = rot3x3.inv()*boardTrans;
-        //cout << T.at<float> (0) << "," << T.at<float> (1) << "," << T.at<float> (2) << endl;
         for( int i=0; i<imgPt.size(); ++i ) {
             Mat col = imgPt_h.col(i);
             Mat worldPtcam = Kinv*col;
@@ -450,19 +444,10 @@ bool ProjectorTracker::backProject(const cv::Mat& boardRot64,
             pt.x = worldPtPlaneReproject.at<float>(0);
             pt.y = worldPtPlaneReproject.at<float>(1);
             pt.z = 0;
-            cout << "pt " << pt.x << "," << pt.y << endl;
-            
-            //X = (-Tz/dz)*dx + Tx
-            //Y = (-Tz/dz)*dy + Ty
-
-            /*cv::Point3f pt1;
-            pt1.x = T.at<float> (2) / d.at<float> (2) * d.at<float> (0) *(-1.0) + T.at<float>(0);
-            pt1.y = T.at<float> (2) / d.at<float> (2) * d.at<float> (1) *(-1.0) + T.at<float>(1);
-            pt1.z = 0;
-            cout << pt1.x << "," << pt1.y << endl;*/
-            
+            //cout << "pt " << pt.x << "," << pt.y << endl;
             worldPt.push_back(pt);
         }
+        
     }
     return true;
 }
@@ -606,9 +591,8 @@ void ProjectorTracker::computeCandidateBoardPose(const vector<cv::Point2f> & img
                  K,
                  distCoeffs,
                  boardRot, boardTrans);
-    cout << boardTrans.at<float> (0) << "," << boardTrans.at<float> (1) << "," << boardTrans.at<float> (2) << endl;
-        //Mat transPlaneToCam = rot3x3.inv()*boardTrans;
-    cout << boardRot.at<float> (0,1) << "," << boardRot.at<float> (0,1) << "," << boardRot.at<float> (0,2) << endl;
+   // cout << boardTrans.at<float> (0) << "," << boardTrans.at<float> (1) << "," << boardTrans.at<float> (2) << endl;
+   // cout << boardRot.at<float> (0,1) << "," << boardRot.at<float> (0,1) << "," << boardRot.at<float> (0,2) << endl;
 }
 /*
 
@@ -828,24 +812,25 @@ bool ProjectorTracker::addProjected_aruco(const cv::Mat& patternImg, const cv::M
         std::cout << "Pattern image size is not consistent with calibrated projector resolution" << std::endl;
         return false;
     }
-
+    //work on undistorted image
+    Mat undistorted;
+    undistort(projectedImg, undistorted, cameraMatrix, cameraDistCoeffs);
     // find corners
     vector<Point2f> chessImgPts;
     int chessFlags = CV_CALIB_CB_ADAPTIVE_THRESH;// | CV_CALIB_CB_NORMALIZE_IMAGE;
-    bool foundCheckerBoard = findChessboardCorners(projectedImg, checkerBoardSize, chessImgPts, chessFlags);
+    bool foundCheckerBoard = findChessboardCorners(undistorted, checkerBoardSize, chessImgPts, chessFlags);
     if(foundCheckerBoard){
         std::cout << "found checker board" << std::endl;
+
         Mat displayImg;
-        drawCheckerBoard(projectedImg, chessImgPts, displayImg);
+        drawCheckerBoard(undistorted, chessImgPts, displayImg);
         vector<vector<cv::Point2f> > aruco_corners;
         vector<cv::Point2f>  aruco_pts;
         vector<int> arucoIds;
 
-        bool bProjectedPatternFound = findAruco(projectedImg, aruco_pts, aruco_corners, arucoIds) ;
+        bool bProjectedPatternFound = findAruco(undistorted, aruco_pts, aruco_corners, arucoIds) ;
         if(bProjectedPatternFound && aruco_pts.size() >= 4){
             std::cout << "found aruco board with " << aruco_pts.size() << " corners " << std::endl;
-
-                    
             drawAruco(displayImg, aruco_corners, arucoIds, displayImg);
             vector<cv::Point3f> arucoObjectPts;
             cv::Mat boardRot;
@@ -859,17 +844,13 @@ bool ProjectorTracker::addProjected_aruco(const cv::Mat& patternImg, const cv::M
                 coordinate.append(",");
                 coordinate.append(to_string((int) (p.y * 1000)));
                 coordinate.append(")");
-                //circle(displayImg, Point2f(p.x, p.y), 5, Scalar( 0, 0, 255), CV_FILLED); 
                 putText(displayImg, coordinate, chessImgPts[i], 
     FONT_HERSHEY_COMPLEX_SMALL, 0.5, cvScalar(200,200,250), 1, CV_AA);
             }
 
-            //imshow( "aruco", displayImg );                   // Show our image inside it.
-            //waitKey(5);
- 
+
             computeCandidateBoardPose(chessImgPts, checkerObjectPts ,cameraMatrix, cameraDistCoeffs,  boardRot, boardTrans);
             backProject(boardRot, boardTrans, aruco_pts, arucoObjectPts);
-            
             for(int i = 0; i < arucoObjectPts.size(); i++){
                 Point3f p = arucoObjectPts[i];
                 string coordinate = "(";
@@ -877,7 +858,6 @@ bool ProjectorTracker::addProjected_aruco(const cv::Mat& patternImg, const cv::M
                 coordinate.append(",");
                 coordinate.append(to_string((int) (p.y * 1000)));
                 coordinate.append(")");
-                //circle(displayImg, Point2f(p.x, p.y), 5, Scalar( 0, 0, 255), CV_FILLED); 
                 putText(displayImg, coordinate, aruco_pts[i], 
     FONT_HERSHEY_COMPLEX_SMALL, 0.5, cvScalar(255,0,0), 1, CV_AA);
             }
@@ -1093,9 +1073,9 @@ bool ProjectorTracker::known3DObj_calib(const Mat& patternImg, const Mat& captur
 {
     bool addOK = addProjected(patternImg, captured);
     if(addOK ) {
-        //bool intrinsic_ok = calibrateProjector();
-        //if(intrinsic_ok ) 
-        stereoCalibrate();
+        bool intrinsic_ok = calibrateProjector();
+        if(intrinsic_ok ) 
+            stereoCalibrate();
     }
     //display for debug
     cv::namedWindow( "captured", cv:: WINDOW_NORMAL );// Create a window for display.
