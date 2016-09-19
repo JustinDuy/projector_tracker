@@ -10,6 +10,7 @@
 #include <projector_tracker/CameraProjectorInterface.h>
 #include <opencv2/core.hpp>
 using namespace std;
+#define diffMinBetweenFrames 3
 #pragma mark - CameraCalibration
 enum CalibrationPattern {CHESSBOARD, CIRCLES_GRID, ASYMMETRIC_CIRCLES_GRID};
 class CameraCalibration {
@@ -40,7 +41,9 @@ public:
 	float maxReprojectionError;
 	int numBoardsFinalCamera;
 	int numBoardsBeforeCleaning;
+        bool updateCamDiff(cv::Mat camMat);
 private:
+        cv::Mat prevMat;
 	vector<cv::Point3f> candidateObjectPts;
 	std::vector<std::vector<cv::Point2f> > imagePoints;
 protected:

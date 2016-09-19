@@ -88,6 +88,18 @@ bool CameraCalibration::clean() {
         return false;
     }
 }
+bool CameraCalibration::updateCamDiff(cv::Mat camMat) {
+    if(prevMat.size() != Size(0,0)){
+        Mat diffMat;
+        absdiff(prevMat, camMat, diffMat);
+        float diffMean = mean(Mat(mean(diffMat)))[0];
+        camMat.copyTo(prevMat);
+        //cout << "diff mean : " << diffMean << endl;
+        return diffMinBetweenFrames < diffMean;
+    }
+    else 
+        camMat.copyTo(prevMat);
+}
 float CameraCalibration::getReprojectionError() const {
     return reprojectionError;
 }
@@ -126,7 +138,7 @@ bool CameraCalibration::calibrate() {
         updateObjectPoints();
 
 	int calibFlags = 0;
-	float rms = calibrateCamera(objectPoints, imagePoints, addedImageSize, distortedIntrinsics, distCoeffs, boardRotations, boardTranslations, calibFlags);
+	float rms = calibrateCamera(objectPoints, imagePoints, addedImageSize, distortedIntrinsics, distCoeffs, boardRotations, boardTranslations, CALIB_FIX_K4|CALIB_FIX_K5);
 	ready = checkRange(distortedIntrinsics) && checkRange(distCoeffs);
 
 	if(!ready) {

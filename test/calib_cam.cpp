@@ -42,39 +42,47 @@ int test_framegrabbing(int argc, char **argv) {
 }
 
 bool calibrateCamera(cv::Mat img, std::shared_ptr<CameraCalibration> calibrationCamera){
+    if(calibrationCamera->updateCamDiff(img)){
 	vector<cv::Point2f> corners;
-    bool bFound = calibrationCamera->add(img,corners);
-    bool bCalibDone = false;
-    if(bFound){
-    	calibrationCamera->drawCheckerBoard(img,corners);
-        cout << "Found board!" << endl;
+        bool bFound = calibrationCamera->add(img,corners);
+        bool bCalibDone = false;
+        if(bFound){
+            calibrationCamera->drawCheckerBoard(img,corners);
+            cout << "Found board!" << endl;
 
-        calibrationCamera->calibrate();
+            calibrationCamera->calibrate();
 
-        if(calibrationCamera->size() >= calibrationCamera->numBoardsBeforeCleaning) {
+            if(calibrationCamera->size() >= calibrationCamera->numBoardsBeforeCleaning) {
 
-            cout << "Cleaning" << endl;
+                cout << "Cleaning" << endl;
 
-            calibrationCamera->clean();
+                calibrationCamera->clean();
 
-            if(calibrationCamera->getReprojectionError(calibrationCamera->size()-1) > calibrationCamera->maxReprojectionError) {
-                cout << "Board found, but reproj. error is too high, skipping" << endl;
-                return false;
+                if(calibrationCamera->getReprojectionError(calibrationCamera->size()-1) > calibrationCamera->maxReprojectionError) {
+                    cout << "Board found, but reproj. error is too high, skipping" << endl;
+                    return false;
+                }
+            }
+
+            if (calibrationCamera->size()>= calibrationCamera->numBoardsFinalCamera) {
+                    if(calibrationCamera->getReprojectionError() < calibrationCamera->maxReprojectionError)
+                    {
+                            calibrationCamera->save("../data/calibrationCamera.yml");        	
+                            cout << "Camera calibration finished & saved to calibrationCamera.yml" << endl;
+                            bCalibDone = true;
+                    }
             }
         }
+        else cout << "Could not find board" << endl;
 
-        if (calibrationCamera->size()>= calibrationCamera->numBoardsFinalCamera) {
-        	if(calibrationCamera->getReprojectionError() < calibrationCamera->maxReprojectionError)
-        	{
-        		calibrationCamera->save("../data/calibrationCamera.yml");        	
-        		cout << "Camera calibration finished & saved to calibrationCamera.yml" << endl;
-        		bCalibDone = true;
-        	}
-        }
+        return bCalibDone;
+        
     }
-    else cout << "Could not find board" << endl;
-
-    return bCalibDone;
+    else
+    {
+        cout << "move the board" << endl;
+        return false;
+    }
 }
 void calib_cam( std::shared_ptr<CameraInterface> ci){
 	//create cameraprojector interface
