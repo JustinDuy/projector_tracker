@@ -320,8 +320,8 @@ else
 	}
 	//Mat Kinv64 = cam_distortedIntrinsics.inv();
 	//use cam_undistorted_intrinsics
-	Mat cam_undistorted_intrinsics = getOptimalNewCameraMatrix(cam_distortedIntrinsics, cam_distortion_coeffs, addedImageSize, 1); //fillFrame ? 0 : 1s
-        Mat Kinv64 = cam_undistorted_intrinsics.inv();
+	//Mat cam_undistorted_intrinsics = getOptimalNewCameraMatrix(cam_distortedIntrinsics, cam_distortion_coeffs, addedImageSize, 1); //fillFrame ? 0 : 1s
+        Mat Kinv64 = cam_distortedIntrinsics.inv();
 	Mat Kinv,boardRot,boardTrans;
 	Kinv64.convertTo(Kinv, CV_32F);
 	boardRot64.convertTo(boardRot, CV_32F);

@@ -152,8 +152,10 @@ protected:
     cv::Mat rotCamToProj;
     cv::Mat transCamToProj;
     cv::Mat fundamentalMatrix, essentialMatrix;
-//protected:
-//    std::shared_ptr<CameraProjectorInterface> cp_interface;  // Gives synchronized access to camera and projector
+    //camera pose Rot&Trans
+    std::vector<cv::Mat> cam_board_rot;
+    std::vector<cv::Mat> cam_board_trans;
+    
     std::vector<cv::Point2f> getPatternPoints();
 private:
     cv::Mat pattern;  /// cached pattern

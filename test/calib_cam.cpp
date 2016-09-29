@@ -1,4 +1,4 @@
-
+#include <dirent.h>
 #include <projector_tracker/CameraProjectorInterface.h>
 #include <projector_tracker/CameraCalibration.h>
 #include <QApplication>
@@ -40,7 +40,31 @@ int test_framegrabbing(int argc, char **argv) {
     
     app.exec();
 }
-
+bool calibrateCamera(std::vector<cv::Mat> imgs, std::shared_ptr<CameraCalibration> calibrationCamera){
+    bool bCalibDone = false;
+    for(int i = 0; i < imgs.size() ; i++){
+        cv::Mat img = imgs[i];
+        vector<cv::Point2f> corners;
+        bool bFound = calibrationCamera->add(img,corners);
+        if(bFound){
+            calibrationCamera->drawCheckerBoard(img,corners);
+            cout << "Found board on image " << i << endl;
+        }
+    }
+    cout << "calibrating ..." << endl;
+    calibrationCamera->calibrate();
+    if(calibrationCamera->getReprojectionError() < calibrationCamera->maxReprojectionError){
+        calibrationCamera->save("../data/calibrationCamera.yml");        	
+        cout << "Camera calibration finished & saved to calibrationCamera.yml" << endl;
+        bCalibDone = true;
+    }
+    else 
+    {
+        cout << "Camera calibration reprojection error is too high " << calibrationCamera->getReprojectionError()<< endl;
+        
+    }
+    return bCalibDone;
+}
 bool calibrateCamera(cv::Mat img, std::shared_ptr<CameraCalibration> calibrationCamera){
    // if(calibrationCamera->updateCamDiff(img)){
 	vector<cv::Point2f> corners;
@@ -85,9 +109,9 @@ bool calibrateCamera(cv::Mat img, std::shared_ptr<CameraCalibration> calibration
     }
 }
 void calib_cam( std::shared_ptr<CameraInterface> ci){
-	//create cameraprojector interface
+    //create cameraprojector interface
     std::shared_ptr<CameraCalibration> camCalib = std::make_shared<CameraCalibration>();
-	//load configuration for tracking algorithm
+    //load configuration for tracking algorithm
     camCalib->loadSetting("../data/cam_calib_setting.yml", "pattern type", 
     		"pattern width", "pattern height", "square size", "max reprojection error", "numBoardsBeforeCleaning", "numBoardsFinalCamera");
 	bool finished = false;
@@ -95,8 +119,39 @@ void calib_cam( std::shared_ptr<CameraInterface> ci){
     	cv::Mat captured = ci->grabFrame();
     	finished = calibrateCamera(captured,camCalib );
     }
-   
+}
+void calib_cam_img( std::string calibImgPath){
+    std::shared_ptr<CameraCalibration> camCalib = std::make_shared<CameraCalibration>();
+    //load configuration for tracking algorithm
+    camCalib->loadSetting("../data/cam_calib_setting.yml", "pattern type", 
+    		"pattern width", "pattern height", "square size", "max reprojection error", "numBoardsBeforeCleaning", "numBoardsFinalCamera");
+    DIR *dpdf;
+    struct dirent *epdf;
 
+    dpdf = opendir(calibImgPath.c_str());
+    char fullPathFile[200];
+    if (dpdf != NULL){
+        std::vector<cv::Mat> imgs;
+        while (epdf = readdir(dpdf)){
+            printf("Filename: %s\n",epdf->d_name);
+            sprintf(fullPathFile, "%s\/%s",  calibImgPath.c_str(),epdf->d_name);
+            //std::cout << "loading " << epdf->d_name << std::endl;
+            Mat image;
+            
+            image = imread(fullPathFile, CV_LOAD_IMAGE_COLOR);   // Read the file
+            if(! image.data )                              // Check for invalid input
+            {
+                cout <<  "Could not open or find the image " << fullPathFile << std::endl ;
+                continue;
+            }
+            else{
+                cv::Mat gray;
+                cv::cvtColor(image, gray, CV_BGR2GRAY);
+                imgs.push_back(gray);
+            }
+        }
+        calibrateCamera(imgs, camCalib);
+    }
 }
 void test_cameraprojector_helper( std::shared_ptr<CameraProjectorInterface> cpi) {
     std::vector<cv::Mat> test_images;
@@ -110,9 +165,10 @@ void test_cameraprojector_helper( std::shared_ptr<CameraProjectorInterface> cpi)
 int test_cameraprojector(int argc, char **argv) {
     QApplication app(argc, argv);
     //read second arg for camera device id
-    int cam_deviceID = atoi(argv[1]);
+    /*int cam_deviceID = atoi(argv[1]);
     std::cout << "using camera device : " << cam_deviceID << std::endl;
     std::shared_ptr<CameraInterface> cam_interface = std::make_shared<CameraInterface>(cam_deviceID);
-    std::thread t(calib_cam, cam_interface);
+    std::thread t(calib_cam, cam_interface);*/
+    calib_cam_img(argv[1]);
     app.exec();
 }

@@ -40,25 +40,16 @@ int test_framegrabbing(int argc, char **argv) {
     
     app.exec();
 }
-bool calib_proj( std::shared_ptr<CameraProjectorInterface> cpi){
-    //load configuration for tracking algorithm
-    std::shared_ptr<ProjectorTracker> projTracker = std::make_shared<ProjectorTracker>  ();
-    //load configuration for tracking algorithm
-    projTracker->loadSetting("../data/setting.yml", "pattern type", "known 3D Object", "pattern width", "pattern height", "pattern size", "corner x", "corner y", "checker width", "checker height", "checker size", 
-                             "max intrinsic reprojection error", "max extrinsic reprojection error", "numBoardsBeforeCleaning", "numBoardsFinalCamera",
-        "../data/calibrationCamera.yml", "cameraMatrix", "distCoeffs", "imageSize_width", "imageSize_height", "../data/calibrationProjector.yml", "projectorMatrix", "distCoeffs", "projectorWidth", "projectorHeight"
-    );
-    vector<cv::Mat> test_images = projTracker->getPatternImages();
-    cv::imwrite("pattern.jpg",test_images[0]);
-    Mat test_image = test_images[0];
-    bool finished = false;
-    while(!finished){
-        CameraProjectorInterface::CameraProjectorImagePair img_pair= cpi->projectAndAcquire(test_image);
-        Mat captured = img_pair.acquired;
-        finished = projTracker->run(test_image, captured);
-        
+bool calib_captured( std::shared_ptr<CameraInterface> ci){
+    int count = 0;
+    char buff[250];
+    while(true){
+        cv::Mat captured = ci->grabFrame();
+        sprintf(buff,"captured_%d.jpg", count);
+        imwrite(buff, captured); 
+        cout << buff << " is saved"<< endl;
+        count++;
     }
-    cout << "You have finished extrinsic calibration" << endl;
 
 }
 
@@ -77,8 +68,7 @@ int test_cameraprojector(int argc, char **argv) {
     int cam_deviceID = atoi(argv[1]);
     std::cout << "using camera device : " << cam_deviceID << std::endl;
     std::shared_ptr<CameraInterface> cam_interface = std::make_shared<CameraInterface>(cam_deviceID);
-    std::shared_ptr<ProjectorInterface> proj_interface= std::make_shared<ProjectorInterface>();
-	std::shared_ptr<CameraProjectorInterface> cpi = std::make_shared<CameraProjectorInterface>(cam_interface, proj_interface, 500);
-	std::thread t(calib_proj, cpi);
+    std::thread t(calib_captured, cam_interface);
+
     app.exec();
 }
